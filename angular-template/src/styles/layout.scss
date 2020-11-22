@@ -1,0 +1,62 @@
+@import "_variables";
+
+html,
+body,
+.main-content {
+  min-height: calc(100vh - 10px);
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: $font-family-body;
+  background-color: $brand-light;
+}
+
+.main-content {
+  position: relative;
+  padding-top: $navbar-height-default;
+
+  @include media-breakpoint-up(lg) {
+    padding-top: $navbar-height-lg;
+  }
+}
+
+.modal-content {
+  border: none;
+}
+
+.center-content {
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+.center-xy {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.card {
+  border: 1px solid $card-border;
+  background-color: white;
+  padding: 1rem;
+}
+
+.card + .card,
+.card:first-child:not(:only-child) {
+  margin-bottom: 1rem;
+}
+
+.card-content {
+  h2 {
+    font-size: 1.8rem;
+  }
+}
+
+.col-fill-height {
+  display: flex;
+  align-items: stretch;
+}

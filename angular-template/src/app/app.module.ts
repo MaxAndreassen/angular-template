@@ -11,6 +11,7 @@ import { AuthInterceptor } from './shared/services/auth-interceptor/auth-interce
 import { FormsModule } from '@angular/forms';
 import { MainModule } from './main/main.module';
 import { SharedModule } from './shared/shared.module';
+import { ProfileModule } from './profile/profile.module';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { SharedModule } from './shared/shared.module';
     FormsModule,
     AppRoutingModule,
     SecurityModule,
+    ProfileModule,
     MainModule,
     HttpClientModule,
     SharedModule

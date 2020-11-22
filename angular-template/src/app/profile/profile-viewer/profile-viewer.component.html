@@ -1,0 +1,28 @@
+<div class="user-profile-page">
+    <div class="banner"></div>
+    <div class="container">
+      <div class="container-summary card card-body mt-4 mb-4">
+        <div class="card-content">
+          <!--<app-sanitized-image class="uploader-image profile-photo" *ngIf="!!profilePictureUrl" [chosenUrl]="profilePictureUrl"></app-sanitized-image>!-->
+          <div class="profile-picture shadow-sm">
+            <div class="uploader-image"
+                 alt="Profile picture"
+                 [style.background-image]="'url(assets/placeholder_profile.jpg)'"></div>
+          </div>
+        </div>
+        <!--<app-loading-spinner *ngIf="loading"></app-loading-spinner>-->
+        <div *ngIf="!loading">
+          <h1 class="name allergen-directory-title">
+            {{data?.firstName}} {{data?.lastName}}
+            <!--<app-verified-user-indicator *ngIf="model?.influencer"></app-verified-user-indicator>-->
+          </h1>
+          <p class="text-center text-muted">
+            {{data?.username}}
+            <!--<span *ngIf="model.emailAddress">| {{model.emailAddress}}</span>-->
+          </p>
+  
+          <p class="description">{{data?.bio}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
