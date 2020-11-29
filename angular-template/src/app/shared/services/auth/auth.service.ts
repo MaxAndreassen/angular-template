@@ -1,7 +1,7 @@
 import { Injectable, EventEmitter, Inject, PLATFORM_ID } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { SecurityContext, AuthenticationRequest, AuthenticatedUser, IAuthenticationResponse, User } from '../../models/auth.models';
+import { SecurityContext, AuthenticationRequest, AuthenticatedUser, IAuthenticationResponse, User, SignUpRequest } from '../../models/auth.models';
 import { IAppConfig, APP_CONFIG } from '../../models/configuration.models';
 import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
@@ -70,6 +70,15 @@ export class AuthService {
 
         this.authStateChange$.next(this.securityContext);
 
+        return of(res);
+      }));
+  }
+
+  register<TUser>(request: SignUpRequest): Observable<any> {
+    const url = `${this.config.apiUrl}users/register`;
+    return this.http
+      .post<any>(url, request)
+      .pipe(switchMap(res => {
         return of(res);
       }));
   }

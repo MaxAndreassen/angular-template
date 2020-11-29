@@ -1,0 +1,14 @@
+@import '_bootstrap.mixins';
+
+.errors {
+  padding-top: 5px;
+
+  ul {
+    padding-left: 5px;
+    list-style: none;
+    margin-bottom: 0.4rem;
+  }
+
+  .error {
+  }
+}

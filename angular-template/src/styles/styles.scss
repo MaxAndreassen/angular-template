@@ -2,3 +2,12 @@
 @import '_bootstrap.mixins';
 
 @import '~bootstrap/scss/bootstrap';
+
+
+.required-star {
+    &:after {
+      content: '*';
+      color: $brand-danger;
+    }
+  }
+  

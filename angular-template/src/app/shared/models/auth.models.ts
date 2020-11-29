@@ -7,7 +7,7 @@ export class AuthenticationRequest {
 export class SignUpRequest {
     password: string;
     passwordConfirm: string;
-    userName: string;
+    username: string;
     email: string;
 }
 

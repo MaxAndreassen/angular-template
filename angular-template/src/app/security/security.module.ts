@@ -3,15 +3,19 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SecurityRoutingModule } from './security-routing.module';
 import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-    SecurityRoutingModule
+    SecurityRoutingModule,
+    SharedModule
   ],
   declarations: [
-    LoginComponent
+    LoginComponent,
+    RegisterComponent
   ]
 })
 export class SecurityModule { }
