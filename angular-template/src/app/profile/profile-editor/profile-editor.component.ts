@@ -1,23 +1,35 @@
 import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { AuthService } from '../../shared/services/auth/auth.service';
-import { AuthBaseComponent } from '../../shared/components/auth-base-component';
 import { Profile } from '../models/profile.models';
+import { isPlatformServer } from '@angular/common';
+import { SecurityContext } from '../../shared/models/auth.models';
 
 @Component({
   selector: 'app-profile-editor',
   templateUrl: './profile-editor.component.html',
   styleUrls: ['./profile-editor.component.scss']
 })
-export class ProfileEditorComponent extends AuthBaseComponent implements OnInit {
+export class ProfileEditorComponent implements OnInit {
   loading = false;
   failed = false;
   editor: Profile = { firstName: 'Bob', lastName: 'Bobson', username: 'InfluencerBob42' };
 
+  securityContext: SecurityContext;
+
   constructor(
-    authService: AuthService,
-    @Inject(PLATFORM_ID) platformId: any,
+    private authService: AuthService,
+    @Inject(PLATFORM_ID) private platformId: any,
   ) {
-    super(authService, platformId);
+  }
+
+  ngOnInit(): any {
+    if (isPlatformServer(this.platformId)) {
+        return;
+    }
+
+    this.authService.authStateChange$.subscribe((context: SecurityContext) => {
+        this.securityContext = context;
+    });
   }
 
   update(): any {

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #e5e5e5;
+      }
+
+      .cls-2 {
+        fill: #bfbebe;
+      }
+
+      .cls-3 {
+        fill: #b5b5b5;
+      }
+    </style>
+  </defs>
+  <g id="User" transform="translate(-1723 -668)">
+    <rect id="Rectangle_71" data-name="Rectangle 71" class="cls-1" width="400" height="400" transform="translate(1723 668)"/>
+    <path id="Path_83" data-name="Path 83" class="cls-2" d="M72.59,0c40.09,0,72.59,34.185,72.59,76.354s-32.5,103.569-72.59,103.569S0,118.523,0,76.354,32.5,0,72.59,0Z" transform="translate(1845.115 724.945)"/>
+    <path id="Intersection_3" data-name="Intersection 3" class="cls-3" d="M0,76.354C0,34.185,32.5,0,72.59,0l.537,0V179.92c-.178,0-.359,0-.537,0C32.5,179.923,0,118.523,0,76.354Z" transform="translate(1845.115 724.946)"/>
+    <path id="Path_85" data-name="Path 85" class="cls-2" d="M-541.322-729.334s-6.54-137.457,48.235-173.161,19.636,21.027,86.272,19.714,29.4-46.089,82.265-19.714,56.133,173.161,56.133,173.161Z" transform="translate(2328 1797.334)"/>
+    <path id="Intersection_4" data-name="Intersection 4" class="cls-3" d="M.243,184.76S-6.3,47.3,48.479,11.6c33.15-21.609,30.332-8.749,39.548,4.114,6.012,8.388,17.146,16.778,46.724,15.6l.822-.035V184.76Z" transform="translate(1787.51 883.239)"/>
+  </g>
+</svg>

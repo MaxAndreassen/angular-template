@@ -9,33 +9,45 @@
 
 
 <!-- Toolbar -->
-<div class="toolbar bg-primary"
+<div class="toolbar bg-dark"        style="z-index: 10; width:100%"
      role="banner">
-  <img width="40"
-       alt="Angular Logo"
-       src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg=="
-  />
-  <span>YOUR LOGO HERE</span>
-  <div class="spacer"></div>
-  <button *ngIf="!securityContext?.authenticated"
-          type="button"
-          class="btn btn-primary mr-2">Log In</button>
-  <button *ngIf="securityContext?.authenticated"
-          type="button"
-          class="btn btn-primary mr-2">
-    <div class="mr-1"
-         style="float: left;
-          margin-top: 2px;">{{securityContext?.user?.username}}</div>
-    <i style="font-size: 28px;"
-       class="fa fa-gear text-white ml-1"></i>
-  </button>
+        <a href="/">
+                <img width="40"
+                     alt="Angular Logo"
+                     src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg=="
+                />
+        </a>
+        <span> {{securityContext?.user?.username}}</span>
+        <div class="spacer"></div>
+        <button *ngIf="!securityContext?.authenticated"
+                type="button"
+                (click)="routeLogin()"
+                class="btn btn-primary mr-2">Log In</button>
+        <button *ngIf="securityContext?.authenticated"
+                type="button"
+                class="btn btn-dark mr-2">
+                <div *ngIf="securityContext?.authenticated"
+                     style="float: left;margin-top: 2px;"
+                     (click)="signOut()">Sign Out</div>
+        </button>
 </div>
 
 <div class="content"
      role="main">
 </div>
 
-<router-outlet></router-outlet>
+<!-- Creates a layout with a left-positioned sidenav and explicit content. -->
+<main [class.dashboard-content]="sideBarOpen && securityContext?.authenticated"
+      [class.dashboard-content-closed]="!sideBarOpen || !securityContext?.authenticated"
+      [class.dashboard-content-closed-auth]="!sideBarOpen && securityContext?.authenticated"
+      [class.dashboard-content-closed-no-auth]="!sideBarOpen && !securityContext?.authenticated">
+        <router-outlet></router-outlet>
+</main>
+
+<app-side-nav></app-side-nav>
+
+
+
 
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 <!-- * * * * * * * * * * * The content above * * * * * * * * * * * -->

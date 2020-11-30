@@ -286,3 +286,75 @@
       visibility: hidden;
     }
   }
+
+  @import '_variables';
+@import '_bootstrap.mixins';
+
+.dashboard-content {
+  $width: 225px;
+
+  margin-left: $width;
+  bottom: 0;
+  right: 0;
+  width: calc(100% - #{$width});
+  transition: all .3s ease-in-out;
+  top: 40px;
+  padding: 20px;
+  overflow-x: hidden;
+  background-color: $brand-light;
+
+  @include media-breakpoint-up(lg) {
+    top: 40px;
+  }
+
+  @include media-breakpoint-down(sm) {
+    width: calc(100% - 70px);
+    margin-left: 70px;
+    padding: 0;
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+}
+
+.dashboard-content-closed-auth {
+  $width: 225px;
+  margin-left: $width;
+  width: calc(100% - #{$width});
+
+  @include media-breakpoint-down(sm) {
+    width: calc(100%);
+  }
+}
+
+.dashboard-content-closed-no-auth {
+  $width: 0px;
+  margin-left: $width;
+  width: calc(100% - #{$width});
+
+  @include media-breakpoint-down(sm) {
+    width: calc(100%);
+  }
+}
+
+.dashboard-content-closed {
+  bottom: 0;
+  right: 0;
+  transition: all .3s ease-in-out;
+  top: 40px;
+  padding: 20px;
+  overflow-x: hidden;
+  background-color: $brand-light;
+
+  @include media-breakpoint-up(lg) {
+    top: 40px;
+  }
+
+  @include media-breakpoint-down(sm) {
+    margin-left: 0px;
+    padding: 0px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+}

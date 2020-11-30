@@ -47,9 +47,12 @@
   }
 
   .banner {
-    height: 300px;
+    height: 200px;
     background-size: cover;
-    background: url('/assets/jungle.jpg') no-repeat 50% 40%;
+
+    @include media-breakpoint-down(sm) {
+      height: 120px;
+     }
   }
 
   .container-summary {
@@ -64,6 +67,11 @@
       left: 50%;
       top: 0;
       transform: translateX(-50%) translateY(-60%);
+
+      @include media-breakpoint-down(sm) {
+        width: 200px;
+        height: 200px;
+       }
 
       .uploader-image,
       .uploader-container {

@@ -33,7 +33,7 @@ import { ProfileModule } from './profile/profile.module';
     provide: HTTP_INTERCEPTORS,
     useClass: AuthInterceptor,
     multi: true
-  },],
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

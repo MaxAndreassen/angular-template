@@ -3,48 +3,50 @@
   <p class="lead">This is a template Angular web app backed by a .net core API. It comes with pre-built authentication, file management and
     stripe integrations.</p>
   <hr class="my-4">
-  <p>Kick start your project by making use of our template today.</p>
-  <p class="lead">
-    <a class="btn btn-primary btn-lg"
-       href="#"
-       role="button">Register</a>
-  </p>
-</div>
-<div class="row mx-4">
-  <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
-    <app-card></app-card>
-  </div>
-  <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
-    <app-card></app-card>
-  </div>
-  <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
-    <app-card></app-card>
-  </div>
-  <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
-    <app-card></app-card>
-  </div>
-  <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
-    <app-card></app-card>
-  </div>
-  <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
-    <app-card></app-card>
-  </div>
-  <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
-    <app-card></app-card>
-  </div>
-  <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
-    <app-card></app-card>
-  </div>
-  <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
-    <app-card></app-card>
-  </div>
-  <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
-    <app-card></app-card>
-  </div>
-  <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
-    <app-card></app-card>
-  </div>
-  <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
-    <app-card></app-card>
+  <span *ngIf="!securityContext?.authenticated">
+    <p>Kick start your project by making use of our template today.</p>
+    <p class="lead mb-5">
+      <a class="btn btn-primary btn-lg"
+         href="security/register"
+         role="button">Register</a>
+    </p>
+  </span>
+  <div class="row mx-4">
+    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4">
+      <app-card></app-card>
+    </div>
+    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4">
+      <app-card></app-card>
+    </div>
+    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4">
+      <app-card></app-card>
+    </div>
+    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4">
+      <app-card></app-card>
+    </div>
+    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4">
+      <app-card></app-card>
+    </div>
+    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4">
+      <app-card></app-card>
+    </div>
+    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4">
+      <app-card></app-card>
+    </div>
+    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4">
+      <app-card></app-card>
+    </div>
+    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4">
+      <app-card></app-card>
+    </div>
+    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4">
+      <app-card></app-card>
+    </div>
+    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4">
+      <app-card></app-card>
+    </div>
+    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4">
+      <app-card></app-card>
+    </div>
   </div>
 </div>

@@ -57,4 +57,9 @@ export class LoginComponent implements OnInit {
       });
   }
 
+  routeRegister(): any {
+    this.router.navigateByUrl('/security/register');
+  }
+
+
 }

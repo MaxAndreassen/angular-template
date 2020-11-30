@@ -1,0 +1,105 @@
+@import '_variables';
+@import '_bootstrap.mixins';
+
+.side-nav-closed {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  background: #7041ce !important;
+  width: 220px;
+  transition: all .3s ease-in-out;
+  top: 0px;
+
+  @include media-breakpoint-up(lg) {
+    top: 0px;
+  }
+
+  @include media-breakpoint-down(sm) {
+    display: none;
+  }
+
+  .nav-item {
+    padding: 20px 30px;
+    color: $brand-white;
+    display: block;
+    width: 100%;
+    position: relative;
+
+    &:hover {
+      background-color: lighten(#7041ce, 12%);
+      text-decoration: none;
+    }
+
+    &.active {
+      background-color: lighten(#7041ce, 10%);
+
+      &::before {
+        content: '';
+        height: 100%;
+        width: 5px;
+        background-color: $primary;
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+    }
+  }
+}
+
+.side-nav-open {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  background: #7041ce !important;
+  width: 220px;
+  transition: all .3s ease-in-out;
+  top: 0px;
+
+  @include media-breakpoint-up(lg) {
+    top: 0px;
+  }
+
+  @include media-breakpoint-down(sm) {
+    width: 70px;
+  }
+
+  .nav-item {
+    padding: 20px 30px;
+    color: $brand-white;
+    display: block;
+    width: 100%;
+    position: relative;
+
+    &:hover {
+      background-color: lighten(#7041ce, 12%);
+      text-decoration: none;
+    }
+
+    &.active {
+      background-color: lighten(#7041ce, 10%);
+
+      &::before {
+        content: '';
+        height: 100%;
+        width: 5px;
+        background-color: $primary;
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+    }
+  }
+}
+
+.toggle-button {
+  display:block;
+  position: fixed;
+  bottom: 10px;
+  left: 5px;
+  width: 60px;
+
+  
+  @include media-breakpoint-up(md) {
+    display: none;
+  }
+}
