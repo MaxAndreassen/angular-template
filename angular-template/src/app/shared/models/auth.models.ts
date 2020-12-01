@@ -33,11 +33,13 @@ export class PasswordReset {
 export class User {
     email: string;
     username: string;
+    uuid: string;
 }
 
 export class AuthenticatedUser {
     username: string;
     email: string;
+    uuid: string;
 }
 
 export class Role {
@@ -56,4 +58,5 @@ export interface IAuthenticationResponse {
     token: string;
     email: string;
     username: string;
+    uuid: string;
   }

@@ -1,4 +1,4 @@
-export class Profile {
+export class UserEditor {
     firstName: string;
     lastName: string;
     username: string;

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardComponent } from './components/card/card.component';
 import { ValidationSummaryComponent } from './components/validation-summary/validation-summary.component';
+import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
 
 @NgModule({
   imports: [
@@ -9,11 +10,13 @@ import { ValidationSummaryComponent } from './components/validation-summary/vali
   ],
   declarations: [
     CardComponent,
-    ValidationSummaryComponent
+    ValidationSummaryComponent,
+    LoadingSpinnerComponent
   ],
   exports: [
     CardComponent,
-    ValidationSummaryComponent
+    ValidationSummaryComponent,
+    LoadingSpinnerComponent
   ]
 })
 export class SharedModule { }

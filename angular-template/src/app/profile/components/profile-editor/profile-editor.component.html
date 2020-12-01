@@ -1,7 +1,7 @@
 <div class="user-profile-page">
   <div class="banner"></div>
   <div class="container">
-    <div class="container-summary card card-body mt-4 mb-4">
+    <div class="container-summary card card-body mt-4 mb-md-4">
       <div class="card-content">
         <!--<app-sanitized-image class="uploader-image profile-photo" *ngIf="!!profilePictureUrl" [chosenUrl]="profilePictureUrl"></app-sanitized-image>!-->
         <div class="profile-picture shadow-sm">
@@ -11,7 +11,7 @@
         </div>
       </div>
       <!--<app-loading-spinner *ngIf="loading"></app-loading-spinner>-->
-      <div *ngIf="!loading">
+      <div *ngIf="!initialPageLoading">
         <h1 class="name allergen-directory-title">
           {{editor?.firstName}} {{editor?.lastName}}
           <!--<app-verified-user-indicator *ngIf="model?.influencer"></app-verified-user-indicator>-->
@@ -25,12 +25,16 @@
       </div>
     </div>
 
-    <div class="pt-2 pt-md-2">
+    <app-loading-spinner *ngIf="initialPageLoading"></app-loading-spinner>
+
+    <div class="pt-2 pt-md-2" *ngIf="!initialPageLoading">
       <div class="card mobile-login">
         <form class="m-3">
           <div class="row">
             <div class="form-group col-6">
-              <label for="firstName"><b>First Name</b></label>
+              <label for="firstName">
+                <b>First Name</b>
+              </label>
               <input type="text"
                      name="firstName"
                      class="form-control"
@@ -38,7 +42,9 @@
                      [(ngModel)]="editor.firstName">
             </div>
             <div class="form-group  col-6">
-              <label for="lastName"><b>Last Name</b></label>
+              <label for="lastName">
+                <b>Last Name</b>
+              </label>
               <input type="text"
                      name="lastName"
                      class="form-control"
@@ -49,9 +55,12 @@
           <div>
             <button type="button"
                     class="w-100 btn btn-primary"
+                    [disabled]="loading"
                     (click)="update()">Update</button>
           </div>
-          <div *ngIf="failed"
+
+          <app-loading-spinner *ngIf="loading"></app-loading-spinner>
+          <div *ngIf="failed && !loading"
                class="alert alert-danger mt-1"
                role="alert">
             Request Failed.

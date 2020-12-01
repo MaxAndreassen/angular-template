@@ -65,6 +65,7 @@ export class AuthService {
         const user = new User();
         user.email = res.email;
         user.username = res.username;
+        user.uuid = res.uuid;
         this.setUser(res);
         this.setRememberedUser(request);
 
@@ -83,13 +84,9 @@ export class AuthService {
       }));
   }
 
-  updateUser<TUser>(paying: boolean): TUser {
+  updateUser<TUser>(): TUser {
     if (!this.user) {
       this.user = this.getStoredUser();
-    }
-
-    if (!!this.user) {
-      this.user.payingCustomer = true;
     }
 
     this.setUser(this.user);

@@ -299,12 +299,16 @@
   width: calc(100% - #{$width});
   transition: all .3s ease-in-out;
   top: 40px;
-  padding: 20px;
+  padding: 0px;
   overflow-x: hidden;
   background-color: $brand-light;
 
   @include media-breakpoint-up(lg) {
     top: 40px;
+  }
+
+  @include media-breakpoint-up(xl) {
+    padding: 20px;
   }
 
   @include media-breakpoint-down(sm) {
@@ -342,12 +346,16 @@
   right: 0;
   transition: all .3s ease-in-out;
   top: 40px;
-  padding: 20px;
+  padding: 0px;
   overflow-x: hidden;
   background-color: $brand-light;
 
   @include media-breakpoint-up(lg) {
     top: 40px;
+  }
+  
+  @include media-breakpoint-up(xl) {
+    padding: 20px;
   }
 
   @include media-breakpoint-down(sm) {

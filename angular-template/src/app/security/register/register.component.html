@@ -51,12 +51,15 @@
       <div>
         <button type="button"
                 class="w-100 btn btn-primary"
+                [disabled]="loading"
                 (click)="register()">Register</button>
       </div>
       <button type="button"
               class="btn btn-link pt-3"
+              [disabled]="loading"
               (click)="routeLogin()">Already have an account?
       </button>
+      <app-loading-spinner *ngIf="loading"></app-loading-spinner>
       <div *ngIf="!validationResult?.valid"
            class="alert alert-danger mt-2"
            role="alert">

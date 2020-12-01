@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Profile } from '../models/profile.models';
+import { UserEditor } from '../../models/profile.models';
 
 @Component({
   selector: 'app-profile-viewer',
@@ -9,7 +9,7 @@ import { Profile } from '../models/profile.models';
 export class ProfileViewerComponent {
   failed = false;
   loading = false;
-  data: Profile = { firstName: 'Bob', lastName: 'Bobson', username: 'InfluencerBob42' };
+  data: UserEditor = { firstName: 'Bob', lastName: 'Bobson', username: 'InfluencerBob42' };
 
   constructor() { }
 

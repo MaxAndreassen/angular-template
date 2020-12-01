@@ -23,15 +23,19 @@
       <div>
         <button type="button"
                 class="w-100 btn btn-primary"
+                [disabled]="loading"
                 (click)="login()">Login</button>
         <button type="button"
-                class="btn btn-link pt-3">Forgotten password?</button>
+                class="btn btn-link pt-3"
+                [disabled]="loading">Forgotten password?</button>
                 <button type="button"
                 class="btn btn-link pt-3"
-                (click)="routeRegister()">Don't have an account?
+                (click)="routeRegister()"
+                [disabled]="loading">Don't have an account?
         </button>
       </div>
-      <div *ngIf="failed"
+      <app-loading-spinner *ngIf="loading"></app-loading-spinner>
+      <div *ngIf="failed && !loading"
            class="alert alert-danger mt-1"
            role="alert">
         Login Attempt Failed.
