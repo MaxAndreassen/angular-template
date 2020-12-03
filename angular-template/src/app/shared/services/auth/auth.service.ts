@@ -5,6 +5,7 @@ import { SecurityContext, AuthenticationRequest, AuthenticatedUser, IAuthenticat
 import { IAppConfig, APP_CONFIG } from '../../models/configuration.models';
 import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -71,6 +72,26 @@ export class AuthService {
 
         this.authStateChange$.next(this.securityContext);
 
+        return of(res);
+      }));
+  }
+
+  securityCheck(router?: Router): any {
+    this.securityCheckRequest().subscribe(test => { }, err => {
+      if ((err.status === 401 || err.status === 0)) {
+        this.logout();
+        if (!!router) {
+          router.navigateByUrl('/security/login');
+        }
+      }
+    });
+  }
+
+  securityCheckRequest(): Observable<any> {
+    const url = `${this.config.apiUrl}users/check`;
+    return this.http
+      .get<any>(url)
+      .pipe(switchMap(res => {
         return of(res);
       }));
   }

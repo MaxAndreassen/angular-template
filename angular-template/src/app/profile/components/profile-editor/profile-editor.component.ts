@@ -33,6 +33,8 @@ export class ProfileEditorComponent implements OnInit {
       return;
     }
 
+    this.authService.securityCheck(this.router);
+
     this.authService.authStateChange$.subscribe((context: SecurityContext) => {
       this.securityContext = context;
 

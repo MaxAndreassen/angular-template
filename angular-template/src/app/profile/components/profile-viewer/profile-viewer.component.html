@@ -10,6 +10,7 @@
                  [style.background-image]="'url(assets/user.svg)'"></div>
           </div>
         </div>
+        <app-loading-spinner *ngIf="loading"></app-loading-spinner>
         <!--<app-loading-spinner *ngIf="loading"></app-loading-spinner>-->
         <div *ngIf="!loading">
           <h1 class="name allergen-directory-title">
