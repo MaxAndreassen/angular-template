@@ -107,16 +107,16 @@
       font-size: 2em;
       text-align: center;
     }
-
-    .description {
-      margin-top: 10px;
-      color: $brand-grey;
-    }
-
     .stats {
       margin-bottom: 0;
     }
   }
+ 
+  .description {
+    margin-top: 10px;
+    color: $brand-grey;
+  }
+
 }
 
 app-verified-user-indicator {

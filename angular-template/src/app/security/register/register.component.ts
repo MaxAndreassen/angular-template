@@ -40,6 +40,9 @@ export class RegisterComponent implements OnInit {
         if (err.status && err.status === 412) {
           this.validationResult = err.error;
         }
+        if (err.status && err.status === 500) {
+          this.validationResult  = new ValidationResult('An Unknown Error Occured.');
+        }
       });
   }
 

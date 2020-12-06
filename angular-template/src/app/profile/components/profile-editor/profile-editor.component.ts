@@ -6,6 +6,8 @@ import { SecurityContext } from '../../../shared/models/auth.models';
 import { UserService } from '../../services/user.service';
 import { finalize } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { PaymentService } from '../../../shared/services/payment/payment.service';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-profile-editor',
@@ -15,8 +17,16 @@ import { Router } from '@angular/router';
 export class ProfileEditorComponent implements OnInit {
   loading = false;
   initialPageLoading = false;
+  paymentLinkLoading = false;
+  paymentCheckLoading = false;
+
   failed = false;
   editor: UserEditor = { firstName: 'placeholder', lastName: 'placeholder', username: 'placeholder' };
+
+  firstName: string;
+  lastName: string;
+
+  paymentProviderAccountCreated = false;
 
   securityContext: SecurityContext;
 
@@ -24,7 +34,9 @@ export class ProfileEditorComponent implements OnInit {
     private authService: AuthService,
     @Inject(PLATFORM_ID) private platformId: any,
     private userService: UserService,
-    private router: Router
+    private router: Router,
+    private paymentService: PaymentService,
+    @Inject(DOCUMENT) private document: Document
   ) {
   }
 
@@ -44,12 +56,22 @@ export class ProfileEditorComponent implements OnInit {
     });
 
     this.initialPageLoading = true;
+    this.paymentCheckLoading = true;
+
+    this.paymentService
+    .getAccount(this.securityContext.user.uuid)
+    .pipe(finalize(() => this.paymentCheckLoading = false))
+    .subscribe(result => {
+      this.paymentProviderAccountCreated = result.chargesEnabled;
+    });
 
     this.userService
       .getUser(this.securityContext.user.uuid)
       .pipe(finalize(() => this.initialPageLoading = false))
       .subscribe(result => {
         this.editor = result;
+        this.firstName = this.editor.firstName;
+        this.lastName = this.editor.lastName;
       });
   }
 
@@ -61,6 +83,19 @@ export class ProfileEditorComponent implements OnInit {
       .pipe(finalize(() => this.loading = false))
       .subscribe(result => {
         this.editor = result;
+        this.firstName = this.editor.firstName;
+        this.lastName = this.editor.lastName;
+      });
+  }
+
+  paymentOnboarding(): any {
+    this.paymentLinkLoading = true;
+
+    this.paymentService
+      .createAccountLink()
+      .pipe(finalize(() => this.paymentLinkLoading = false))
+      .subscribe(result => {
+        this.document.location.href = result.url;
       });
   }
 }

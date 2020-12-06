@@ -7,7 +7,13 @@ export class ValidationResult implements IValidationResult {
     valid = true;
     errors: ValidationError[] = [];
 
-    addError(key: string, message: string): any {
+    constructor(initialError?: string) {
+        if (initialError) {
+            this.addError('initialError', initialError);
+        }
+    }
+
+    public addError(key: string, message: string): any {
         if (!key) {
             throw new Error('Cannot add validation message with empty key');
         }
