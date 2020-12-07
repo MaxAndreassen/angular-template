@@ -6,6 +6,8 @@ import { UserService } from '../../services/user.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SecurityContext } from '../../../shared/models/auth.models';
 import { finalize } from 'rxjs/operators';
+import { PaymentService } from '../../../shared/services/payment/payment.service';
+import { PaymentIntentSecret } from '../../../shared/models/payment.models';
 
 @Component({
   selector: 'app-profile-viewer',
@@ -43,6 +45,9 @@ export class ProfileViewerComponent implements OnInit {
           this.data = result;
         });
     });
+  }
+
+  examplePurchase(): any {
   }
 
 }

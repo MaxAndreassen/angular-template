@@ -19,6 +19,7 @@ export interface IAppConfig {
   version: string;
   authConfig?: IAuthConfig;
   defaultMetaTags?: IMetaTagConfig;
+  stripeApiKey: string;
 }
 
 export const APP_CONFIG = new InjectionToken<IAppConfig>('app_config');

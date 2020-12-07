@@ -5,7 +5,8 @@
 export const environment = {
   production: false,
   apiUrl: 'https://localhost:5001/api/',
-  domain: 'localhost'
+  domain: 'localhost',
+  stripeApiKey: 'pk_test_51HmLPzKj3UkfM18YnQzqHeSnqwbGDyHFCpVVcNXnRRjIZcKbwA9IogKD55UrSVhnOBloDhxW5z5ElaEqNixXCs5p00W7lNvXm9'
 };
 
 /*

@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { MainModule } from './main/main.module';
 import { SharedModule } from './shared/shared.module';
 import { ProfileModule } from './profile/profile.module';
+import { CheckOutModule } from './check-out/check-out.module';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { ProfileModule } from './profile/profile.module';
     ProfileModule,
     MainModule,
     HttpClientModule,
-    SharedModule
+    SharedModule,
+    CheckOutModule,
   ],
   providers: [
     { provide: APP_CONFIG, useClass: AppConfig },

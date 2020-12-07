@@ -2,7 +2,7 @@ import { Injectable, Inject } from '@angular/core';
 import { APP_CONFIG, IAppConfig } from '../../models/configuration.models';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { AccountLink, Account } from '../../models/payment.models';
+import { AccountLink, Account, PaymentIntentSecret } from '../../models/payment.models';
 
 @Injectable({
   providedIn: 'root'
@@ -22,5 +22,10 @@ export class PaymentService {
   getAccount(userUuid: string): Observable<Account> {
     const url = `${this.config.apiUrl}payment/account/${userUuid}`;
     return this.http.get<Account>(url);
+  }
+
+  buyProduct(productUuid: string): Observable<PaymentIntentSecret> {
+    const url = `${this.config.apiUrl}payment/purchase/${productUuid}`;
+    return this.http.post<PaymentIntentSecret>(url, null);
   }
 }

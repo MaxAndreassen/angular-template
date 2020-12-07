@@ -62,7 +62,7 @@ export class ProfileEditorComponent implements OnInit {
     .getAccount(this.securityContext.user.uuid)
     .pipe(finalize(() => this.paymentCheckLoading = false))
     .subscribe(result => {
-      this.paymentProviderAccountCreated = result.chargesEnabled;
+      this.paymentProviderAccountCreated = result.payoutsEnabled;
     });
 
     this.userService

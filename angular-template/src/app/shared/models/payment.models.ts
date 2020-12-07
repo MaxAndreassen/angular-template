@@ -8,3 +8,8 @@ export class Account {
     chargesEnabled: boolean;
     payoutsEnabled: boolean;
 }
+
+export class PaymentIntentSecret {
+    thirdPartyId: string;
+    secretKey: string;
+}
