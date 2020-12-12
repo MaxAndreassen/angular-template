@@ -17,7 +17,8 @@ import {
   faCloud,
   faRobot,
   faTag,
-  faUser
+  faUser,
+  faDollarSign
 } from '@fortawesome/free-solid-svg-icons';
 import { isPlatformServer } from '@angular/common';
 import { SecurityContext } from '../../shared/models/auth.models';
@@ -39,6 +40,18 @@ export class SideNavComponent implements OnInit {
       icon: faUser,
       isPaid: false
     },
+    {
+      url: 'product/me',
+      title: 'Products',
+      icon: faBook,
+      isPaid: false
+    },
+    {
+      url: 'transactions',
+      title: 'Sales',
+      icon: faDollarSign,
+      isPaid: false
+    }
   ];
 
   securityContext: SecurityContext;

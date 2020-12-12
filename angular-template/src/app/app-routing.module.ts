@@ -5,6 +5,7 @@ import { SecurityModule } from './security/security.module';
 import { MainComponent } from './main/main.component';
 import { ProfileModule } from './profile/profile.module';
 import { CheckOutModule } from './check-out/check-out.module';
+import { ProductModule } from './product/product.module';
 
 const routes: Routes = [
   {
@@ -21,6 +22,10 @@ const routes: Routes = [
   {
     path: 'purchase',
     loadChildren: () => CheckOutModule
+  },
+  {
+    path: 'product',
+    loadChildren: () => ProductModule
   }
 ];
 
