@@ -18,7 +18,8 @@ import {
   faRobot,
   faTag,
   faUser,
-  faDollarSign
+  faDollarSign,
+  faSearch
 } from '@fortawesome/free-solid-svg-icons';
 import { isPlatformServer } from '@angular/common';
 import { SecurityContext } from '../../shared/models/auth.models';
@@ -35,21 +36,27 @@ export class SideNavComponent implements OnInit {
 
   navItems: DashboardSideNavItem[] = [
     {
-      url: 'profile/edit',
-      title: 'Profile',
-      icon: faUser,
+      url: 'product/search',
+      title: 'Find Products',
+      icon: faSearch,
       isPaid: false
     },
     {
       url: 'product/me',
-      title: 'Products',
+      title: 'My Products',
       icon: faBook,
       isPaid: false
     },
     {
       url: 'transactions',
-      title: 'Sales',
+      title: 'Payment History',
       icon: faDollarSign,
+      isPaid: false
+    },
+    {
+      url: 'profile/edit',
+      title: 'Profile',
+      icon: faUser,
       isPaid: false
     }
   ];

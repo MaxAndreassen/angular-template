@@ -4,6 +4,9 @@ import { PaymentService } from '../../../shared/services/payment/payment.service
 import { finalize } from 'rxjs/operators';
 import { isPlatformServer } from '@angular/common';
 import { IAppConfig, APP_CONFIG } from '../../../shared/models/configuration.models';
+import { ProductSummary } from '../../../shared/models/product.models.ts';
+import { ProductService } from '../../../shared/services/product/product.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-check-out',
@@ -13,8 +16,12 @@ import { IAppConfig, APP_CONFIG } from '../../../shared/models/configuration.mod
 export class CheckOutComponent implements OnInit {
 
   loading = false;
+  productLoading = false;
+  failed = false;
 
   paymentIntent: PaymentIntentSecret;
+
+  product: ProductSummary = new ProductSummary();
 
   stripe: any;
   card: any;
@@ -23,22 +30,42 @@ export class CheckOutComponent implements OnInit {
 
   constructor(
     private paymentService: PaymentService,
-    @Inject(APP_CONFIG) public config: IAppConfig
+    @Inject(APP_CONFIG) public config: IAppConfig,
+    private productService: ProductService,
+    private route: ActivatedRoute,
+    private router: Router
   ) {
 
   }
 
   ngOnInit(): any {
+    this.route.paramMap.subscribe(params => {
+      this.productLoading = true;
 
-    this.loading = true;
-    this.paymentService
-      .buyProduct('DE65E368-6B1A-472F-BDB5-C61E5CD64FF0')
-      .pipe(finalize(() => this.loading = false))
-      .subscribe(res => {
-        this.paymentIntent = res;
-        this.setupStripe();
-      }, err => {
-      });
+      this.productService
+        .getProductSummary(params.get('productUuid'))
+        .pipe(finalize(() => this.productLoading = false))
+        .subscribe(result => {
+          this.product = result;
+        }, err => {
+          this.failed = true;
+        });
+
+      this.loading = true;
+      this.paymentService
+        .createPaymentIntent(params.get('productUuid'))
+        .pipe(finalize(() => this.loading = false))
+        .subscribe(res => {
+          this.paymentIntent = res;
+          this.setupStripe();
+        }, err => {
+          this.failed = true;
+        });
+    });
+  }
+
+  backToProduct(): any {
+    this.router.navigateByUrl(`product/view/${this.product.uuid}`);
   }
 
   setupStripe(): any {

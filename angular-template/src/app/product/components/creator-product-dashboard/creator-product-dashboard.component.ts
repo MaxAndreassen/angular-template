@@ -46,11 +46,11 @@ export class CreatorProductDashboardComponent implements OnInit {
 
     this.queryParams.creatorUserUuid = this.securityContext.user.uuid;
     this.productService
-    .listProducts(this.queryParams)
-    .pipe(finalize(() => this.loading = false))
-    .subscribe(res => {
-      this.products = res;
-    });
+      .listProducts(this.queryParams)
+      .pipe(finalize(() => this.loading = false))
+      .subscribe(res => {
+        this.products = res;
+      });
   }
 
 }

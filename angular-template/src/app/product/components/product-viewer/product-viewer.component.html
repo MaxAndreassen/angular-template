@@ -1,0 +1,11 @@
+<div class="jumbotron m-0 m-xl-4 text-center bg-white">
+  <h1 class="display-4 mb-3">{{product?.name}}</h1>
+  <hr class="my-4">
+  <app-loading-spinner *ngIf="loading"></app-loading-spinner>
+  <p>{{product?.description}}</p>
+  <p>{{product?.priceInPounds}}</p>
+  <button type="button"
+          class="d-none d-md-block btn btn-primary mx-auto"
+          [disabled]="loading"
+          (click)="purchase()">Purchase</button>
+</div>

@@ -15,7 +15,7 @@ export class ProductService {
   ) { }
 
   createProduct(editor: ProductEditor): Observable<ProductEditor> {
-    const url = `${this.config.apiUrl}product/create`;
+    const url = `${this.config.apiUrl}product/update`;
     return this.http.post<ProductEditor>(url, editor);
   }
 
@@ -24,4 +24,13 @@ export class ProductService {
     return this.http.post<ProductSummary[]>(url, queryParams);
   }
 
+  getProduct(uuid: string): Observable<ProductEditor> {
+    const url = `${this.config.apiUrl}product/get/${uuid}`;
+    return this.http.get<ProductEditor>(url);
+  }
+
+  getProductSummary(uuid: string): Observable<ProductSummary> {
+    const url = `${this.config.apiUrl}product/get/${uuid}/summary`;
+    return this.http.get<ProductSummary>(url);
+  }
 }

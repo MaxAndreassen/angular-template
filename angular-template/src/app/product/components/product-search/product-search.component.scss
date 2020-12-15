@@ -1,0 +1,10 @@
+@import '_variables';
+@import '_bootstrap.mixins';
+
+.search-bar {
+    width: 100% !important;
+  
+    @include media-breakpoint-up(lg) {
+        width: 50% !important;
+    }
+}

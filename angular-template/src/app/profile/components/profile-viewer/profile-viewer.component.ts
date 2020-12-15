@@ -46,8 +46,4 @@ export class ProfileViewerComponent implements OnInit {
         });
     });
   }
-
-  examplePurchase(): any {
-  }
-
 }

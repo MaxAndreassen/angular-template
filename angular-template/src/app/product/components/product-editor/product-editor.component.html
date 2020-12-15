@@ -2,13 +2,7 @@
   <div class="text-center">
     <h1 class="display-4">{{creating ? 'New Product' : 'Edit Product'}}</h1>
     <p class="lead">{{editor?.name}}</p>
-    <span *ngIf="securityContext?.authenticated">
-      <p class="lead mb-5">
-        <a class="btn btn-primary btn-lg"
-           href="security/register"
-           role="button">List New Product</a>
-      </p>
-    </span>
+    <hr>
   </div>
 
   <div class="pt-2 pt-md-2">
@@ -34,10 +28,10 @@
                 <div class="input-group-text">£</div>
               </div>
               <input type="number"
-                     name="name"
+                     name="priceInPounds"
                      class="form-control"
                      id="name"
-                     [(ngModel)]="editor.name">
+                     [(ngModel)]="editor.priceInPounds">
             </div>
           </div>
           <div class="form-group col-12">
@@ -54,17 +48,17 @@
         </div>
         <div>
           <button type="button"
-                  class="w-100 btn btn-primary"
+                  class="w-100 d-block d-md-none btn btn-primary"
                   [disabled]="loading"
-                  (click)="update()">Submit</button>
+                  (click)="submit()">{{creating ? 'Submit' : 'Update'}}</button>
+
+          <button type="button"
+                  class="d-none d-md-block btn btn-primary"
+                  [disabled]="loading"
+                  (click)="submit()">{{creating ? 'Submit' : 'Update'}}</button>
         </div>
 
         <app-loading-spinner *ngIf="loading"></app-loading-spinner>
-        <div *ngIf="failed && !loading"
-             class="alert alert-danger mt-1"
-             role="alert">
-          Request Failed.
-        </div>
       </form>
     </div>
   </div>
