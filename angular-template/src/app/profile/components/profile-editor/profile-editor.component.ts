@@ -8,6 +8,7 @@ import { finalize } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { PaymentService } from '../../../shared/services/payment/payment.service';
 import { DOCUMENT } from '@angular/common';
+import { Upload } from '../../../shared/models/file.models';
 
 @Component({
   selector: 'app-profile-editor',
@@ -97,5 +98,8 @@ export class ProfileEditorComponent implements OnInit {
       .subscribe(result => {
         this.document.location.href = result.url;
       });
+  }
+
+  updateProfileImage(uploads: Upload[]): any {
   }
 }

@@ -1,0 +1,33 @@
+.upload-image {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.image-container {
+    position: relative;
+    display: inline-block;
+    max-width: 200px;
+    height: 200px;
+    border: 1px solid black;
+}
+
+
+.video-container {
+    position: relative;
+    display: inline-block;
+    max-width: 350px;
+    height: 200px;
+    border: 1px solid black;
+}
+
+.close-button {
+position: absolute;
+right:0px;
+top: 0px;
+}
+
+.helper {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}

@@ -26,6 +26,8 @@ export class CheckOutComponent implements OnInit {
   stripe: any;
   card: any;
 
+  vat: number;
+
   status: string;
 
   constructor(
@@ -47,6 +49,7 @@ export class CheckOutComponent implements OnInit {
         .pipe(finalize(() => this.productLoading = false))
         .subscribe(result => {
           this.product = result;
+          this.vat = Math.round((this.product.priceInPounds * 0.2) * 100) / 100;
         }, err => {
           this.failed = true;
         });

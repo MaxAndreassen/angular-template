@@ -45,6 +45,27 @@
                       [(ngModel)]="editor.description"
                       rows="4"> </textarea>
           </div>
+          <div class="form-group col-12">
+            <app-file-uploader multiple="true"
+                               name="Marketing Media"
+                               description="Accepts image and videos"
+                               maximum=5
+                               image="true"
+                               video="true"
+                               (uploadsChanged)="updateMarketingMedia($event)"></app-file-uploader>
+          </div>
+          <div class="form-group col-12">
+            <app-file-uploader name="Cover Image"
+                               description="Accepts images"
+                               image="true"
+                               (uploadsChanged)="updateCoverImage($event)"></app-file-uploader>
+          </div>
+          <div class="form-group col-12">
+            <app-file-uploader name="Asset Zip"
+                               description="Accepts zip files"
+                               zip="true"
+                               (uploadsChanged)="updateAssetZip($event)"></app-file-uploader>
+          </div>
         </div>
         <div>
           <button type="button"

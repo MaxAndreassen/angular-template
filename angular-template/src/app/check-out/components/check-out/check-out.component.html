@@ -3,7 +3,29 @@
 
 <div class="card mobile-login mb-4">
   <h5 class="card-header text-center">Purchase</h5>
-  <p class="p-2 mt-3 text-center">{{product?.name}} - £{{product?.priceInPounds}}</p>
+
+  <table class="table text-center">
+    <thead>
+      <tr>
+        <th scope="col">Item</th>
+        <th scope="col">Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{product?.name}}</td>
+        <td>£{{product?.priceInPounds}}</td>
+      </tr>
+      <tr>
+        <td>VAT</td>
+        <td>£{{vat}}</td>
+      </tr>
+      <tr>
+        <th scope="row">Total</th>
+        <td>£{{product?.priceInPounds + vat}}</td>
+      </tr>
+    </tbody>
+  </table>
   <form id="payment-form"
         *ngIf="!failed"
         class="p-3">

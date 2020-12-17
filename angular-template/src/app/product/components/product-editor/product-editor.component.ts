@@ -5,6 +5,7 @@ import { finalize } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../../shared/services/auth/auth.service';
 import { SecurityContext } from '../../../shared/models/auth.models';
+import { Upload } from '../../../shared/models/file.models';
 
 @Component({
   selector: 'app-product-editor',
@@ -12,7 +13,6 @@ import { SecurityContext } from '../../../shared/models/auth.models';
   styleUrls: ['./product-editor.component.scss']
 })
 export class ProductEditorComponent implements OnInit {
-
   editor: ProductEditor = new ProductEditor();
   creating = true;
   loading = false;
@@ -57,6 +57,26 @@ export class ProductEditorComponent implements OnInit {
     });
   }
 
+  updateMarketingMedia(uploads: Upload[]): any {
+    this.editor.marketingMedia = uploads.map(p => p.file);
+  }
+
+  updateCoverImage(uploads: Upload[]): any {
+    if (uploads.length === 0) {
+      this.editor.coverImage = null;
+    }
+
+    this.editor.coverImage = uploads[0].file;
+  }
+
+  updateAssetZip(uploads: Upload[]): any {
+    if (uploads.length === 0) {
+      this.editor.assetZip = null;
+    }
+
+    this.editor.assetZip = uploads[0].file;
+  }
+
   submit(): any {
     this.loading = true;
 
@@ -71,5 +91,4 @@ export class ProductEditorComponent implements OnInit {
         }
       });
   }
-
 }

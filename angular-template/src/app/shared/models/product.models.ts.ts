@@ -1,5 +1,5 @@
 export class ProductSummary {
-    priceInPounds: string;
+    priceInPounds: number;
     name: string;
     description: string;
     uuid: string;
@@ -11,6 +11,9 @@ export class ProductEditor {
     description: string;
     uuid: string;
     userUuid: string;
+    marketingMedia: any[] = [];
+    coverImage: any;
+    assetZip: any;
 }
 
 export class ProductQueryRequest {

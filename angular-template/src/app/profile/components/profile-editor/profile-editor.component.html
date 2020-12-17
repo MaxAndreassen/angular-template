@@ -68,6 +68,11 @@
                      id="lastName"
                      [(ngModel)]="editor.lastName">
             </div>
+            <div class="form-group col-12">
+              <app-file-uploader name="Profile Image"
+                                 image="true"
+                                 (uploadsChanged)="updateProfileImage($event)"></app-file-uploader>
+            </div>
           </div>
           <div>
             <button type="button"

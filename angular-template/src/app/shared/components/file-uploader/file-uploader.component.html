@@ -1,0 +1,55 @@
+<div class="form-group">
+  <label for="file" class="mb-0">
+    <b>{{name}}
+      <span *ngIf="maximum">({{uploads.length}}/{{maximum}})</span>
+    </b>
+  </label>
+  <small class="d-block mb-2"> {{description}} </small>
+  <input type="file"
+         #file
+         name="file"
+         class="form-control-file"
+         id="file"
+         (change)="preview($event)"
+         [disabled]="uploads.length >= maximum">
+  <div *ngIf="failureMessage"
+       class="alert alert-danger mt-1"
+       role="alert">
+    {{failureMessage}}
+  </div>
+  <div class="row mx-1 mt-2">
+    <div *ngFor="let upload of uploads">
+      <div class="image-container m-1 col-auto"
+           *ngIf="upload.format==='image'">
+        <span class="helper"></span>
+        <img [src]="upload.url"
+             *ngIf="upload.format==='image' && upload.url"
+             class="upload-image">
+        <button class="close-button btn btn-danger"
+                style="border-radius: 0px;"
+                (click)="remove(upload.tempId)">X</button>
+      </div>
+      <div class="image-container m-1 col-auto"
+           *ngIf="upload.format==='zip'">
+        <span class="helper"></span>
+        <img src="assets/vault.svg"
+             *ngIf="upload.format==='zip' && upload.url"
+             class="upload-image">
+        <button class="close-button btn btn-danger"
+                style="border-radius: 0px;"
+                (click)="remove(upload.tempId)">X</button>
+      </div>
+      <div class="video-container m-1 col-auto"
+           *ngIf="upload.format==='video'">
+        <span class="helper"></span>
+        <video [src]="upload.url"
+               *ngIf="upload.format==='video' && upload.url"
+               controls
+               class="upload-image mt-2"></video>
+        <button class="close-button btn btn-danger"
+                style="border-radius: 0px;"
+                (click)="remove(upload.tempId)">X</button>
+      </div>
+    </div>
+  </div>
+</div>
