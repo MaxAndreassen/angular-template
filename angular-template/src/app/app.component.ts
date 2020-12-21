@@ -23,16 +23,18 @@ export class AppComponent implements OnInit {
   ) {
 
     this.authService.sidebarEmitter
-    .subscribe(p => this.sideBarOpen = p);
+      .subscribe(p => this.sideBarOpen = p);
+
+    this.authService.securityCheck();
   }
 
   ngOnInit(): any {
     if (isPlatformServer(this.platformId)) {
-        return;
+      return;
     }
 
     this.authService.authStateChange$.subscribe((context: SecurityContext) => {
-        this.securityContext = context;
+      this.securityContext = context;
     });
   }
 

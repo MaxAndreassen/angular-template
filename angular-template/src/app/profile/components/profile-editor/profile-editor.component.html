@@ -7,7 +7,7 @@
         <div class="profile-picture shadow-sm">
           <div class="uploader-image"
                alt="Profile picture"
-               [style.background-image]="'url(assets/user.svg)'"></div>
+               [style.background-image]="editor?.profileUrl ? 'url(' + editor?.profileUrl + ')' : 'url(assets/user.svg)'"></div>
         </div>
       </div>
       <!--<app-loading-spinner *ngIf="loading"></app-loading-spinner>-->
@@ -69,9 +69,12 @@
                      [(ngModel)]="editor.lastName">
             </div>
             <div class="form-group col-12">
-              <app-file-uploader name="Profile Image"
+              <app-file-uploader *ngIf="!loading"
+                                 name="Profile Image"
                                  image="true"
-                                 (uploadsChanged)="updateProfileImage($event)"></app-file-uploader>
+                                 [existingFiles]="existingProfileImage"
+                                 (uploadsChanged)="updateProfileImage($event)"
+                                 (existingFilesChanged)="updateExistingProfileImage($event)"></app-file-uploader>
             </div>
           </div>
           <div>
@@ -82,10 +85,15 @@
           </div>
 
           <app-loading-spinner *ngIf="loading"></app-loading-spinner>
-          <div *ngIf="failed && !loading"
-               class="alert alert-danger mt-1"
+          <div *ngIf="!validationResult?.valid"
+               class="alert alert-danger mt-2"
                role="alert">
-            Request Failed.
+            <app-validation-summary [errors]="validationResult?.errors"> </app-validation-summary>
+          </div>
+          <div *ngIf="successfullyUpdated"
+               class="alert alert-success mt-2"
+               role="alert">
+            Successfully Updated.
           </div>
         </form>
       </div>

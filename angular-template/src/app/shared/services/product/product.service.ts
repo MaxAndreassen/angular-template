@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { IAppConfig, APP_CONFIG } from '../../models/configuration.models';
-import { ProductSummary, ProductEditor, ProductQueryRequest } from '../../models/product.models.ts';
+import { ProductSummary, ProductEditor, ProductQueryRequest, ProductFileQueryRequest, ProductFileSummary } from '../../models/product.models.ts';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -41,8 +41,16 @@ export class ProductService {
       formData.append('coverImage', editor.coverImage, editor.coverImage.name);
     }
 
+    if (!!editor.existingCoverImageUuid) {
+      formData.append('existingCoverImageUuid', editor.existingCoverImageUuid);
+    }
+
     if (!!editor.assetZip) {
-      formData.append('asset', editor.assetZip, editor.assetZip.name);
+      formData.append('assetZip', editor.assetZip, editor.assetZip.name);
+    }
+
+    if (!!editor.existingAssetZipUuid) {
+      formData.append('existingAssetZipUuid', editor.existingAssetZipUuid);
     }
 
     if (!!editor.marketingMedia) {
@@ -53,12 +61,25 @@ export class ProductService {
       });
     }
 
+    if (!!editor.existingMarketingMediaUuids) {
+      editor.existingMarketingMediaUuids.forEach(uuid => {
+        if (!!uuid) {
+          formData.append('existingMarketingMediaUuids', uuid);
+        }
+      });
+    }
+
     return this.http.post<ProductEditor>(url, formData, options);
   }
 
   listProducts(queryParams: ProductQueryRequest): Observable<ProductSummary[]> {
     const url = `${this.config.apiUrl}product/list`;
     return this.http.post<ProductSummary[]>(url, queryParams);
+  }
+
+  listFilesForProduct(productUuid: string): Observable<ProductFileSummary[]> {
+    const url = `${this.config.apiUrl}product/${productUuid}/files`;
+    return this.http.get<ProductFileSummary[]>(url);
   }
 
   getProduct(uuid: string): Observable<ProductEditor> {

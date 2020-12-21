@@ -1,12 +1,13 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Upload } from '../../models/file.models';
-
+import { Upload, FileToShow, FileSummary } from '../../models/file.models';
 @Component({
   selector: 'app-file-uploader',
   templateUrl: './file-uploader.component.html',
   styleUrls: ['./file-uploader.component.scss']
 })
-export class FileUploaderComponent {
+export class FileUploaderComponent implements OnInit {
+
+  mbInBytes = 1048576;
 
   @Input() multiple = false;
   @Input() name = 'File Upload';
@@ -14,15 +15,37 @@ export class FileUploaderComponent {
   @Input() image: boolean;
   @Input() video: boolean;
   @Input() zip: boolean;
+  @Input() required: boolean;
   @Input() description: string;
+  @Input() existingFiles: FileSummary[] = [];
+  @Input() maxFileSizeMB = 10;
+
   @Output() uploadsChanged: EventEmitter<Upload[]> = new EventEmitter();
+  @Output() existingFilesChanged: EventEmitter<FileSummary[]> = new EventEmitter();
 
   uploads: Upload[] = [];
 
+  filesToShow: FileToShow[] = [];
+
   failureMessage: string;
+  failureSubText: string;
+
+  ngOnInit(): any {
+    if (this.existingFiles) {
+      for (const file of this.existingFiles) {
+        const fileToShow = new FileToShow();
+        fileToShow.identifier = file.uuid;
+        fileToShow.format = file.format;
+        fileToShow.url = file.url;
+        fileToShow.type = 'existing';
+        this.filesToShow.push(fileToShow);
+      }
+    }
+  }
 
   preview(event): any {
     this.failureMessage = null;
+    this.failureSubText = null;
 
     if (!!this.maximum && this.uploads.length >= this.maximum) {
       return;
@@ -44,20 +67,46 @@ export class FileUploaderComponent {
       }
 
       if (!upload.format) {
-        this.failureMessage = 'Invalid File Type.';
+        this.failureMessage = 'Invalid file type.';
+        this.failureSubText = null;
         return;
       }
 
       reader.readAsDataURL(file);
 
       reader.onload = (event2: any) => {
+
+        const result = reader.result;
+
+        if (!result) {
+          this.failureMessage = 'Unable to read file.';
+          this.failureSubText = null;
+          return;
+        }
+
+        // @ts-ignore
+        if (result.length * 2 > this.mbInBytes * this.maxFileSizeMB) {
+          this.failureMessage = `File exceeds the maximum size limit.`;
+          // @ts-ignore
+          this.failureSubText = `Limit: ${this.maxFileSizeMB}mb. File Size: ${Math.round(result.length / this.mbInBytes * 100) / 100}mb.`;
+          return;
+        }
         upload.url = (event2.target as FileReader).result;
         upload.tempId = this.uuidv4();
+
+        const fileToShow = new FileToShow();
+        fileToShow.identifier = upload.tempId;
+        fileToShow.format = upload.format;
+        fileToShow.url = upload.url;
+        fileToShow.type = 'new';
+
         if (this.multiple) {
           this.uploads.push(upload);
+          this.filesToShow.push(fileToShow);
         }
         else {
           this.uploads[0] = upload;
+          this.filesToShow[0] = fileToShow;
         }
 
         this.uploadsChanged.emit(this.uploads);
@@ -65,8 +114,18 @@ export class FileUploaderComponent {
     }
   }
 
-  remove(tempId: string): any {
-    this.uploads = this.uploads.filter(p => p.tempId !== tempId);
+  remove(fileToShow: FileToShow): any {
+    if (fileToShow.type === 'new') {
+      this.uploads = this.uploads.filter(p => p.tempId !== fileToShow.identifier);
+      this.uploadsChanged.emit(this.uploads);
+    }
+
+    if (fileToShow.type === 'existing') {
+      this.existingFiles = this.existingFiles.filter(p => p.uuid !== fileToShow.identifier);
+      this.existingFilesChanged.emit(this.existingFiles);
+    }
+
+    this.filesToShow = this.filesToShow.filter(p => p.identifier !== fileToShow.identifier);
   }
 
   uuidv4(): any {

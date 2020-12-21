@@ -10,7 +10,8 @@
       <form class="m-3">
         <div class="row">
           <div class="form-group col-12 col-sm-6">
-            <label for="name">
+            <label class="required-star"
+                   for="name">
               <b>Name</b>
             </label>
             <input type="text"
@@ -20,7 +21,8 @@
                    [(ngModel)]="editor.name">
           </div>
           <div class="form-group col-12 col-sm-6 mb-0">
-            <label for="name">
+            <label class="required-star"
+                   for="name">
               <b>Price</b>
             </label>
             <div class="input-group mb-2">
@@ -35,7 +37,8 @@
             </div>
           </div>
           <div class="form-group col-12">
-            <label for="description">
+            <label class="required-star"
+                   for="description">
               <b>Description</b>
             </label>
             <textarea type="text"
@@ -46,25 +49,35 @@
                       rows="4"> </textarea>
           </div>
           <div class="form-group col-12">
-            <app-file-uploader multiple="true"
+            <app-file-uploader *ngIf="!existingFilesLoading"
+                               multiple="true"
                                name="Marketing Media"
                                description="Accepts image and videos"
                                maximum=5
                                image="true"
                                video="true"
-                               (uploadsChanged)="updateMarketingMedia($event)"></app-file-uploader>
+                               [existingFiles]="existingMarketingMedia"
+                               (uploadsChanged)="updateMarketingMedia($event)"
+                               (existingFilesChanged)="updateExistingMarketingMedia($event)"></app-file-uploader>
           </div>
           <div class="form-group col-12">
-            <app-file-uploader name="Cover Image"
+            <app-file-uploader *ngIf="!existingFilesLoading"
+                               name="Cover Image"
                                description="Accepts images"
                                image="true"
-                               (uploadsChanged)="updateCoverImage($event)"></app-file-uploader>
+                               [existingFiles]="existingCoverImage"
+                               (uploadsChanged)="updateCoverImage($event)"
+                               (existingFilesChanged)="updateExistingCoverImage($event)"></app-file-uploader>
           </div>
           <div class="form-group col-12">
-            <app-file-uploader name="Asset Zip"
+            <app-file-uploader *ngIf="!existingFilesLoading"
+                               name="Asset Zip"
                                description="Accepts zip files"
                                zip="true"
-                               (uploadsChanged)="updateAssetZip($event)"></app-file-uploader>
+                               required="true"
+                               [existingFiles]="existingAssetZip"
+                               (uploadsChanged)="updateAssetZip($event)"
+                               (existingFilesChanged)="updateExistingAssetZip($event)"></app-file-uploader>
           </div>
         </div>
         <div>
@@ -80,6 +93,16 @@
         </div>
 
         <app-loading-spinner *ngIf="loading"></app-loading-spinner>
+        <div *ngIf="!validationResult?.valid"
+             class="alert alert-danger mt-2"
+             role="alert">
+          <app-validation-summary [errors]="validationResult?.errors"> </app-validation-summary>
+        </div>
+        <div *ngIf="successfullyUpdated"
+             class="alert alert-success mt-2"
+             role="alert">
+          Successfully Updated.
+        </div>
       </form>
     </div>
   </div>

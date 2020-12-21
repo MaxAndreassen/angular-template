@@ -8,7 +8,8 @@ import { finalize } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { PaymentService } from '../../../shared/services/payment/payment.service';
 import { DOCUMENT } from '@angular/common';
-import { Upload } from '../../../shared/models/file.models';
+import { Upload, FileSummary } from '../../../shared/models/file.models';
+import { IValidationResult, ValidationResult } from '../../../shared/models/validation,models';
 
 @Component({
   selector: 'app-profile-editor',
@@ -20,9 +21,11 @@ export class ProfileEditorComponent implements OnInit {
   initialPageLoading = false;
   paymentLinkLoading = false;
   paymentCheckLoading = false;
+  validationResult: IValidationResult = new ValidationResult();
+  successfullyUpdated = false;
 
   failed = false;
-  editor: UserEditor = { firstName: 'placeholder', lastName: 'placeholder', username: 'placeholder' };
+  editor: UserEditor = new UserEditor();
 
   firstName: string;
   lastName: string;
@@ -30,6 +33,8 @@ export class ProfileEditorComponent implements OnInit {
   paymentProviderAccountCreated = false;
 
   securityContext: SecurityContext;
+
+  existingProfileImage: FileSummary[] = [];
 
   constructor(
     private authService: AuthService,
@@ -60,11 +65,11 @@ export class ProfileEditorComponent implements OnInit {
     this.paymentCheckLoading = true;
 
     this.paymentService
-    .getAccount(this.securityContext.user.uuid)
-    .pipe(finalize(() => this.paymentCheckLoading = false))
-    .subscribe(result => {
-      this.paymentProviderAccountCreated = result.payoutsEnabled;
-    });
+      .getAccount(this.securityContext.user.uuid)
+      .pipe(finalize(() => this.paymentCheckLoading = false))
+      .subscribe(result => {
+        this.paymentProviderAccountCreated = result.payoutsEnabled;
+      });
 
     this.userService
       .getUser(this.securityContext.user.uuid)
@@ -78,14 +83,25 @@ export class ProfileEditorComponent implements OnInit {
 
   update(): any {
     this.loading = true;
+    this.successfullyUpdated = false;
 
     this.userService
       .updateUser(this.editor)
       .pipe(finalize(() => this.loading = false))
       .subscribe(result => {
+        this.validationResult = new ValidationResult();
+        this.successfullyUpdated = true;
+
         this.editor = result;
         this.firstName = this.editor.firstName;
         this.lastName = this.editor.lastName;
+      }, err => {
+        if (err.status && err.status === 412) {
+          this.validationResult = err.error;
+        }
+        if (err.status && err.status === 500) {
+          this.validationResult = new ValidationResult('An Unknown Error Occured.');
+        }
       });
   }
 
@@ -101,5 +117,20 @@ export class ProfileEditorComponent implements OnInit {
   }
 
   updateProfileImage(uploads: Upload[]): any {
+    this.existingProfileImage = [];
+
+    if (uploads.length === 0) {
+      this.editor.profileImage = null;
+    }
+
+    this.editor.profileImage = uploads[0].file;
+  }
+
+  updateExistingProfileImage(existingFiles: FileSummary[]): any {
+    if (existingFiles.length === 0) {
+      this.editor.existingProfileUuid = null;
+    }
+
+    this.editor.existingProfileUuid = existingFiles.map(p => p.uuid).find(p => true);
   }
 }

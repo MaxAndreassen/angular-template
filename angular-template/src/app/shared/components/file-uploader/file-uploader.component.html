@@ -1,7 +1,7 @@
 <div class="form-group">
-  <label for="file" class="mb-0">
+  <label [class.required-star]="required" for="file" class="mb-0">
     <b>{{name}}
-      <span *ngIf="maximum">({{uploads.length}}/{{maximum}})</span>
+      <span *ngIf="maximum">({{filesToShow.length}}/{{maximum}})</span>
     </b>
   </label>
   <small class="d-block mb-2"> {{description}} </small>
@@ -11,14 +11,15 @@
          class="form-control-file"
          id="file"
          (change)="preview($event)"
-         [disabled]="uploads.length >= maximum">
+         [disabled]="filesToShow.length >= maximum">
   <div *ngIf="failureMessage"
        class="alert alert-danger mt-1"
        role="alert">
-    {{failureMessage}}
+    <p class="mb-0">{{failureMessage}}</p>
+    <p class="mb-0" style="font-size: 10px">{{failureSubText}}</p>
   </div>
   <div class="row mx-1 mt-2">
-    <div *ngFor="let upload of uploads">
+    <div *ngFor="let upload of filesToShow">
       <div class="image-container m-1 col-auto"
            *ngIf="upload.format==='image'">
         <span class="helper"></span>
@@ -27,7 +28,7 @@
              class="upload-image">
         <button class="close-button btn btn-danger"
                 style="border-radius: 0px;"
-                (click)="remove(upload.tempId)">X</button>
+                (click)="remove(upload)">X</button>
       </div>
       <div class="image-container m-1 col-auto"
            *ngIf="upload.format==='zip'">
@@ -37,7 +38,7 @@
              class="upload-image">
         <button class="close-button btn btn-danger"
                 style="border-radius: 0px;"
-                (click)="remove(upload.tempId)">X</button>
+                (click)="remove(upload)">X</button>
       </div>
       <div class="video-container m-1 col-auto"
            *ngIf="upload.format==='video'">
@@ -48,7 +49,7 @@
                class="upload-image mt-2"></video>
         <button class="close-button btn btn-danger"
                 style="border-radius: 0px;"
-                (click)="remove(upload.tempId)">X</button>
+                (click)="remove(upload)">X</button>
       </div>
     </div>
   </div>

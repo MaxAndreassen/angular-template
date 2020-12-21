@@ -5,6 +5,13 @@ export class ProductSummary {
     uuid: string;
 }
 
+export class ProductFileSummary {
+    uuid: string;
+    type: number;
+    url: string;
+    format: string;
+}
+
 export class ProductEditor {
     priceInPounds: string;
     name: string;
@@ -12,12 +19,19 @@ export class ProductEditor {
     uuid: string;
     userUuid: string;
     marketingMedia: any[] = [];
+    existingMarketingMediaUuids: string[] = [];
     coverImage: any;
+    existingCoverImageUuid: string;
     assetZip: any;
+    existingAssetZipUuid: string;
 }
 
 export class ProductQueryRequest {
     ownerUserUuid: string;
     creatorUserUuid: string;
     searchTerm: string;
+}
+
+export class ProductFileQueryRequest {
+    productUuid: string;
 }

@@ -10,6 +10,7 @@ export class CardComponent implements OnInit {
   @Input() title: string;
   @Input() description: string;
   @Input() linkUrl: string;
+  @Input() pictureUrl: string;
   @Input() buttonText: string;
 
   constructor() { }

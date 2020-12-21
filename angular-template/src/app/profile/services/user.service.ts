@@ -2,7 +2,7 @@ import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { Observable } from 'rxjs';
 import { UserEditor } from '../models/profile.models';
 import { APP_CONFIG, IAppConfig } from '../../shared/models/configuration.models';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { switchMap, map } from 'rxjs/operators';
 
 @Injectable({
@@ -17,7 +17,36 @@ export class UserService {
 
   updateUser(editor: UserEditor): Observable<UserEditor> {
     const url = `${this.config.apiUrl}users/edit`;
-    return this.http.post<UserEditor>(url, editor);
+    const options = {
+      headers: new HttpHeaders().set('enctype', 'multipart/form-data')
+    };
+
+    const formData: FormData = new FormData();
+    if (!!editor.uuid) {
+      formData.append('uuid', editor.uuid);
+    }
+
+    if (!!editor.firstName) {
+      formData.append('firstName', editor.firstName);
+    }
+
+    if (!!editor.lastName) {
+      formData.append('lastName', editor.lastName);
+    }
+
+    if (!!editor.username) {
+      formData.append('username', editor.username);
+    }
+
+    if (!!editor.existingProfileUuid) {
+      formData.append('existingProfileUuid', editor.existingProfileUuid);
+    }
+
+    if (!!editor.profileImage) {
+      formData.append('profileImage', editor.profileImage, editor.profileImage.name);
+    }
+
+    return this.http.post<UserEditor>(url, formData, options);
   }
 
   getUser(uuid: string): Observable<UserEditor> {

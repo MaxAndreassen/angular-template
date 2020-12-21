@@ -17,7 +17,7 @@ import { PaymentIntentSecret } from '../../../shared/models/payment.models';
 export class ProfileViewerComponent implements OnInit {
   failed = false;
   loading = false;
-  data: UserEditor = { firstName: 'Unknown', lastName: 'User', username: '' };
+  data: UserEditor = new UserEditor();
   userUuid: string;
 
   constructor(
