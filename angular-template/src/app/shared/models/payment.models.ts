@@ -13,3 +13,7 @@ export class PaymentIntentSecret {
     thirdPartyId: string;
     secretKey: string;
 }
+
+export class AccountBalance {
+    balance: number;
+}

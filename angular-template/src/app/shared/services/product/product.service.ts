@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpEvent } from '@angular/common/http';
 import { IAppConfig, APP_CONFIG } from '../../models/configuration.models';
 import { ProductSummary, ProductEditor, ProductQueryRequest, ProductFileQueryRequest, ProductFileSummary } from '../../models/product.models.ts';
 import { Observable } from 'rxjs';
@@ -14,11 +14,8 @@ export class ProductService {
     private http: HttpClient
   ) { }
 
-  createProduct(editor: ProductEditor): Observable<ProductEditor> {
+  createProduct(editor: ProductEditor): Observable<HttpEvent<ProductEditor>> {
     const url = `${this.config.apiUrl}product/update`;
-    const options = {
-      headers: new HttpHeaders().set('enctype', 'multipart/form-data')
-    };
 
     const formData: FormData = new FormData();
     if (!!editor.name) {
@@ -69,7 +66,11 @@ export class ProductService {
       });
     }
 
-    return this.http.post<ProductEditor>(url, formData, options);
+    return this.http.post<ProductEditor>(url, formData, {
+      headers: new HttpHeaders().set('enctype', 'multipart/form-data'),
+      reportProgress: true,
+      observe: 'events'
+    });
   }
 
   listProducts(queryParams: ProductQueryRequest): Observable<ProductSummary[]> {
@@ -77,8 +78,13 @@ export class ProductService {
     return this.http.post<ProductSummary[]>(url, queryParams);
   }
 
-  listFilesForProduct(productUuid: string): Observable<ProductFileSummary[]> {
-    const url = `${this.config.apiUrl}product/${productUuid}/files`;
+  listFilesForProduct(productUuid: string, includeAsset?: boolean): Observable<ProductFileSummary[]> {
+    let url = `${this.config.apiUrl}product/${productUuid}/files`;
+
+    if (includeAsset) {
+      url = url + `?includeAsset=${includeAsset}`;
+    }
+
     return this.http.get<ProductFileSummary[]>(url);
   }
 

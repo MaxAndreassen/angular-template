@@ -1,0 +1,70 @@
+<div>
+  <div class="selected-image-container m-1 col-auto"
+       *ngIf="selectedFile.format==='image'">
+    <span class="helper"></span>
+    <img [src]="selectedFile.url"
+         *ngIf="selectedFile.format==='image' && selectedFile.url"
+         class="selected-image">
+    <button class="left-button"
+            style="border-radius: 0px;"
+            (click)="left()">
+      <fa-icon [icon]="leftIcon"
+               class="text-center mx-auto"
+               style="font-size: 30px; color: #7041ce; opacity: 0.6;"></fa-icon>
+    </button>
+    <button class="right-button"
+            style="border-radius: 0px;"
+            (click)="right()">
+      <fa-icon [icon]="rightIcon"
+               class="text-center mx-auto"
+               style="font-size: 30px; color: #7041ce; opacity: 0.6;"></fa-icon>
+    </button>
+  </div>
+  <div class="selected-video-container m-1 col-auto"
+       *ngIf="selectedFile.format==='video'">
+    <span class="helper"></span>
+    <video [src]="selectedFile.url"
+           *ngIf="selectedFile.format==='video' && selectedFile.url"
+           controls
+           class="selected-video mt-2"></video>
+    <button class="left-button"
+            style="border-radius: 0px;"
+            (click)="left()">
+      <fa-icon [icon]="leftIcon"
+               class="text-center mx-auto"
+               style="font-size: 30px; color: #7041ce; opacity: 0.6;"></fa-icon>
+    </button>
+    <button class="right-button"
+            style="border-radius: 0px;"
+            (click)="right()">
+      <fa-icon [icon]="rightIcon"
+               class="text-center mx-auto"
+               style="font-size: 30px; color: #7041ce; opacity: 0.6;"></fa-icon>
+    </button>
+  </div>
+  <div class="row no-wrap-row mx-1 mt-2">
+    <div *ngFor="let upload of files">
+      <div class="image-container m-1 col-auto"
+           *ngIf="upload.format==='image'">
+        <span class="helper"></span>
+        <img [src]="upload.url"
+             *ngIf="upload.format==='image' && upload.url"
+             class="upload-image">
+        <button class="select-button"
+                style="border-radius: 0px;"
+                (click)="select(upload)"></button>
+      </div>
+      <div class="video-container m-1 col-auto"
+           *ngIf="upload.format==='video'">
+        <span class="helper"></span>
+        <video [src]="upload.url"
+               *ngIf="upload.format==='video' && upload.url"
+               controls
+               class="upload-image mt-2"></video>
+        <button class="select-button"
+                style="border-radius: 0px;"
+                (click)="select(upload)"></button>
+      </div>
+    </div>
+  </div>
+</div>

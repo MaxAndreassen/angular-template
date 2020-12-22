@@ -18,8 +18,8 @@
        *ngIf="!loading">
     <div *ngFor="let product of products"
          class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4">
-      <app-card [title]="product?.name"
-                [description]="product?.description"
+      <app-card [description]="product?.name"
+                [title]="'£' + product?.priceInPounds"
                 [linkUrl]="'product/view/' + product?.uuid"
                 [pictureUrl]="product?.coverImageUrl"
                 buttonText="View"></app-card>

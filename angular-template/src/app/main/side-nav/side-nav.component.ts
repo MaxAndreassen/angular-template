@@ -23,6 +23,8 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { isPlatformServer } from '@angular/common';
 import { SecurityContext } from '../../shared/models/auth.models';
+import { PaymentService } from '../../shared/services/payment/payment.service';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-side-nav',
@@ -66,17 +68,18 @@ export class SideNavComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private router: Router,
+    private paymentService: PaymentService,
     @Inject(PLATFORM_ID) private platformId: any,
   ) {
   }
 
   ngOnInit(): any {
     if (isPlatformServer(this.platformId)) {
-        return;
+      return;
     }
 
     this.authService.authStateChange$.subscribe((context: SecurityContext) => {
-        this.securityContext = context;
+      this.securityContext = context;
     });
   }
 

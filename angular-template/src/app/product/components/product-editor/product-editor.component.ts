@@ -7,6 +7,7 @@ import { AuthService } from '../../../shared/services/auth/auth.service';
 import { SecurityContext } from '../../../shared/models/auth.models';
 import { Upload, FileSummary } from '../../../shared/models/file.models';
 import { ValidationResult, IValidationResult } from '../../../shared/models/validation,models';
+import { HttpEventType } from '@angular/common/http';
 
 @Component({
   selector: 'app-product-editor',
@@ -16,16 +17,20 @@ import { ValidationResult, IValidationResult } from '../../../shared/models/vali
 export class ProductEditorComponent implements OnInit {
   editor: ProductEditor = new ProductEditor();
   validationResult: IValidationResult = new ValidationResult();
-  creating = true;
-  loading = false;
-  existingFilesLoading = false;
-  successfullyUpdated = false;
 
   existingCoverImage: FileSummary[] = [];
   existingAssetZip: FileSummary[] = [];
   existingMarketingMedia: FileSummary[] = [];
 
   securityContext: SecurityContext = new SecurityContext();
+
+  creating = true;
+  loading = false;
+  submitLoading = false;
+  existingFilesLoading = false;
+  successfullyUpdated = false;
+
+  uploadPercentage = 0;
 
   constructor(
     private productService: ProductService,
@@ -64,7 +69,7 @@ export class ProductEditorComponent implements OnInit {
             this.existingFilesLoading = true;
 
             this.productService
-              .listFilesForProduct(params.get('uuid'))
+              .listFilesForProduct(params.get('uuid'), true)
               .pipe(finalize(() => this.existingFilesLoading = false))
               .subscribe(fileResult => {
                 this.existingCoverImage = fileResult.filter(p => p.type === 3);
@@ -131,18 +136,26 @@ export class ProductEditorComponent implements OnInit {
   }
 
   submit(): any {
-    this.loading = true;
+    this.submitLoading = true;
     this.successfullyUpdated = false;
+    this.uploadPercentage = 0;
+    this.validationResult = new ValidationResult();
 
     this.productService
       .createProduct(this.editor)
-      .pipe(finalize(() => this.loading = false))
-      .subscribe(result => {
-        this.successfullyUpdated = true;
-        this.validationResult = new ValidationResult();
+      .pipe(finalize(() => this.submitLoading = false))
+      .subscribe(resp => {
+        if (resp.type === HttpEventType.Response) {
+          this.successfullyUpdated = true;
+          this.uploadPercentage = 100;
 
-        if (this.creating) {
-          this.router.navigateByUrl(`product/edit/${result.uuid}`);
+          if (this.creating) {
+            this.router.navigateByUrl(`product/edit/${resp.body.uuid}`);
+          }
+        }
+
+        if (resp.type === HttpEventType.UploadProgress) {
+          this.uploadPercentage = Math.min(Math.floor(100 * resp.loaded / resp.total), 99);
         }
       }, err => {
         if (err.status && err.status === 412) {

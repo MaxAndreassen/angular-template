@@ -18,7 +18,7 @@ export class FileUploaderComponent implements OnInit {
   @Input() required: boolean;
   @Input() description: string;
   @Input() existingFiles: FileSummary[] = [];
-  @Input() maxFileSizeMB = 10;
+  @Input() maxFileSizeMB = 20;
 
   @Output() uploadsChanged: EventEmitter<Upload[]> = new EventEmitter();
   @Output() existingFilesChanged: EventEmitter<FileSummary[]> = new EventEmitter();
@@ -88,7 +88,7 @@ export class FileUploaderComponent implements OnInit {
         if (result.length * 2 > this.mbInBytes * this.maxFileSizeMB) {
           this.failureMessage = `File exceeds the maximum size limit.`;
           // @ts-ignore
-          this.failureSubText = `Limit: ${this.maxFileSizeMB}mb. File Size: ${Math.round(result.length / this.mbInBytes * 100) / 100}mb.`;
+          this.failureSubText = `Limit: ${this.maxFileSizeMB}mb. File Size: ${Math.round((result.length * 2) / this.mbInBytes * 100) / 100}mb.`;
           return;
         }
         upload.url = (event2.target as FileReader).result;
