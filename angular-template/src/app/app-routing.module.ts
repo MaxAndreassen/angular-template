@@ -6,10 +6,11 @@ import { MainComponent } from './main/main.component';
 import { ProfileModule } from './profile/profile.module';
 import { CheckOutModule } from './check-out/check-out.module';
 import { ProductModule } from './product/product.module';
+import { ProductSearchComponent } from './product/components/product-search/product-search.component';
 
 const routes: Routes = [
   {
-    path: '', component: MainComponent
+    path: '', component: ProductSearchComponent
   },
   {
     path: 'security',

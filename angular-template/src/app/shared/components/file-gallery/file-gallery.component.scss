@@ -31,7 +31,7 @@
     display: inline-block;
     width: 200px;
     height: 120px;
-    border: 1px solid black;
+    border: 1px solid lightgray;
 }
 
 .selected-image-container {
@@ -39,7 +39,7 @@
     display: inline-block;
     width: 100%;
     height: 340px;
-    border: 1px solid black;
+    border: 1px solid lightgray;
 
     @include media-breakpoint-down(sm) {
         height: 240px;
@@ -51,7 +51,7 @@
     display: inline-block;
     width: 200px;
     height: 120px;
-    border: 1px solid black;
+    border: 1px solid lightgray;
 }
 
 .selected-video-container {
@@ -59,7 +59,7 @@
     display: inline-block;
     width: 100%;
     height: 340px;
-    border: 1px solid black;
+    border: 1px solid lightgray;
 
     
     @include media-breakpoint-down(sm) {

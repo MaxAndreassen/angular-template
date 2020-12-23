@@ -65,6 +65,7 @@
                                name="Cover Image"
                                description="Accepts images"
                                image="true"
+                               required="true"
                                [existingFiles]="existingCoverImage"
                                (uploadsChanged)="updateCoverImage($event)"
                                (existingFilesChanged)="updateExistingCoverImage($event)"></app-file-uploader>

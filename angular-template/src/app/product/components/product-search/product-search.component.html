@@ -1,19 +1,12 @@
 <div class="jumbotron m-0 m-xl-4 text-center bg-white">
-  <h1 class="display-4 mb-3">All Products</h1>
-  <div class="input-group mb-3 mt-3 search-bar mx-auto">
-    <input type="text"
-           name="search"
-           [(ngModel)]="queryParams.searchTerm"
-           class="form-control"
-           (keyup.enter)="search()">
-    <div class="input-group-append">
-      <button class="btn btn-outline-secondary"
-              type="submit"
-              (click)="search()">Search</button>
-    </div>
-  </div>
+  <img src="assets/logo.png"
+       style="width:200px"
+       class="d-none d-sm-block mx-auto">
+  <h1 class="mb-3">Find The Perfect Asset</h1>
+  <app-product-search-box [searchTerm]="queryParams?.searchTerm"></app-product-search-box>
   <hr class="my-4">
   <app-loading-spinner *ngIf="loading"></app-loading-spinner>
+  <h2 class="text-center my-5" *ngIf="!loading && !(products?.length > 0)"> No Assets Found</h2>
   <div class="row mx-0 mx-md-4"
        *ngIf="!loading">
     <div *ngFor="let product of products"
@@ -25,4 +18,23 @@
                 buttonText="View"></app-card>
     </div>
   </div>
+  <nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+      <li class="page-item">
+        <button class="page-link px-4 disabled-link"
+                [class.disabled-link]="currentPage === 0"
+                [disabled]="currentPage === 0"
+                (click)="prev()">Prev</button>
+      </li>
+      <li class="page-item active">
+        <a class="page-link">{{currentPage}}</a>
+      </li>
+      <li class="page-item">
+        <button class="page-link px-4"
+                [class.disabled-link]="!(products?.length > 0)"
+                [disabled]="!(products?.length > 0)"
+                (click)="next()">Next</button>
+      </li>
+    </ul>
+  </nav>
 </div>

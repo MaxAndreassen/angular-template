@@ -3,6 +3,7 @@ export class ProductSummary {
     name: string;
     description: string;
     uuid: string;
+    creatorUserUuid: string;
 }
 
 export class ProductFileSummary {
@@ -27,9 +28,10 @@ export class ProductEditor {
 }
 
 export class ProductQueryRequest {
-    ownerUserUuid: string;
-    creatorUserUuid: string;
-    searchTerm: string;
+    ownerUserUuid?: string;
+    creatorUserUuid?: string;
+    searchTerm?: string;
+    page?: number;
 }
 
 export class ProductFileQueryRequest {

@@ -8,6 +8,8 @@ import { SecurityContext } from '../../../shared/models/auth.models';
 import { finalize } from 'rxjs/operators';
 import { PaymentService } from '../../../shared/services/payment/payment.service';
 import { PaymentIntentSecret } from '../../../shared/models/payment.models';
+import { ProductSummary } from '../../../shared/models/product.models.ts';
+import { ProductService } from '../../../shared/services/product/product.service';
 
 @Component({
   selector: 'app-profile-viewer',
@@ -20,9 +22,12 @@ export class ProfileViewerComponent implements OnInit {
   data: UserEditor = new UserEditor();
   userUuid: string;
 
+  products: ProductSummary[] = [];
+
   constructor(
     @Inject(PLATFORM_ID) private platformId: any,
     private userService: UserService,
+    private productService: ProductService,
     private router: Router,
     private route: ActivatedRoute
   ) {
@@ -44,6 +49,13 @@ export class ProfileViewerComponent implements OnInit {
         .subscribe(result => {
           this.data = result;
         });
+
+      this.productService
+        .listProducts({ creatorUserUuid: this.userUuid })
+        .subscribe(extraProducts => {
+          this.products = extraProducts;
+        });
+
     });
   }
 }

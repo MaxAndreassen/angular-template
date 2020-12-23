@@ -1,0 +1,18 @@
+@import '_variables';
+@import '_bootstrap.mixins';
+
+.page-wrapper {
+    max-width: 1200px;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+.sub-title {
+    font-size: 20px;
+}
+
+.user-profile {
+    border-radius: 200px;
+    width: 30px;
+    padding: 0.1rem;
+}

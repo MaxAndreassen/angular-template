@@ -1,0 +1,13 @@
+<div class="input-group mb-3 mt-3 search-bar mx-auto">
+    <input type="text"
+           name="search"
+           [(ngModel)]="searchTerm"
+           class="form-control"
+           placeholder="Search for assets..."
+           (keyup.enter)="search()">
+    <div class="input-group-append">
+      <button class="btn btn-outline-secondary"
+              type="submit"
+              (click)="search()">Search</button>
+    </div>
+  </div>

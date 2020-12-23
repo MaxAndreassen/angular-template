@@ -34,7 +34,17 @@ export class AuthService {
   private readonly EMAIL_KEY: string = 'auth_username';
   private readonly REMEMBER_KEY: string = 'auth_remember';
 
+  private readonly SIDENAV: string = 'side_nav_open';
+
   private user: any;
+
+  public setSideNavState(open: boolean): any {
+    localStorage.setItem(this.SIDENAV, open ? '1' : '0');
+  }
+
+  public getSideNavState(): boolean {
+    return localStorage.getItem(this.SIDENAV) === '1' ? true : false;
+  }
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: any,
@@ -77,6 +87,10 @@ export class AuthService {
   }
 
   securityCheck(router?: Router): any {
+    if (!this.securityContext.authenticated) {
+      return;
+    }
+
     this.securityCheckRequest().subscribe(test => { }, err => {
       if ((err.status === 401 || err.status === 0)) {
         this.logout();

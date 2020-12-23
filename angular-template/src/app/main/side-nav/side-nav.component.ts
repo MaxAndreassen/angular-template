@@ -1,4 +1,4 @@
-import { Component, OnInit, PLATFORM_ID, Inject } from '@angular/core';
+import { Component, OnInit, PLATFORM_ID, Inject, AfterContentInit, AfterContentChecked } from '@angular/core';
 import { AuthService } from '../../shared/services/auth/auth.service';
 import { Router } from '@angular/router';
 import {
@@ -38,12 +38,6 @@ export class SideNavComponent implements OnInit {
 
   navItems: DashboardSideNavItem[] = [
     {
-      url: 'product/search',
-      title: 'Find Products',
-      icon: faSearch,
-      isPaid: false
-    },
-    {
       url: 'product/me',
       title: 'My Products',
       icon: faBook,
@@ -71,6 +65,12 @@ export class SideNavComponent implements OnInit {
     private paymentService: PaymentService,
     @Inject(PLATFORM_ID) private platformId: any,
   ) {
+    if (isPlatformServer(this.platformId)) {
+      return;
+    }
+
+    this.sidebarEnabled = this.authService.getSideNavState();
+    this.authService.sidebarEmitter.emit(this.sidebarEnabled);
   }
 
   ngOnInit(): any {
@@ -85,6 +85,7 @@ export class SideNavComponent implements OnInit {
 
   toggleSidebar(): any {
     this.sidebarEnabled = !this.sidebarEnabled;
+    this.authService.setSideNavState(this.sidebarEnabled);
     this.authService.sidebarEmitter.emit(this.sidebarEnabled);
   }
 }

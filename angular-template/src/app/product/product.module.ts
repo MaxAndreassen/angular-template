@@ -7,19 +7,23 @@ import { CreatorProductDashboardComponent } from './components/creator-product-d
 import { ProductEditorComponent } from './components/product-editor/product-editor.component';
 import { ProductSearchComponent } from './components/product-search/product-search.component';
 import { ProductViewerComponent } from './components/product-viewer/product-viewer.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ProductSearchBoxComponent } from './components/product-search-box/product-search-box.component';
 
 @NgModule({
   imports: [
     CommonModule,
     ProductRoutingModule,
     FormsModule,
-    SharedModule
+    SharedModule,
+    FontAwesomeModule
   ],
   declarations: [
     CreatorProductDashboardComponent,
     ProductEditorComponent,
     ProductSearchComponent,
-    ProductViewerComponent
+    ProductViewerComponent,
+    ProductSearchBoxComponent
   ]
 })
 export class ProductModule { }

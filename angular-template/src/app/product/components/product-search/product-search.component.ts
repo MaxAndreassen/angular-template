@@ -2,7 +2,7 @@ import { Component, OnInit, PLATFORM_ID, Inject } from '@angular/core';
 import { ProductQueryRequest, ProductSummary } from '../../../shared/models/product.models.ts';
 import { ProductService } from '../../../shared/services/product/product.service';
 import { AuthService } from '../../../shared/services/auth/auth.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { isPlatformServer } from '@angular/common';
 import { SecurityContext } from '../../../shared/models/auth.models';
 import { finalize } from 'rxjs/operators';
@@ -18,13 +18,16 @@ export class ProductSearchComponent implements OnInit {
 
   products: ProductSummary[] = [];
 
+  currentPage = 0;
+
   loading = false;
 
   constructor(
     private productService: ProductService,
     private authService: AuthService,
     @Inject(PLATFORM_ID) private platformId: any,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit(): any {
@@ -32,24 +35,36 @@ export class ProductSearchComponent implements OnInit {
       return;
     }
 
-    this.loading = true;
+    this.route.queryParamMap.subscribe(params => {
+      this.loading = true;
 
-    this.productService
-      .listProducts(this.queryParams)
-      .pipe(finalize(() => this.loading = false))
-      .subscribe(res => {
-        this.products = res;
-      });
+      this.queryParams.searchTerm = params.get('term');
+      this.currentPage = +params.get('page');
+      this.queryParams.page = this.currentPage;
+
+      this.productService
+        .listProducts(this.queryParams)
+        .pipe(finalize(() => this.loading = false))
+        .subscribe(res => {
+          this.products = res;
+        });
+    });
   }
 
-  search(): any {
-    this.loading = true;
-
-    this.productService
-      .listProducts(this.queryParams)
-      .pipe(finalize(() => this.loading = false))
-      .subscribe(res => {
-        this.products = res;
-      });
+  prev(): any {
+    if (this.queryParams.searchTerm) {
+      this.router.navigateByUrl(`product/search?term=${this.queryParams.searchTerm}&page=${this.currentPage - 1}`);
+    } else {
+      this.router.navigateByUrl(`product/search?page=${this.currentPage - 1}`);
+    }
   }
+
+  next(): any {
+    if (this.queryParams.searchTerm) {
+      this.router.navigateByUrl(`product/search?term=${this.queryParams.searchTerm}&page=${this.currentPage + 1}`);
+    } else {
+      this.router.navigateByUrl(`product/search?page=${this.currentPage + 1}`);
+    }
+  }
+
 }

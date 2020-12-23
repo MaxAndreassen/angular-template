@@ -1,19 +1,116 @@
-<div class="jumbotron m-0 m-xl-4 text-center bg-white">
-  <h1 class="display-4 mb-3">{{product?.name}}</h1>
+<div class="jumbotron m-0 m-xl-5 bg-white page-wrapper pt-3 pt-md-5 pt-xl-4">
+    <img src="assets/logo.png" class="mx-auto d-block" style="width:100px">
+  <app-product-search-box searchTerm=""></app-product-search-box>
   <hr class="my-4">
+  <h1 class="mb-1 text-center d-block d-lg-none">{{product?.name}}</h1>
+  <div class="text-center d-block d-lg-none">
+    <p class="mb-3"> Max Andreassen </p>
+  </div>
   <app-loading-spinner *ngIf="loading"></app-loading-spinner>
   <div class="row">
-    <div class="col-12 col-lg-6">
+    <div class="col-12 col-lg-7 mb-4">
       <app-file-gallery *ngIf="!filesLoading"
                         [files]="files"> </app-file-gallery>
     </div>
-    <div class="col-12 col-lg-6">
-      <p style="white-space: pre-wrap;">{{product?.description}}</p>
-      <p>{{product?.priceInPounds}}</p>
+    <div class="col-12 col-lg-5">
+      <h3 class="mb-1 d-none d-lg-block">{{product?.name}}</h3>
+
+      <div class="d-none d-lg-block">
+        <a [href]="'profile/' + user?.uuid">
+          <img [src]="user?.profileUrl ? user?.profileUrl : 'assets/user.svg'"
+               class="img-thumbnail user-profile">
+          <p class="d-inline-block ml-1 mb-3"
+             style="font-size: 14px; font-weight: bold;"> {{user?.username ? user?.username : 'Anonymous'}} </p>
+        </a>
+      </div>
+
+      <hr class="mt-0">
+      <div class="row">
+        <div class="col-12 col-sm-6 col-lg-12">
+          <div class="mx-auto d-table mx-lg-0 d-lg-block">
+            <fa-icon [icon]="licenseIcon"
+                     class="text-center mx-auto d-inline-block"
+                     style="font-size: 21px; width: 20px;">
+            </fa-icon>
+            <p class="d-inline-block sub-title ml-2"> All Purpose License </p>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-12">
+          <div class="mx-auto d-table mx-lg-0 d-lg-block">
+            <fa-icon [icon]="refundIcon"
+                     class="text-center mx-auto d-inline-block text-primary"
+                     style="font-size: 21px; width: 20px;">
+            </fa-icon>
+            <p class="d-inline-block sub-title ml-2"> Refund Policy </p>
+          </div>
+        </div>
+      </div>
+      <h3 class="mb-1 text-center text-lg-left"
+          style="font-weight: bold;">£{{product?.priceInPounds}}</h3>
+      <p class="mt-0 text-center text-lg-left"
+         style="font-size: 10px; color: gray;">Taxes/VAT calculated at checkout</p>
       <button type="button"
-              class="btn btn-primary mx-auto"
+              class="btn btn-primary mx-auto w-100 mb-2"
               [disabled]="loading"
-              (click)="purchase()">Purchase</button>
+              (click)="purchase()">
+        <b>Buy Now</b>
+      </button>
+      <p class="text-center mb-0"> Payment Secured By
+        <a href="https://stripe.com/customers"
+           target="_blank">Stripe</a>
+      </p>
+      <p class="mt-0 text-center"
+         style="font-size: 8px">Stripe is used by 1000s of platforms including Zoom, Slack and GitHub</p>
+      <hr>
+      <div class="row mx-auto mt-3"
+           style="max-width: 320px">
+        <div class="col-6">
+          <h6 class="text-left">File size</h6>
+        </div>
+        <div class="col-6">
+          <h6 class="text-right">1 MB</h6>
+        </div>
+      </div>
+      <div class="row mx-auto"
+           style="max-width: 320px">
+        <div class="col-6">
+          <h6 class="text-left">Last updated</h6>
+        </div>
+        <div class="col-6">
+          <h6 class="text-right">22/03/2020</h6>
+        </div>
+      </div>
+      <div class="row mx-auto"
+           style="max-width: 320px">
+        <div class="col-5">
+          <h6 class="text-left">Creator</h6>
+        </div>
+        <div class="col-7">
+          <h6 class="text-right">{{user?.username ? user.username : 'Anonymous'}}</h6>
+        </div>
+      </div>
+
+    </div>
+    <div class="col-12 mx-1 mx-md-4 mx-lg-2">
+      <hr class="d-block d-lg-none">
+      <h3 class="mb-2">Description</h3>
+      <p class="mx-1 mb-3"
+         style="white-space: pre-wrap;">{{product?.description}}</p>
+      <hr class="mt-5" *ngIf="extraProducts?.length > 0">
+    </div>
+    <div class="col-12 mx-0 mx-md-4 mt-4" *ngIf="extraProducts?.length > 0">
+      <h3 class="mb-4 mx-1">More by {{user?.username}}</h3>
+      <div class="row mr-0">
+        <div *ngFor="let product of extraProducts"
+             class="col-xl-2 col-lg-3 col-md-4 col-sm-4 col-9 mb-4 mx-auto mx-sm-0">
+          <app-card [description]="product?.name"
+                    [title]="'£' + product?.priceInPounds"
+                    [linkUrl]="'product/view/' + product?.uuid"
+                    [pictureUrl]="product?.coverImageUrl"
+                    height="135"
+                    buttonText="View"></app-card>
+        </div>
+      </div>
     </div>
   </div>
 </div>

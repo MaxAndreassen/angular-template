@@ -1,5 +1,5 @@
-<div>
-  <div class="selected-image-container m-1 col-auto"
+<div class="text-center">
+  <div class="selected-image-container col-auto"
        *ngIf="selectedFile.format==='image'">
     <span class="helper"></span>
     <img [src]="selectedFile.url"
@@ -20,7 +20,7 @@
                style="font-size: 30px; color: #7041ce; opacity: 0.6;"></fa-icon>
     </button>
   </div>
-  <div class="selected-video-container m-1 col-auto"
+  <div class="selected-video-container col-auto"
        *ngIf="selectedFile.format==='video'">
     <span class="helper"></span>
     <video [src]="selectedFile.url"

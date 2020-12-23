@@ -1,11 +1,12 @@
 <div class="card mx-auto d-block pb-4">
   <div class="image-container"
        style="background-position: center;     background-size: cover; background-repeat: no-repeat;"
-       [style.background-image]="!!pictureUrl ? 'url(' + pictureUrl + ')' : 'url(assets/user.svg)'">
+       [style.background-image]="!!pictureUrl ? 'url(' + pictureUrl + ')' : 'url(assets/user.svg)'"
+       [style.height]="height + 'px'">
     <span class="helper"></span>
     <div class="card-body">
       <h5 class="card-title">{{title}}</h5>
-      <p class="card-text">{{description}}</p>
+      <p class="card-text" style="overflow: hidden; white-space: nowrap;">{{description}}</p>
       <a [href]="linkUrl"
          class="btn btn-primary w-100">{{buttonText}}</a>
     </div>

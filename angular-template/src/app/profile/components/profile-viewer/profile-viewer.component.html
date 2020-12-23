@@ -7,7 +7,7 @@
           <div class="profile-picture shadow-sm">
             <div class="uploader-image"
                  alt="Profile picture"
-                 [style.background-image]="'url(assets/user.svg)'"></div>
+                 [style.background-image]="data?.profileUrl ? 'url(' + data?.profileUrl + ')' : 'url(assets/user.svg)'"></div>
           </div>
         </div>
         <app-loading-spinner *ngIf="loading"></app-loading-spinner>
@@ -24,6 +24,17 @@
   
           <p class="description">{{data?.bio}}</p>
         </div>
+        <h3 class="mb-4 mx-1 text-center">Assets</h3>
+        <div class="row mr-0">
+            <div *ngFor="let product of products"
+                 class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4 mx-auto mx-sm-0">
+              <app-card [description]="product?.name"
+                        [title]="'£' + product?.priceInPounds"
+                        [linkUrl]="'product/view/' + product?.uuid"
+                        [pictureUrl]="product?.coverImageUrl"
+                        buttonText="View"></app-card>
+            </div>
+          </div>
       </div>
     </div>
   </div>
