@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpEvent } from '@angular/common/http';
 import { IAppConfig, APP_CONFIG } from '../../models/configuration.models';
-import { ProductSummary, ProductEditor, ProductQueryRequest, ProductFileQueryRequest, ProductFileSummary } from '../../models/product.models.ts';
+import { ProductSummary, ProductEditor, ProductQueryRequest, ProductFileQueryRequest, ProductFileSummary, ProductOwnership } from '../../models/product.models.ts';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -91,6 +91,11 @@ export class ProductService {
   getProduct(uuid: string): Observable<ProductEditor> {
     const url = `${this.config.apiUrl}product/get/${uuid}`;
     return this.http.get<ProductEditor>(url);
+  }
+
+  getIsProductOwnedByMe(uuid: string): Observable<ProductOwnership> {
+    const url = `${this.config.apiUrl}product/${uuid}/owned-by-me`;
+    return this.http.get<ProductOwnership>(url);
   }
 
   getProductSummary(uuid: string): Observable<ProductSummary> {

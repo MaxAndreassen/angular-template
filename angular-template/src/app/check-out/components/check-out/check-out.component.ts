@@ -19,6 +19,12 @@ export class CheckOutComponent implements OnInit {
   productLoading = false;
   failed = false;
 
+  paymentSubmitted = false;
+  paymentLoading = false;
+  paymentSucceed = false;
+  paymentFailed = false;
+  failureReason = '';
+
   paymentIntent: PaymentIntentSecret;
 
   product: ProductSummary = new ProductSummary();
@@ -99,6 +105,9 @@ export class CheckOutComponent implements OnInit {
 
   submit(ev: any): any {
 
+    this.paymentSubmitted = true;
+    this.paymentLoading = true;
+
     /* tslint:disable */
     ev.preventDefault();
     this.stripe.confirmCardPayment(this.paymentIntent.secretKey, {
@@ -110,13 +119,19 @@ export class CheckOutComponent implements OnInit {
       }
     }).then(result => {
       this.status = result.paymentIntent.status;
+      this.paymentLoading = false;
 
       if (result.error) {
         // Show error to your customer (e.g., insufficient funds)
         console.log(result.error.message);
+        this.paymentFailed = true;
+        this.failureReason = result.error.message;
+        this.paymentSucceed = false;
       } else {
         // The payment has been processed!
         if (result.paymentIntent.status === 'succeeded') {
+          this.paymentSucceed = true;
+          this.paymentFailed = false;
           console.log(result.paymentIntent.status);
           // Show a success message to your customer
           // There's a risk of the customer closing the window before callback

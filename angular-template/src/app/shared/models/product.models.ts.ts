@@ -27,6 +27,10 @@ export class ProductEditor {
     existingAssetZipUuid: string;
 }
 
+export class ProductOwnership {
+    ownsProduct: boolean;
+}
+
 export class ProductQueryRequest {
     ownerUserUuid?: string;
     creatorUserUuid?: string;

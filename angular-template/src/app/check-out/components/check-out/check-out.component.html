@@ -37,9 +37,22 @@
     <!-- We'll put the error messages in this element -->
     <div id="card-errors"
          role="alert"></div>
-    <button *ngIf="!loading && !productLoading"
+    <button *ngIf="!loading && !productLoading && !paymentSucceed"
             (click)="submit($event)"
+            [disabled]="paymentSubmitted"
             class="w-100 btn btn-primary mt-3">Pay</button>
+
+    <div *ngIf="paymentSucceed"
+         class="alert alert-success mt-3 mb-0"
+         role="alert">
+      Payment Successful
+    </div>
+    <div *ngIf="paymentFailed"
+         class="alert alert-danger mt-3 mb-0"
+         role="alert">
+      {{failureReason}}
+    </div>
+
   </form>
   <div *ngIf="failed && !loading && !productLoading"
        class="alert alert-danger mx-2"
@@ -47,9 +60,9 @@
     There appears to be an issue with this product at this time. Unfortunately this means you are unable to make your purchase.
   </div>
   <div class="mt-2 mx-2 mb-2">
-    <button *ngIf="failed && !loading && !productLoading"
+    <button *ngIf="(failed || paymentSucceed) && !loading && !productLoading"
             (click)="backToProduct()"
             class="w-100 btn btn-primary">Return To Product</button>
   </div>
 </div>
-<app-loading-spinner *ngIf="loading || productLoading"></app-loading-spinner>
+<app-loading-spinner *ngIf="loading || productLoading || paymentLoading"></app-loading-spinner>

@@ -20,6 +20,8 @@ export class ProductViewerComponent implements OnInit {
   loading = false;
   filesLoading = false;
 
+  ownsProduct = false;
+
   extraProducts: ProductSummary[] = [];
 
   files: FileSummary[] = [];
@@ -36,34 +38,40 @@ export class ProductViewerComponent implements OnInit {
 
   ngOnInit(): any {
     this.route.paramMap.subscribe(params => {
-        this.loading = true;
-        this.filesLoading = true;
+      this.loading = true;
+      this.filesLoading = true;
 
-        this.productService
-          .getProductSummary(params.get('uuid'))
-          .pipe(finalize(() => this.loading = false))
-          .subscribe(result => {
-            this.product = result;
+      this.productService
+        .getProductSummary(params.get('uuid'))
+        .pipe(finalize(() => this.loading = false))
+        .subscribe(result => {
+          this.product = result;
 
-            this.userService
+          this.userService
             .getUser(result.creatorUserUuid)
             .subscribe(user => {
               this.user = user;
             });
 
-            this.productService
+          this.productService
             .listProducts({ creatorUserUuid: result.creatorUserUuid })
             .subscribe(extraProducts => {
               this.extraProducts = extraProducts;
             });
 
-            this.productService
+          this.productService
+            .getIsProductOwnedByMe(params.get('uuid'))
+            .subscribe(ownership => {
+              this.ownsProduct = ownership.ownsProduct;
+            });
+
+          this.productService
             .listFilesForProduct(params.get('uuid'))
             .pipe(finalize(() => this.filesLoading = false))
             .subscribe(fileResult => {
               this.files = fileResult;
             });
-          });
+        });
     });
   }
 
