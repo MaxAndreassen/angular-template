@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductEditor, ProductFileSummary } from '../../../shared/models/product.models.ts';
+import { ProductVersionEditor, ProductFileSummary } from '../../../shared/models/product.models.ts';
 import { ProductService } from '../../../shared/services/product/product.service';
 import { finalize } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -15,7 +15,7 @@ import { HttpEventType } from '@angular/common/http';
   styleUrls: ['./product-editor.component.scss']
 })
 export class ProductEditorComponent implements OnInit {
-  editor: ProductEditor = new ProductEditor();
+  editor: ProductVersionEditor = new ProductVersionEditor();
   validationResult: IValidationResult = new ValidationResult();
 
   existingCoverImage: FileSummary[] = [];
@@ -60,7 +60,7 @@ export class ProductEditorComponent implements OnInit {
           .getProduct(params.get('uuid'))
           .pipe(finalize(() => this.loading = false))
           .subscribe(result => {
-            if (result.userUuid !== this.securityContext.user.uuid) {
+            if (result.creatorUserUuid !== this.securityContext.user.uuid) {
               this.router.navigateByUrl(`/product/view/${params.get('uuid')}`);
             }
 
@@ -112,11 +112,7 @@ export class ProductEditorComponent implements OnInit {
   }
 
   updateExistingCoverImage(existingFiles: FileSummary[]): any {
-    if (existingFiles.length === 0) {
-      this.editor.existingCoverImageUuid = null;
-    }
-
-    this.editor.existingCoverImageUuid = existingFiles.map(p => p.uuid).find(p => true);
+    this.editor.existingCoverImageUuid = null;
   }
 
   updateAssetZip(uploads: Upload[]): any {
@@ -128,11 +124,7 @@ export class ProductEditorComponent implements OnInit {
   }
 
   updateExistingAssetZip(existingFiles: FileSummary[]): any {
-    if (existingFiles.length === 0) {
-      this.editor.existingAssetZipUuid = null;
-    }
-
-    this.editor.existingAssetZipUuid = existingFiles.map(p => p.uuid).find(p => true);
+    this.editor.existingAssetZipUuid = null;
   }
 
   submit(): any {
@@ -149,9 +141,7 @@ export class ProductEditorComponent implements OnInit {
           this.successfullyUpdated = true;
           this.uploadPercentage = 100;
 
-          if (this.creating) {
-            this.router.navigateByUrl(`product/edit/${resp.body.uuid}`);
-          }
+          this.router.navigateByUrl(`product/me`);
         }
 
         if (resp.type === HttpEventType.UploadProgress) {

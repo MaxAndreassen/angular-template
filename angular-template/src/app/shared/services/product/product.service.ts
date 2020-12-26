@@ -1,7 +1,15 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpEvent } from '@angular/common/http';
 import { IAppConfig, APP_CONFIG } from '../../models/configuration.models';
-import { ProductSummary, ProductEditor, ProductQueryRequest, ProductFileQueryRequest, ProductFileSummary, ProductOwnership } from '../../models/product.models.ts';
+import {
+  ProductVersionEditor,
+  ProductQueryRequest,
+  ProductFileQueryRequest,
+  ProductFileSummary,
+  ProductOwnership,
+  ProductSummary,
+  ProductVersionSummary
+} from '../../models/product.models.ts';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -14,7 +22,7 @@ export class ProductService {
     private http: HttpClient
   ) { }
 
-  createProduct(editor: ProductEditor): Observable<HttpEvent<ProductEditor>> {
+  createProduct(editor: ProductVersionEditor): Observable<HttpEvent<ProductVersionEditor>> {
     const url = `${this.config.apiUrl}product/update`;
 
     const formData: FormData = new FormData();
@@ -66,7 +74,7 @@ export class ProductService {
       });
     }
 
-    return this.http.post<ProductEditor>(url, formData, {
+    return this.http.post<ProductVersionEditor>(url, formData, {
       headers: new HttpHeaders().set('enctype', 'multipart/form-data'),
       reportProgress: true,
       observe: 'events'
@@ -75,6 +83,11 @@ export class ProductService {
 
   listProducts(queryParams: ProductQueryRequest): Observable<ProductSummary[]> {
     const url = `${this.config.apiUrl}product/list`;
+    return this.http.post<ProductSummary[]>(url, queryParams);
+  }
+
+  listApprovedProducts(queryParams: ProductQueryRequest): Observable<ProductSummary[]> {
+    const url = `${this.config.apiUrl}product/list/approved`;
     return this.http.post<ProductSummary[]>(url, queryParams);
   }
 
@@ -88,9 +101,9 @@ export class ProductService {
     return this.http.get<ProductFileSummary[]>(url);
   }
 
-  getProduct(uuid: string): Observable<ProductEditor> {
+  getProduct(uuid: string): Observable<ProductVersionEditor> {
     const url = `${this.config.apiUrl}product/get/${uuid}`;
-    return this.http.get<ProductEditor>(url);
+    return this.http.get<ProductVersionEditor>(url);
   }
 
   getIsProductOwnedByMe(uuid: string): Observable<ProductOwnership> {
@@ -98,8 +111,8 @@ export class ProductService {
     return this.http.get<ProductOwnership>(url);
   }
 
-  getProductSummary(uuid: string): Observable<ProductSummary> {
+  getProductSummary(uuid: string): Observable<ProductVersionSummary> {
     const url = `${this.config.apiUrl}product/get/${uuid}/summary`;
-    return this.http.get<ProductSummary>(url);
+    return this.http.get<ProductVersionSummary>(url);
   }
 }

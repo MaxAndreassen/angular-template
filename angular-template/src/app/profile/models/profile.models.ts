@@ -6,4 +6,5 @@ export class UserEditor {
     profileUrl: string;
     existingProfileUuid: string;
     profileImage: any;
+    isAdmin: boolean;
 }

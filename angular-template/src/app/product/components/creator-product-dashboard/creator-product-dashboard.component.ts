@@ -1,6 +1,6 @@
 import { Component, OnInit, PLATFORM_ID, Inject } from '@angular/core';
 import { ProductService } from '../../../shared/services/product/product.service';
-import { ProductQueryRequest, ProductSummary } from '../../../shared/models/product.models.ts';
+import { ProductQueryRequest, ProductVersionSummary, ProductSummary } from '../../../shared/models/product.models.ts';
 import { isPlatformServer } from '@angular/common';
 import { AuthService } from '../../../shared/services/auth/auth.service';
 import { SecurityContext } from '../../../shared/models/auth.models';

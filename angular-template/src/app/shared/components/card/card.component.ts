@@ -13,6 +13,7 @@ export class CardComponent implements OnInit {
   @Input() pictureUrl: string;
   @Input() buttonText: string;
   @Input() height = 200;
+  @Input() status: number;
 
   constructor() { }
 

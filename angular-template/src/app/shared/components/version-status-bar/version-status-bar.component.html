@@ -1,0 +1,9 @@
+<div class="alert alert-success mt-0 mb-0" *ngIf="status === 3">
+    <h5 class="text-center mb-0">Approved</h5>
+  </div>
+  <div class="alert alert-warning mt-0 mb-0" *ngIf="status === 1">
+    <h5 class="text-center mb-0">Awaiting Approval</h5>
+  </div>
+  <div class="alert alert-danger mt-0 mb-0" *ngIf="status === 2">
+    <h5 class="text-center mb-0">Rejected</h5>
+  </div>

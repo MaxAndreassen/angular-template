@@ -1,0 +1,41 @@
+<div class="jumbotron m-0 m-xl-4 text-center bg-white">
+    <img src="assets/logo.png"
+         style="width:200px"
+         class="d-none d-sm-block mx-auto">
+    <h1 class="mb-3">Submissions</h1>
+    <app-product-search-box [searchTerm]="queryParams?.searchTerm"></app-product-search-box>
+    <hr class="my-4">
+    <app-loading-spinner *ngIf="loading"></app-loading-spinner>
+    <h2 class="text-center my-5" *ngIf="!loading && !(products?.length > 0)"> No Oustanding Assets To Review</h2>
+    <div class="row mx-0 mx-md-4"
+         *ngIf="!loading">
+      <div *ngFor="let product of products"
+           class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4">
+        <app-card [description]="product?.name"
+                  [title]="'£' + product?.priceInPounds"
+                  [linkUrl]="'admin/review/' + product?.versionUuid"
+                  [pictureUrl]="product?.coverImageUrl"
+                  [status]="product?.status"
+                  buttonText="Review"></app-card>
+      </div>
+    </div>
+    <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-center">
+        <li class="page-item">
+          <button class="page-link px-4 disabled-link"
+                  [class.disabled-link]="currentPage === 0"
+                  [disabled]="currentPage === 0"
+                  (click)="prev()">Prev</button>
+        </li>
+        <li class="page-item active">
+          <a class="page-link">{{currentPage}}</a>
+        </li>
+        <li class="page-item">
+          <button class="page-link px-4"
+                  [class.disabled-link]="!(products?.length > 0)"
+                  [disabled]="!(products?.length > 0)"
+                  (click)="next()">Next</button>
+        </li>
+      </ul>
+    </nav>
+  </div>

@@ -6,6 +6,7 @@ import { LoadingSpinnerComponent } from './components/loading-spinner/loading-sp
 import { FileUploaderComponent } from './components/file-uploader/file-uploader.component';
 import { FileGalleryComponent } from './components/file-gallery/file-gallery.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { VersionStatusBarComponent } from './components/version-status-bar/version-status-bar.component';
 
 @NgModule({
   imports: [
@@ -17,14 +18,16 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     ValidationSummaryComponent,
     LoadingSpinnerComponent,
     FileUploaderComponent,
-    FileGalleryComponent
+    FileGalleryComponent,
+    VersionStatusBarComponent
   ],
   exports: [
     CardComponent,
     ValidationSummaryComponent,
     LoadingSpinnerComponent,
     FileUploaderComponent,
-    FileGalleryComponent
+    FileGalleryComponent,
+    VersionStatusBarComponent
   ]
 })
 export class SharedModule { }

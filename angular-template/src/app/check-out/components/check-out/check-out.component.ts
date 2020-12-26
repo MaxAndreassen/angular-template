@@ -4,7 +4,7 @@ import { PaymentService } from '../../../shared/services/payment/payment.service
 import { finalize } from 'rxjs/operators';
 import { isPlatformServer } from '@angular/common';
 import { IAppConfig, APP_CONFIG } from '../../../shared/models/configuration.models';
-import { ProductSummary } from '../../../shared/models/product.models.ts';
+import { ProductVersionSummary } from '../../../shared/models/product.models.ts';
 import { ProductService } from '../../../shared/services/product/product.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -27,7 +27,7 @@ export class CheckOutComponent implements OnInit {
 
   paymentIntent: PaymentIntentSecret;
 
-  product: ProductSummary = new ProductSummary();
+  product: ProductVersionSummary = new ProductVersionSummary();
 
   stripe: any;
   card: any;

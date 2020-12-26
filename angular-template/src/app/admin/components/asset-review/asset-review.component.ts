@@ -1,28 +1,23 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ProductService } from '../../../shared/services/product/product.service';
-import { finalize } from 'rxjs/operators';
 import { ProductVersionSummary } from '../../../shared/models/product.models.ts';
+import { UserEditor } from '../../../profile/models/profile.models';
 import { FileSummary } from '../../../shared/models/file.models';
 import { faFileContract, faShieldAlt } from '@fortawesome/free-solid-svg-icons';
+import { ProductService } from '../../../shared/services/product/product.service';
 import { UserService } from '../../../profile/services/user.service';
-import { UserEditor } from '../../../profile/models/profile.models';
+import { Router, ActivatedRoute } from '@angular/router';
+import { finalize } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-product-viewer',
-  templateUrl: './product-viewer.component.html',
-  styleUrls: ['./product-viewer.component.scss']
+  selector: 'app-asset-review',
+  templateUrl: './asset-review.component.html',
+  styleUrls: ['./asset-review.component.scss']
 })
-export class ProductViewerComponent implements OnInit {
-
+export class AssetReviewComponent implements OnInit {
   product: ProductVersionSummary = new ProductVersionSummary();
   user: UserEditor = new UserEditor();
   loading = false;
   filesLoading = false;
-
-  ownsProduct = false;
-
-  extraProducts: ProductVersionSummary[] = [];
 
   files: FileSummary[] = [];
 
@@ -54,18 +49,6 @@ export class ProductViewerComponent implements OnInit {
             });
 
           this.productService
-            .listApprovedProducts({ creatorUserUuid: result.creatorUserUuid })
-            .subscribe(extraProducts => {
-              this.extraProducts = extraProducts;
-            });
-
-          this.productService
-            .getIsProductOwnedByMe(params.get('uuid'))
-            .subscribe(ownership => {
-              this.ownsProduct = ownership.ownsProduct;
-            });
-
-          this.productService
             .listFilesForProduct(params.get('uuid'))
             .pipe(finalize(() => this.filesLoading = false))
             .subscribe(fileResult => {
@@ -75,8 +58,12 @@ export class ProductViewerComponent implements OnInit {
     });
   }
 
-  purchase(): any {
-    this.router.navigateByUrl(`purchase/${this.product.uuid}`);
+  approve(): any {
+
+  }
+
+  reject(): any {
+
   }
 
 }

@@ -2,7 +2,6 @@
   <img src="assets/logo.png"
        class="mx-auto d-block"
        style="width:100px">
-  <app-product-search-box searchTerm=""></app-product-search-box>
   <hr class="my-4">
   <h1 class="mb-1 text-center d-block d-lg-none">{{product?.name}}</h1>
   <div class="text-center d-block d-lg-none">
@@ -51,23 +50,6 @@
           style="font-weight: bold;">£{{product?.priceInPounds}}</h3>
       <p class="mt-0 text-center text-lg-left"
          style="font-size: 10px; color: gray;">Taxes/VAT calculated at checkout</p>
-      <button *ngIf="!ownsProduct"
-              type="button"
-              class="btn btn-primary mx-auto w-100 mb-2"
-              [disabled]="loading"
-              (click)="purchase()">
-        <b>Buy Now</b>
-      </button>
-      <button *ngIf="ownsProduct"
-              type="button"
-              class="btn btn-success mx-auto w-100 mb-2"
-              disabled="true">
-        <b>Owned</b>
-      </button>
-      <p class="text-center mb-0"> Payment Secured By
-        <a href="https://stripe.com/customers"
-           target="_blank">Stripe</a>
-      </p>
       <p class="mt-0 text-center"
          style="font-size: 8px">Stripe is used by 1000s of platforms including Zoom, Slack and GitHub</p>
       <hr>
@@ -105,23 +87,21 @@
       <h3 class="mb-2">Description</h3>
       <p class="mx-1 mb-3"
          style="white-space: pre-wrap;">{{product?.description}}</p>
-      <hr class="mt-5"
-          *ngIf="extraProducts?.length > 0">
     </div>
-    <div class="col-12 mx-0 mx-md-4 mt-4"
-         *ngIf="extraProducts?.length > 0">
-      <h3 class="mb-4 mx-1">More by {{user?.username}}</h3>
-      <div class="row mr-0">
-        <div *ngFor="let product of extraProducts"
-             class="col-xl-2 col-lg-3 col-md-4 col-sm-4 col-9 mb-4 mx-auto mx-sm-0">
-          <app-card [description]="product?.name"
-                    [title]="'£' + product?.priceInPounds"
-                    [linkUrl]="'product/view/' + product?.versionUuid"
-                    [pictureUrl]="product?.coverImageUrl"
-                    height="135"
-                    buttonText="View"></app-card>
-        </div>
-      </div>
+  </div>
+  <hr>
+  <div class="row mt-4">
+    <div class="col-6">
+      <button type="button"
+              class="w-100 btn btn-success"
+              [disabled]="loading"
+              (click)="approve()">Approve</button>
+    </div>
+    <div class="col-6">
+      <button type="button"
+              class="w-100 btn btn-danger"
+              [disabled]="loading"
+              (click)="approve()">Reject</button>
     </div>
   </div>
 </div>

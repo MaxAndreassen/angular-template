@@ -24,6 +24,9 @@ import { ProductSearchBoxComponent } from './components/product-search-box/produ
     ProductSearchComponent,
     ProductViewerComponent,
     ProductSearchBoxComponent
+  ],
+  exports: [
+    ProductSearchBoxComponent
   ]
 })
 export class ProductModule { }

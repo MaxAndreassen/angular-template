@@ -19,12 +19,14 @@ import {
   faTag,
   faUser,
   faDollarSign,
-  faSearch
+  faSearch,
+  faArchive
 } from '@fortawesome/free-solid-svg-icons';
 import { isPlatformServer } from '@angular/common';
 import { SecurityContext } from '../../shared/models/auth.models';
 import { PaymentService } from '../../shared/services/payment/payment.service';
 import { finalize } from 'rxjs/operators';
+import { UserService } from '../../profile/services/user.service';
 
 @Component({
   selector: 'app-side-nav',
@@ -36,24 +38,29 @@ export class SideNavComponent implements OnInit {
   toggleIconOn = faAngleRight;
   toggleIconOff = faAngleLeft;
 
+  adminUser = false;
+
   navItems: DashboardSideNavItem[] = [
     {
       url: 'product/me',
       title: 'My Products',
       icon: faBook,
-      isPaid: false
     },
     {
       url: 'transactions',
       title: 'Payment History',
       icon: faDollarSign,
-      isPaid: false
     },
     {
       url: 'profile/edit',
       title: 'Profile',
       icon: faUser,
-      isPaid: false
+    },
+    {
+      url: 'admin/submissions',
+      title: 'Review Assets',
+      icon: faArchive,
+      isAdmin: true
     }
   ];
 
@@ -63,6 +70,7 @@ export class SideNavComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private paymentService: PaymentService,
+    private userService: UserService,
     @Inject(PLATFORM_ID) private platformId: any,
   ) {
     if (isPlatformServer(this.platformId)) {
@@ -77,10 +85,16 @@ export class SideNavComponent implements OnInit {
     if (isPlatformServer(this.platformId)) {
       return;
     }
-
     this.authService.authStateChange$.subscribe((context: SecurityContext) => {
       this.securityContext = context;
     });
+
+    this.authService.securityCheck();
+
+    this.userService.getUser(this.securityContext.user.uuid)
+      .subscribe(res => {
+        this.adminUser = res.isAdmin;
+      });
   }
 
   toggleSidebar(): any {
@@ -94,5 +108,6 @@ interface DashboardSideNavItem {
   url: string;
   title: string;
   icon: any;
-  isPaid: boolean;
+  isPaid?: boolean;
+  isAdmin?: boolean;
 }

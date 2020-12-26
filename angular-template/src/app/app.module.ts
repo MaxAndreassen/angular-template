@@ -14,6 +14,7 @@ import { SharedModule } from './shared/shared.module';
 import { ProfileModule } from './profile/profile.module';
 import { CheckOutModule } from './check-out/check-out.module';
 import { ProductModule } from './product/product.module';
+import { AdminModule } from './admin/admin.module';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { ProductModule } from './product/product.module';
     HttpClientModule,
     SharedModule,
     CheckOutModule,
-    ProductModule
+    ProductModule,
+    AdminModule
   ],
   providers: [
     { provide: APP_CONFIG, useClass: AppConfig },

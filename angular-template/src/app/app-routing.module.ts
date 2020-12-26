@@ -7,6 +7,7 @@ import { ProfileModule } from './profile/profile.module';
 import { CheckOutModule } from './check-out/check-out.module';
 import { ProductModule } from './product/product.module';
 import { ProductSearchComponent } from './product/components/product-search/product-search.component';
+import { AdminModule } from './admin/admin.module';
 
 const routes: Routes = [
   {
@@ -27,6 +28,10 @@ const routes: Routes = [
   {
     path: 'product',
     loadChildren: () => ProductModule
+  },
+  {
+    path: 'admin',
+    loadChildren: () => AdminModule
   }
 ];
 
