@@ -1,9 +1,15 @@
-<div class="alert alert-success mt-0 mb-0" *ngIf="status === 3">
-    <h5 class="text-center mb-0">Approved</h5>
-  </div>
-  <div class="alert alert-warning mt-0 mb-0" *ngIf="status === 1">
-    <h5 class="text-center mb-0">Awaiting Approval</h5>
-  </div>
-  <div class="alert alert-danger mt-0 mb-0" *ngIf="status === 2">
-    <h5 class="text-center mb-0">Rejected</h5>
-  </div>
+<div class="alert alert-success mt-0 mb-0"
+     style="border-radius: 0rem 0rem 0.25rem 0.25rem; margin: -1px;"
+     *ngIf="status === 3">
+  <h5 class="text-center mb-0">Approved</h5>
+</div>
+<div class="alert alert-warning mt-0 mb-0"
+     style="border-radius: 0rem 0rem 0.25rem 0.25rem; margin: -1px;"
+     *ngIf="status === 1">
+  <h5 class="text-center mb-0">Awaiting Approval</h5>
+</div>
+<div class="alert alert-danger mt-0 mb-0"
+     style="border-radius: 0rem 0rem 0.25rem 0.25rem; margin: -1px;"
+     *ngIf="status === 2">
+  <h5 class="text-center mb-0">Rejected</h5>
+</div>
