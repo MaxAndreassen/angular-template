@@ -1,9 +1,9 @@
 <div class="jumbotron m-0 m-xl-4 text-center bg-white">
     <img src="assets/logo.png"
-         style="width:200px"
+         style="width:120px"
          class="d-none d-sm-block mx-auto">
     <h1 class="mb-3">Submissions</h1>
-    <app-product-search-box [searchTerm]="queryParams?.searchTerm"></app-product-search-box>
+    <app-search-box [searchTerm]="queryParams?.searchTerm" route="admin/submissions"></app-search-box>
     <hr class="my-4">
     <app-loading-spinner *ngIf="loading"></app-loading-spinner>
     <h2 class="text-center my-5" *ngIf="!loading && !(products?.length > 0)"> No Oustanding Assets To Review</h2>
@@ -13,7 +13,7 @@
            class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4">
         <app-card [description]="product?.name"
                   [title]="'£' + product?.priceInPounds"
-                  [linkUrl]="'admin/review/' + product?.versionUuid"
+                  [linkUrl]="'admin/review/' + product?.uuid"
                   [pictureUrl]="product?.coverImageUrl"
                   [status]="product?.status"
                   buttonText="Review"></app-card>

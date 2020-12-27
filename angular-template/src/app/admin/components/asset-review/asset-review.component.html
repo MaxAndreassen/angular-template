@@ -3,7 +3,7 @@
        class="mx-auto d-block"
        style="width:100px">
   <hr class="my-4">
-  <h1 class="mb-1 text-center d-block d-lg-none">{{product?.name}}</h1>
+  <h1 class="mb-1 text-center d-block d-lg-none">{{submission?.name}}</h1>
   <div class="text-center d-block d-lg-none">
     <p class="mb-3"> Max Andreassen </p>
   </div>
@@ -14,7 +14,7 @@
                         [files]="files"> </app-file-gallery>
     </div>
     <div class="col-12 col-lg-5">
-      <h3 class="mb-1 d-none d-lg-block">{{product?.name}}</h3>
+      <h3 class="mb-1 d-none d-lg-block">{{submission?.name}}</h3>
 
       <div class="d-none d-lg-block">
         <a [href]="'profile/' + user?.uuid">
@@ -47,7 +47,7 @@
         </div>
       </div>
       <h3 class="mb-1 text-center text-lg-left"
-          style="font-weight: bold;">£{{product?.priceInPounds}}</h3>
+          style="font-weight: bold;">£{{submission?.priceInPounds}}</h3>
       <p class="mt-0 text-center text-lg-left"
          style="font-size: 10px; color: gray;">Taxes/VAT calculated at checkout</p>
       <p class="mt-0 text-center"
@@ -86,22 +86,39 @@
       <hr class="d-block d-lg-none">
       <h3 class="mb-2">Description</h3>
       <p class="mx-1 mb-3"
-         style="white-space: pre-wrap;">{{product?.description}}</p>
+         style="white-space: pre-wrap;">{{submission?.description}}</p>
     </div>
   </div>
   <hr>
+  <div class="form-group col-12">
+    <label
+           for="rejectionComment">
+      <b>Rejection Comment</b>
+    </label>
+    <textarea type="text"
+              name="rejectionComment"
+              class="form-control"
+              id="rejectionComment"
+              [(ngModel)]="submissionEditor.rejectionComment"
+              rows="4"> </textarea>
+  </div>
   <div class="row mt-4">
     <div class="col-6">
       <button type="button"
               class="w-100 btn btn-success"
-              [disabled]="loading"
-              (click)="approve()">Approve</button>
+              [disabled]="loading || approvalLoading || submissionEditor.rejectionComment"
+              (click)="submit(true)">Approve</button>
     </div>
     <div class="col-6">
       <button type="button"
               class="w-100 btn btn-danger"
-              [disabled]="loading"
-              (click)="approve()">Reject</button>
+              [disabled]="loading || approvalLoading || !submissionEditor.rejectionComment"
+              (click)="submit(false)">Reject</button>
+    </div>
+    <div *ngIf="!validationResult?.valid"
+         class="alert alert-danger mt-3 mb-0 w-100"
+         role="alert">
+      <app-validation-summary [errors]="validationResult?.errors"> </app-validation-summary>
     </div>
   </div>
 </div>

@@ -3,8 +3,9 @@ import { isPlatformServer } from '@angular/common';
 import { ProductService } from '../../../shared/services/product/product.service';
 import { AuthService } from '../../../shared/services/auth/auth.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ProductQueryRequest, ProductSummary } from '../../../shared/models/product.models.ts';
+import { ProductQueryRequest, ProductSummary, ProductVersionSubmissionQueryParams, ProductVersionSubmissionSummary } from '../../../shared/models/product.models.ts';
 import { finalize } from 'rxjs/operators';
+import { ProductVersionSubmissionService } from '../../../shared/services/product-version-submission/product-version-submission.service';
 
 @Component({
   selector: 'app-submissions',
@@ -13,16 +14,16 @@ import { finalize } from 'rxjs/operators';
 })
 export class SubmissionsComponent implements OnInit {
 
-  queryParams: ProductQueryRequest = new ProductQueryRequest();
+  queryParams: ProductVersionSubmissionQueryParams = new ProductVersionSubmissionQueryParams();
 
-  products: ProductSummary[] = [];
+  products: ProductVersionSubmissionSummary[] = [];
 
   currentPage = 0;
 
   loading = false;
 
   constructor(
-    private productService: ProductService,
+    private productVersionSubmissionService: ProductVersionSubmissionService,
     private authService: AuthService,
     @Inject(PLATFORM_ID) private platformId: any,
     private router: Router,
@@ -42,10 +43,9 @@ export class SubmissionsComponent implements OnInit {
       this.queryParams.searchTerm = params.get('term');
       this.currentPage = +params.get('page');
       this.queryParams.page = this.currentPage;
-      this.queryParams.status = 1;
 
-      this.productService
-        .listProducts(this.queryParams)
+      this.productVersionSubmissionService
+        .listProductSubmissions(this.queryParams)
         .pipe(finalize(() => this.loading = false))
         .subscribe(res => {
           this.products = res;

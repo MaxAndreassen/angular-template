@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductVersionSummary } from '../../../shared/models/product.models.ts';
+import { ProductVersionSummary, ProductVersionSubmissionSummary, ProductVersionSubmissionEditor } from '../../../shared/models/product.models.ts';
 import { UserEditor } from '../../../profile/models/profile.models';
 import { FileSummary } from '../../../shared/models/file.models';
 import { faFileContract, faShieldAlt } from '@fortawesome/free-solid-svg-icons';
@@ -7,6 +7,8 @@ import { ProductService } from '../../../shared/services/product/product.service
 import { UserService } from '../../../profile/services/user.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { finalize } from 'rxjs/operators';
+import { ProductVersionSubmissionService } from '../../../shared/services/product-version-submission/product-version-submission.service';
+import { IValidationResult, ValidationResult } from '../../../shared/models/validation,models';
 
 @Component({
   selector: 'app-asset-review',
@@ -14,18 +16,25 @@ import { finalize } from 'rxjs/operators';
   styleUrls: ['./asset-review.component.scss']
 })
 export class AssetReviewComponent implements OnInit {
-  product: ProductVersionSummary = new ProductVersionSummary();
+  submission: ProductVersionSubmissionSummary = new ProductVersionSubmissionSummary();
+  submissionEditor: ProductVersionSubmissionEditor = new ProductVersionSubmissionEditor();
+
   user: UserEditor = new UserEditor();
+
   loading = false;
   filesLoading = false;
+  approvalLoading = false;
 
   files: FileSummary[] = [];
 
   licenseIcon = faFileContract;
   refundIcon = faShieldAlt;
 
+  validationResult: IValidationResult = new ValidationResult();
+
   constructor(
     private productService: ProductService,
+    private productVersionSubmissionService: ProductVersionSubmissionService,
     private userService: UserService,
     private router: Router,
     private route: ActivatedRoute
@@ -36,11 +45,14 @@ export class AssetReviewComponent implements OnInit {
       this.loading = true;
       this.filesLoading = true;
 
-      this.productService
-        .getProductSummary(params.get('uuid'))
+      this.productVersionSubmissionService
+        .getProductSubmissions(params.get('uuid'))
         .pipe(finalize(() => this.loading = false))
         .subscribe(result => {
-          this.product = result;
+          this.submission = result;
+
+          this.submissionEditor.uuid = params.get('uuid');
+          this.submissionEditor.productVersionUuid = this.submission.productVersionUuid;
 
           this.userService
             .getUser(result.creatorUserUuid)
@@ -49,7 +61,7 @@ export class AssetReviewComponent implements OnInit {
             });
 
           this.productService
-            .listFilesForProduct(params.get('uuid'))
+            .listFilesForProduct(this.submission.productVersionUuid)
             .pipe(finalize(() => this.filesLoading = false))
             .subscribe(fileResult => {
               this.files = fileResult;
@@ -58,12 +70,24 @@ export class AssetReviewComponent implements OnInit {
     });
   }
 
-  approve(): any {
+  submit(approved: boolean): any {
+    this.submissionEditor.approved = approved;
+    this.approvalLoading = true;
 
+    this.validationResult = new ValidationResult();
+
+    this.productVersionSubmissionService
+      .updateSubmission(this.submissionEditor)
+      .pipe(finalize(() => this.approvalLoading = false))
+      .subscribe(res => {
+        this.router.navigateByUrl('admin/submissions');
+      }, err => {
+        if (err.status && err.status === 412) {
+          this.validationResult = err.error;
+        }
+        if (err.status && err.status === 500) {
+          this.validationResult = new ValidationResult('An Unknown Error Occured.');
+        }
+      });
   }
-
-  reject(): any {
-
-  }
-
 }

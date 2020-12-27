@@ -61,3 +61,26 @@ export class ProductQueryRequest {
 export class ProductFileQueryRequest {
     productUuid: string;
 }
+
+export class ProductVersionSubmissionSummary {
+    uuid: string;
+    productVersionUuid: string;
+    coverImageUrl: string;
+    priceInPounds: number;
+    name: string;
+    creatorUserUuid: string;
+}
+
+export class ProductVersionSubmissionQueryParams {
+    page: number;
+    searchTerm?: string;
+}
+
+export class ProductVersionSubmissionEditor {
+    uuid: string;
+    productVersionUuid: string;
+    reviewedByUserUuid: string;
+    approved: boolean;
+    reviewedAt: Date;
+    rejectionComment: string;
+}

@@ -1,9 +1,9 @@
 <div class="jumbotron m-0 m-xl-4 text-center bg-white">
   <img src="assets/logo.png"
-       style="width:200px"
+       style="width:120px"
        class="d-none d-sm-block mx-auto">
   <h1 class="mb-3">Find The Perfect Asset</h1>
-  <app-product-search-box [searchTerm]="queryParams?.searchTerm"></app-product-search-box>
+  <app-search-box [searchTerm]="queryParams?.searchTerm" route="product/search"></app-search-box>
   <hr class="my-4">
   <app-loading-spinner *ngIf="loading"></app-loading-spinner>
   <h2 class="text-center my-5" *ngIf="!loading && !(products?.length > 0)"> No Assets Found</h2>
