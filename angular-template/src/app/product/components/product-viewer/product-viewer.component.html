@@ -3,6 +3,7 @@
        class="mx-auto d-block"
        style="width:100px">
   <app-search-box searchTerm=""
+                  *ngIf="externalFacing"
                   route="product/search"></app-search-box>
   <hr class="my-4">
   <h1 class="mb-1 text-center d-block d-lg-none">{{product?.name}}</h1>
@@ -115,7 +116,8 @@
         <app-asset-row [rows]="assetContent?.contents"></app-asset-row>
       </div>
     </div>
-    <div class="col-12 mx-1 mx-md-4 mx-lg-2">
+    <div class="col-12 mx-1 mx-md-4 mx-lg-2"
+         *ngIf="externalFacing">
       <hr class="mt-1"
           *ngIf="extraProducts?.length > 0">
       <h4 class="mb-4 mx-1 mt-md-4">More by {{user?.username}}</h4>

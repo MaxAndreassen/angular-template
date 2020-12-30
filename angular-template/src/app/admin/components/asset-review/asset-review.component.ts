@@ -21,6 +21,8 @@ export class AssetReviewComponent implements OnInit {
 
   user: UserEditor = new UserEditor();
 
+  productVersionUuid: string;
+
   loading = false;
   filesLoading = false;
   approvalLoading = false;
@@ -53,19 +55,7 @@ export class AssetReviewComponent implements OnInit {
 
           this.submissionEditor.uuid = params.get('uuid');
           this.submissionEditor.productVersionUuid = this.submission.productVersionUuid;
-
-          this.userService
-            .getUser(result.creatorUserUuid)
-            .subscribe(user => {
-              this.user = user;
-            });
-
-          this.productService
-            .listFilesForProduct(this.submission.productVersionUuid)
-            .pipe(finalize(() => this.filesLoading = false))
-            .subscribe(fileResult => {
-              this.files = fileResult;
-            });
+          this.productVersionUuid = this.submission.productVersionUuid;
         });
     });
   }

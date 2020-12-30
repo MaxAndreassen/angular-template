@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '../../../shared/services/product/product.service';
 import { finalize } from 'rxjs/operators';
@@ -15,6 +15,8 @@ import { FileSizeHelperService } from '../../../shared/services/file-size-helper
   styleUrls: ['./product-viewer.component.scss']
 })
 export class ProductViewerComponent implements OnInit {
+@Input() productVersionUuid: string;
+@Input() externalFacing: boolean;
 
   product: ProductVersionSummary = new ProductVersionSummary();
   user: UserEditor = new UserEditor();
@@ -38,12 +40,11 @@ export class ProductViewerComponent implements OnInit {
   ) { }
 
   ngOnInit(): any {
-    this.route.paramMap.subscribe(params => {
       this.loading = true;
       this.filesLoading = true;
 
       this.productService
-        .getProductSummary(params.get('uuid'))
+        .getProductSummary(this.productVersionUuid)
         .pipe(finalize(() => this.loading = false))
         .subscribe(result => {
           this.product = result;
@@ -61,26 +62,25 @@ export class ProductViewerComponent implements OnInit {
             });
 
           this.productService
-            .getIsProductOwnedByMe(params.get('uuid'))
+            .getIsProductOwnedByMe(this.productVersionUuid)
             .subscribe(ownership => {
               this.ownsProduct = ownership.ownsProduct;
             });
 
           this.productService
-            .getAssetContentsForProductVersion(params.get('uuid'))
+            .getAssetContentsForProductVersion(this.productVersionUuid)
             .subscribe(p => {
               this.assetContent = p;
               this.assetContent.fileSizeFriendly = this.fileSizeHelper.getFileSize(this.assetContent.fileSize);
             });
 
           this.productService
-            .listFilesForProduct(params.get('uuid'))
+            .listFilesForProduct(this.productVersionUuid)
             .pipe(finalize(() => this.filesLoading = false))
             .subscribe(fileResult => {
               this.files = fileResult;
             });
         });
-    });
   }
 
   purchase(): any {
