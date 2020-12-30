@@ -69,6 +69,7 @@ export class ProductVersionSubmissionSummary {
     priceInPounds: number;
     name: string;
     creatorUserUuid: string;
+    description: string;
 }
 
 export class ProductVersionSubmissionQueryParams {
@@ -83,4 +84,14 @@ export class ProductVersionSubmissionEditor {
     approved: boolean;
     reviewedAt: Date;
     rejectionComment: string;
+}
+
+export class AssetContent {
+    fileName: string;
+    fileSize: number;
+    contents: AssetContent[] = [];
+
+    // local var
+    open = true;
+    fileSizeFriendly: string;
 }

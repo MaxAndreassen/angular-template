@@ -91,10 +91,12 @@ export class SideNavComponent implements OnInit {
 
     this.authService.securityCheck();
 
-    this.userService.getUser(this.securityContext.user.uuid)
-      .subscribe(res => {
-        this.adminUser = res.isAdmin;
-      });
+    if (!!this.securityContext.user) {
+      this.userService.getUser(this.securityContext.user.uuid)
+        .subscribe(res => {
+          this.adminUser = res.isAdmin;
+        });
+    }
   }
 
   toggleSidebar(): any {

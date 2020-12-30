@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '../../../shared/services/product/product.service';
 import { finalize } from 'rxjs/operators';
-import { ProductVersionSummary } from '../../../shared/models/product.models.ts';
+import { ProductVersionSummary, AssetContent } from '../../../shared/models/product.models.ts';
 import { FileSummary } from '../../../shared/models/file.models';
 import { faFileContract, faShieldAlt } from '@fortawesome/free-solid-svg-icons';
 import { UserService } from '../../../profile/services/user.service';
 import { UserEditor } from '../../../profile/models/profile.models';
+import { FileSizeHelperService } from '../../../shared/services/file-size-helper/file-size-helper.service';
 
 @Component({
   selector: 'app-product-viewer',
@@ -17,14 +18,13 @@ export class ProductViewerComponent implements OnInit {
 
   product: ProductVersionSummary = new ProductVersionSummary();
   user: UserEditor = new UserEditor();
+  extraProducts: ProductVersionSummary[] = [];
+  files: FileSummary[] = [];
+  assetContent: AssetContent = new AssetContent();
+
   loading = false;
   filesLoading = false;
-
   ownsProduct = false;
-
-  extraProducts: ProductVersionSummary[] = [];
-
-  files: FileSummary[] = [];
 
   licenseIcon = faFileContract;
   refundIcon = faShieldAlt;
@@ -32,6 +32,7 @@ export class ProductViewerComponent implements OnInit {
   constructor(
     private productService: ProductService,
     private userService: UserService,
+    private fileSizeHelper: FileSizeHelperService,
     private router: Router,
     private route: ActivatedRoute
   ) { }
@@ -63,6 +64,13 @@ export class ProductViewerComponent implements OnInit {
             .getIsProductOwnedByMe(params.get('uuid'))
             .subscribe(ownership => {
               this.ownsProduct = ownership.ownsProduct;
+            });
+
+          this.productService
+            .getAssetContentsForProductVersion(params.get('uuid'))
+            .subscribe(p => {
+              this.assetContent = p;
+              this.assetContent.fileSizeFriendly = this.fileSizeHelper.getFileSize(this.assetContent.fileSize);
             });
 
           this.productService

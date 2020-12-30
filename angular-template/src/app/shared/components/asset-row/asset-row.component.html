@@ -1,0 +1,44 @@
+<div *ngFor="let assetContent of rows">
+  <div class="row mb-1">
+    <div class="col-7">
+      <div style="white-space: nowrap;overflow-x: hidden; text-overflow: ellipsis;">
+        <div class="d-inline">
+          <fa-icon [icon]="openIcon"
+                   *ngIf="!(assetContent?.contents?.length > 0)"
+                   class="d-inline"
+                   style="color: white"
+                   [style.margin-left]="depth + 'px'"></fa-icon>
+          <fa-icon [icon]="openIcon"
+                   *ngIf="assetContent?.open && assetContent?.contents?.length > 0"
+                   (click)="toggleOpen(assetContent)"
+                   class="d-inline"
+                   style="color: lightslategrey;"
+                   [style.margin-left]="depth + 'px'"></fa-icon>
+          <fa-icon [icon]="closeIcon"
+                   (click)="toggleOpen(assetContent)"
+                   *ngIf="!assetContent?.open && assetContent?.contents?.length > 0"
+                   class="d-inline"
+                   style="color: lightslategrey;"
+                   [style.margin-left]="depth + 'px'"></fa-icon>
+          <fa-icon [icon]="folderIcon"
+                   *ngIf="(assetContent?.contents?.length > 0)"
+                   class="d-inline ml-1"
+                   style="color: #7041ce;"></fa-icon>
+          <fa-icon [icon]="fileIcon"
+                   *ngIf="!(assetContent?.contents?.length > 0)"
+                   class="d-inline ml-1"
+                   style="color: #7041ce;"></fa-icon>
+        </div>
+        <h6 class="text-left ml-1 d-inline">{{assetContent?.fileName}} </h6>
+      </div>
+    </div>
+    <div class="col-5">
+      <h6 class="text-right"  [style.color]="(assetContent?.contents?.length > 0) ? 'white' : 'black'">{{assetContent?.fileSizeFriendly}}</h6>
+    </div>
+  </div>
+  <div *ngIf="assetContent?.contents && assetContent?.contents?.length > 0">
+    <app-asset-row *ngIf="assetContent?.open"
+                   [rows]="assetContent?.contents"
+                   [depth]="depth + 18"></app-asset-row>
+  </div>
+</div>

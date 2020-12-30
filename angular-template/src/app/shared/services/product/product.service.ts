@@ -8,7 +8,8 @@ import {
   ProductFileSummary,
   ProductOwnership,
   ProductSummary,
-  ProductVersionSummary
+  ProductVersionSummary,
+  AssetContent
 } from '../../models/product.models.ts';
 import { Observable } from 'rxjs';
 
@@ -91,14 +92,20 @@ export class ProductService {
     return this.http.post<ProductSummary[]>(url, queryParams);
   }
 
-  listFilesForProduct(productUuid: string, includeAsset?: boolean): Observable<ProductFileSummary[]> {
-    let url = `${this.config.apiUrl}product/${productUuid}/files`;
+  listFilesForProduct(productVersionUuid: string, includeAsset?: boolean): Observable<ProductFileSummary[]> {
+    let url = `${this.config.apiUrl}product/${productVersionUuid}/files`;
 
     if (includeAsset) {
       url = url + `?includeAsset=${includeAsset}`;
     }
 
     return this.http.get<ProductFileSummary[]>(url);
+  }
+
+  getAssetContentsForProductVersion(productVersionUuid: string): Observable<AssetContent> {
+    const url = `${this.config.apiUrl}product/${productVersionUuid}/asset/contents`;
+
+    return this.http.get<AssetContent>(url);
   }
 
   getProduct(uuid: string): Observable<ProductVersionEditor> {

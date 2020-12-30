@@ -9,6 +9,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { VersionStatusBarComponent } from './components/version-status-bar/version-status-bar.component';
 import { SearchBoxComponent } from './components/search-box/search-box.component';
 import { FormsModule } from '@angular/forms';
+import { AssetRowComponent } from './components/asset-row/asset-row.component';
 
 @NgModule({
   imports: [
@@ -23,7 +24,8 @@ import { FormsModule } from '@angular/forms';
     FileUploaderComponent,
     FileGalleryComponent,
     VersionStatusBarComponent,
-    SearchBoxComponent
+    SearchBoxComponent,
+    AssetRowComponent
   ],
   exports: [
     CardComponent,
@@ -32,7 +34,8 @@ import { FormsModule } from '@angular/forms';
     FileUploaderComponent,
     FileGalleryComponent,
     VersionStatusBarComponent,
-    SearchBoxComponent
+    SearchBoxComponent,
+    AssetRowComponent
   ]
 })
 export class SharedModule { }
