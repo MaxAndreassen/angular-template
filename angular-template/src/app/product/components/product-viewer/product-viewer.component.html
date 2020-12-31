@@ -55,28 +55,34 @@
           </div>
         </div>
       </div>
-      <h3 class="mb-1 text-center text-lg-left"
+      <h3 *ngIf="!ownsProduct" class="mb-1 text-center text-lg-left"
           style="font-weight: bold;">£{{product?.priceInPounds}}</h3>
-      <p class="mt-0 text-center text-lg-left"
+      <p *ngIf="!ownsProduct" class="mt-0 text-center text-lg-left"
          style="font-size: 10px; color: gray;">Taxes/VAT calculated at checkout</p>
-      <button *ngIf="!ownsProduct"
+      <button *ngIf="!ownsProduct && !ownedLoading"
               type="button"
               class="btn btn-primary mx-auto w-100 mb-2"
               [disabled]="loading"
               (click)="purchase()">
         <b>Buy Now</b>
       </button>
-      <button *ngIf="ownsProduct"
+      <app-loading-spinner *ngIf="ownedLoading"></app-loading-spinner>
+      <button *ngIf="ownsProduct && !ownedLoading"
               type="button"
               class="btn btn-success mx-auto w-100 mb-2"
               disabled="true">
         <b>Owned</b>
       </button>
-      <p class="text-center mb-0"> Payment Secured By
+      <button *ngIf="ownsProduct && !ownedLoading"
+              type="button"
+              class="btn btn-secondary mx-auto w-100 mb-2">
+        <b>Download</b>
+      </button>
+      <p *ngIf="!ownsProduct" class="text-center mb-0"> Payment Secured By
         <a href="https://stripe.com/customers"
            target="_blank">Stripe</a>
       </p>
-      <p class="mt-0 text-center mb-2 mb-lg-0"
+      <p *ngIf="!ownsProduct" class="mt-0 text-center mb-2 mb-lg-0"
          style="font-size: 8px">Stripe is used by 1000s of platforms including Zoom, Slack and GitHub</p>
       <hr class="mt-1">
       <h4 class="mb-2 ml-lg-2">Details</h4>

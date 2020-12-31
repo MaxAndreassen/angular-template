@@ -5,12 +5,14 @@ import { ProductEditorComponent } from './components/product-editor/product-edit
 import { ProductSearchComponent } from './components/product-search/product-search.component';
 import { ProductViewerComponent } from './components/product-viewer/product-viewer.component';
 import { ProductListingComponent } from './components/product-listing/product-listing.component';
+import { OwnedProductsComponent } from './components/owned-products/owned-products.component';
 
 
 const routes: Routes = [
   { path: 'me', component: CreatorProductDashboardComponent },
   { path: 'new', component: ProductEditorComponent },
   { path: 'search', component: ProductSearchComponent },
+  { path: 'owned', component: OwnedProductsComponent },
   { path: 'edit/:uuid', component: ProductEditorComponent },
   { path: 'view/:uuid', component: ProductListingComponent }
 ];

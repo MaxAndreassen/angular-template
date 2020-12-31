@@ -9,6 +9,7 @@ import { ProductSearchComponent } from './components/product-search/product-sear
 import { ProductViewerComponent } from './components/product-viewer/product-viewer.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ProductListingComponent } from './components/product-listing/product-listing.component';
+import { OwnedProductsComponent } from './components/owned-products/owned-products.component';
 
 @NgModule({
   imports: [
@@ -23,7 +24,8 @@ import { ProductListingComponent } from './components/product-listing/product-li
     ProductEditorComponent,
     ProductSearchComponent,
     ProductViewerComponent,
-    ProductListingComponent
+    ProductListingComponent,
+    OwnedProductsComponent
   ],
   exports: [
     ProductViewerComponent

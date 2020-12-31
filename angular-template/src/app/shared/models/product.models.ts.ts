@@ -1,5 +1,6 @@
 export class ProductVersionSummary {
     priceInPounds: number;
+    productUuid: string;
     name: string;
     description: string;
     uuid: string;
@@ -15,10 +16,16 @@ export class ProductSummary {
     description: string;
     uuid: string;
     creatorUserUuid: string;
+    creatorUserUsername: string;
     version: number;
     status: number;
     statusName: string;
     versionUuid: string;
+
+    // local vars
+    downloadFailed = false;
+    downloadPercentage = 0;
+    downloading = false;
 }
 
 

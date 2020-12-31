@@ -20,7 +20,14 @@ import {
   faUser,
   faDollarSign,
   faSearch,
-  faArchive
+  faArchive,
+  faHandHolding,
+  faHandHoldingUsd,
+  faBox,
+  faMoneyBill,
+  faCreditCard,
+  faTags,
+  faReceipt
 } from '@fortawesome/free-solid-svg-icons';
 import { isPlatformServer } from '@angular/common';
 import { SecurityContext } from '../../shared/models/auth.models';
@@ -40,22 +47,33 @@ export class SideNavComponent implements OnInit {
 
   adminUser = false;
 
-  navItems: DashboardSideNavItem[] = [
+  sellerNavItems: DashboardSideNavItem[] = [
     {
       url: 'product/me',
-      title: 'My Products',
-      icon: faBook,
+      title: 'Listings',
+      icon: faTag,
     },
     {
       url: 'transactions',
-      title: 'Payment History',
-      icon: faDollarSign,
+      title: 'Financials',
+      icon: faReceipt,
     },
     {
       url: 'profile/edit',
       title: 'Profile',
       icon: faUser,
-    },
+    }
+  ];
+
+  buyerNavItems: DashboardSideNavItem[] = [
+    {
+      url: 'product/owned',
+      title: 'Owned',
+      icon: faBox,
+    }
+  ];
+
+  adminNavItems: DashboardSideNavItem[] = [
     {
       url: 'admin/submissions',
       title: 'Review Assets',

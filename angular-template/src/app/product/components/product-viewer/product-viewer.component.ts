@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '../../../shared/services/product/product.service';
 import { finalize } from 'rxjs/operators';
-import { ProductVersionSummary, AssetContent } from '../../../shared/models/product.models.ts';
+import { ProductVersionSummary, AssetContent, ProductSummary } from '../../../shared/models/product.models.ts';
 import { FileSummary } from '../../../shared/models/file.models';
 import { faFileContract, faShieldAlt } from '@fortawesome/free-solid-svg-icons';
 import { UserService } from '../../../profile/services/user.service';
@@ -20,13 +20,15 @@ export class ProductViewerComponent implements OnInit {
 
   product: ProductVersionSummary = new ProductVersionSummary();
   user: UserEditor = new UserEditor();
-  extraProducts: ProductVersionSummary[] = [];
+  extraProducts: ProductSummary[] = [];
   files: FileSummary[] = [];
   assetContent: AssetContent = new AssetContent();
 
   loading = false;
   filesLoading = false;
   ownsProduct = false;
+
+  ownedLoading = false;
 
   licenseIcon = faFileContract;
   refundIcon = faShieldAlt;
@@ -42,6 +44,7 @@ export class ProductViewerComponent implements OnInit {
   ngOnInit(): any {
       this.loading = true;
       this.filesLoading = true;
+      this.ownedLoading = true;
 
       this.productService
         .getProductSummary(this.productVersionUuid)
@@ -62,7 +65,8 @@ export class ProductViewerComponent implements OnInit {
             });
 
           this.productService
-            .getIsProductOwnedByMe(this.productVersionUuid)
+            .getIsProductOwnedByMe(this.product.productUuid)
+            .pipe(finalize(() => this.ownedLoading = false))
             .subscribe(ownership => {
               this.ownsProduct = ownership.ownsProduct;
             });

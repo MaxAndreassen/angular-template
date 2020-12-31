@@ -10,11 +10,12 @@
       />
     </a>
   </div>
-  <a class="nav-item p-md-3 p-0 py-3 pl-md-1"
-     *ngFor="let item of navItems"
-     routerLinkActive="active"
-     [href]="item.url">
-    <span *ngIf="!item.isAdmin || (item.isAdmin && adminUser)" >
+  <h6 class="text-white mb-1 mx-auto mx-md-3 mt-3 text-center text-md-left">Buying</h6>
+  <span *ngFor="let item of buyerNavItems">
+    <a class="nav-item p-md-3 p-0 py-3 pl-md-1"
+       routerLinkActive="active"
+       *ngIf="!item.isAdmin || (item.isAdmin && adminUser)"
+       [href]="item.url">
       <fa-icon [icon]="item.icon"
                class="ml-md-2 d-none d-md-inline-block"
                [class.text-warning]="item.isAdmin"
@@ -27,9 +28,50 @@
             [class.text-warning]="item.isAdmin">{{item.title}}</span>
       <span class="d-md-none d-block text-center"
             [class.text-warning]="item.isAdmin">{{item.title}}</span>
-    </span>
-
-  </a>
+    </a>
+  </span>
+  <hr *ngIf="adminUser" style="border-color: #F7F7F7; margin-top: 0;opacity: 0.3;">
+  <h6 class="text-white mb-1 mx-auto mx-md-3 mt-2 text-center text-md-left">Selling</h6>
+  <span *ngFor="let item of sellerNavItems">
+    <a class="nav-item p-md-3 p-0 py-3 pl-md-1"
+       routerLinkActive="active"
+       *ngIf="!item.isAdmin || (item.isAdmin && adminUser)"
+       [href]="item.url">
+      <fa-icon [icon]="item.icon"
+               class="ml-md-2 d-none d-md-inline-block"
+               [class.text-warning]="item.isAdmin"
+               style="width:16px"></fa-icon>
+      <fa-icon [icon]="item.icon"
+               class="ml-md-2 text-center mx-auto d-block d-md-none"
+               [class.text-warning]="item.isAdmin"
+               style="width:16px"></fa-icon>
+      <span class="d-md-inline-block d-none ml-2"
+            [class.text-warning]="item.isAdmin">{{item.title}}</span>
+      <span class="d-md-none d-block text-center"
+            [class.text-warning]="item.isAdmin">{{item.title}}</span>
+    </a>
+  </span>
+  <hr *ngIf="adminUser" style="border-color: #F7F7F7; margin-top: 0;opacity: 0.3;">
+  <h6 *ngIf="adminUser" class="text-warning mb-1 mx-auto mx-md-3 mt-2 text-center text-md-left">Admin</h6>
+  <span *ngFor="let item of adminNavItems">
+    <a class="nav-item p-md-3 p-0 py-3 pl-md-1"
+       routerLinkActive="active"
+       *ngIf="!item.isAdmin || (item.isAdmin && adminUser)"
+       [href]="item.url">
+      <fa-icon [icon]="item.icon"
+               class="ml-md-2 d-none d-md-inline-block"
+               [class.text-warning]="item.isAdmin"
+               style="width:16px"></fa-icon>
+      <fa-icon [icon]="item.icon"
+               class="ml-md-2 text-center mx-auto d-block d-md-none"
+               [class.text-warning]="item.isAdmin"
+               style="width:16px"></fa-icon>
+      <span class="d-md-inline-block d-none ml-2"
+            [class.text-warning]="item.isAdmin">{{item.title}}</span>
+      <span class="d-md-none d-block text-center"
+            [class.text-warning]="item.isAdmin">{{item.title}}</span>
+    </a>
+  </span>
 </aside>
 <aside *ngIf="securityContext?.authenticated">
   <button class="toggle-button btn btn-primary btn-submit"

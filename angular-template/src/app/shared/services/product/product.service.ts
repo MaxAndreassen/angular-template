@@ -122,4 +122,15 @@ export class ProductService {
     const url = `${this.config.apiUrl}product/get/${uuid}/summary`;
     return this.http.get<ProductVersionSummary>(url);
   }
+
+  downloadProductVersionAsset(productVersionUuid: string): Observable<any> {
+    const url = `${this.config.apiUrl}product/${productVersionUuid}/asset/download`;
+
+    return this.http.get<any>(url, {
+      headers: new HttpHeaders(),
+      responseType: 'blob' as 'json',
+      reportProgress: true,
+      observe: 'events'
+    });
+  }
 }

@@ -9,7 +9,7 @@
 
 
 <!-- Toolbar -->
-<div class="toolbar bg-dark"        style="z-index: 10; width:100%"
+<div class="toolbar bg-primary"        style="z-index: 10; width:100%"
      role="banner">
         <a href="/">
                 <img width="40"
@@ -22,10 +22,10 @@
         <button *ngIf="!securityContext?.authenticated"
                 type="button"
                 (click)="routeLogin()"
-                class="btn btn-primary mr-2">Log In</button>
+                class="btn btn-secondary mr-2">Log In</button>
         <button *ngIf="securityContext?.authenticated"
                 type="button"
-                class="btn btn-dark mr-2">
+                class="btn btn-primary mr-2">
                 <div *ngIf="securityContext?.authenticated"
                      style="float: left;margin-top: 2px;"
                      (click)="signOut()">Sign Out</div>

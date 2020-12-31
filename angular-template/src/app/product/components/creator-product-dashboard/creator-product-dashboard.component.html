@@ -1,12 +1,12 @@
 <div class="jumbotron m-0 m-xl-4 text-center bg-white">
-  <h1 class="display-4">Your Products</h1>
-  <p class="lead">You Have {{products?.length}} Products For Sale on GameAssets.io</p>
+  <h1 class="display-4">Your Listings</h1>
+  <p class="lead">You Have {{products?.length}} Assets For Sale on GameAssets.io</p>
   <hr class="my-4">
   <span *ngIf="securityContext?.authenticated">
     <p class="lead mb-5">
       <a class="btn btn-primary btn-lg"
          href="product/new"
-         role="button">List New Product</a>
+         role="button">New Listing</a>
     </p>
   </span>
   <app-loading-spinner *ngIf="loading"></app-loading-spinner>
