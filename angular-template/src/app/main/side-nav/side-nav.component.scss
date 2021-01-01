@@ -5,7 +5,7 @@
   position: fixed;
   left: 0;
   bottom: 0;
-  background: $secondary !important;
+  background: $primary !important;
   width: 220px;
   transition: all .3s ease-in-out;
   top: 0px;
@@ -26,12 +26,12 @@
     position: relative;
 
     &:hover {
-      background-color: lighten($secondary, 12%);
+      background-color: lighten($primary, 12%);
       text-decoration: none;
     }
 
     &.active {
-      background-color: lighten($secondary, 10%);
+      background-color: lighten($primary, 10%);
 
       &::before {
         content: '';
@@ -50,7 +50,7 @@
   position: fixed;
   left: 0;
   bottom: 0;
-  background: $secondary !important;
+  background: $primary !important;
   width: 220px;
   transition: all .3s ease-in-out;
   top: 0px;
@@ -72,12 +72,12 @@
     position: relative;
 
     &:hover {
-      background-color: lighten($secondary, 12%);
+      background-color: lighten($primary, 12%);
       text-decoration: none;
     }
 
     &.active {
-      background-color: lighten($secondary, 10%);
+      background-color: lighten($primary, 10%);
 
       &::before {
         content: '';

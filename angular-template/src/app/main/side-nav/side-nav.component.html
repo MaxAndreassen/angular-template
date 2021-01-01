@@ -10,7 +10,7 @@
       />
     </a>
   </div>
-  <h6 class="text-white mb-1 mx-auto mx-md-3 mt-3 text-center text-md-left">Buying</h6>
+  <h6 class="text-white mb-2 mx-auto mx-md-3 mt-3 text-center text-md-left">Buying</h6>
   <span *ngFor="let item of buyerNavItems">
     <a class="nav-item p-md-3 p-0 py-3 pl-md-1"
        routerLinkActive="active"
@@ -31,7 +31,7 @@
     </a>
   </span>
   <hr *ngIf="adminUser" style="border-color: #F7F7F7; margin-top: 0;opacity: 0.3;">
-  <h6 class="text-white mb-1 mx-auto mx-md-3 mt-2 text-center text-md-left">Selling</h6>
+  <h6 class="text-white mb-2 mx-auto mx-md-3 mt-2 text-center text-md-left">Selling</h6>
   <span *ngFor="let item of sellerNavItems">
     <a class="nav-item p-md-3 p-0 py-3 pl-md-1"
        routerLinkActive="active"
@@ -52,7 +52,7 @@
     </a>
   </span>
   <hr *ngIf="adminUser" style="border-color: #F7F7F7; margin-top: 0;opacity: 0.3;">
-  <h6 *ngIf="adminUser" class="text-warning mb-1 mx-auto mx-md-3 mt-2 text-center text-md-left">Admin</h6>
+  <h6 *ngIf="adminUser" class="text-warning mb-2 mx-auto mx-md-3 mt-2 text-center text-md-left">Admin</h6>
   <span *ngFor="let item of adminNavItems">
     <a class="nav-item p-md-3 p-0 py-3 pl-md-1"
        routerLinkActive="active"

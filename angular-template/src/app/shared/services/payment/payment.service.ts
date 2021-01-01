@@ -2,7 +2,7 @@ import { Injectable, Inject } from '@angular/core';
 import { APP_CONFIG, IAppConfig } from '../../models/configuration.models';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { AccountLink, Account, PaymentIntentSecret, AccountBalance } from '../../models/payment.models';
+import { AccountLink, Account, PaymentIntentSecret, AccountBalance, Transfer } from '../../models/payment.models';
 
 @Injectable({
   providedIn: 'root'
@@ -32,5 +32,14 @@ export class PaymentService {
   createPaymentIntent(productUuid: string): Observable<PaymentIntentSecret> {
     const url = `${this.config.apiUrl}payment/purchase/${productUuid}`;
     return this.http.post<PaymentIntentSecret>(url, null);
+  }
+
+  getAccountTransfers(userUuid: string, startingAfter?: string): Observable<Transfer[]> {
+    if (!startingAfter) {
+      startingAfter = '';
+    }
+
+    const url = `${this.config.apiUrl}payment/account/${userUuid}/transfers?startingAfter=${startingAfter}`;
+    return this.http.get<Transfer[]>(url);
   }
 }

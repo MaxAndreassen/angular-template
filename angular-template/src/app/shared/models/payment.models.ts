@@ -17,3 +17,8 @@ export class PaymentIntentSecret {
 export class AccountBalance {
     balance: number;
 }
+
+export class Transfer {
+    amount: number;
+    createdAt: Date;
+}

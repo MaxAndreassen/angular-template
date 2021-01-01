@@ -8,7 +8,7 @@ import { SecurityContext } from '../../../shared/models/auth.models';
 import { finalize } from 'rxjs/operators';
 import { PaymentService } from '../../../shared/services/payment/payment.service';
 import { PaymentIntentSecret } from '../../../shared/models/payment.models';
-import { ProductVersionSummary } from '../../../shared/models/product.models.ts';
+import { ProductVersionSummary, ProductSummary } from '../../../shared/models/product.models.ts';
 import { ProductService } from '../../../shared/services/product/product.service';
 
 @Component({
@@ -22,7 +22,7 @@ export class ProfileViewerComponent implements OnInit {
   data: UserEditor = new UserEditor();
   userUuid: string;
 
-  products: ProductVersionSummary[] = [];
+  products: ProductSummary[] = [];
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: any,

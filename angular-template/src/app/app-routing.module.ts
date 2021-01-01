@@ -8,10 +8,15 @@ import { CheckOutModule } from './check-out/check-out.module';
 import { ProductModule } from './product/product.module';
 import { ProductSearchComponent } from './product/components/product-search/product-search.component';
 import { AdminModule } from './admin/admin.module';
+import { StatisticsModule } from './statistics/statistics.module';
 
 const routes: Routes = [
   {
     path: '', component: ProductSearchComponent
+  },
+  {
+    path: 'stats',
+    loadChildren: () => StatisticsModule
   },
   {
     path: 'security',

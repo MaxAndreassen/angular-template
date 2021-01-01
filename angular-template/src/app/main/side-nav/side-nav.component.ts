@@ -54,8 +54,8 @@ export class SideNavComponent implements OnInit {
       icon: faTag,
     },
     {
-      url: 'transactions',
-      title: 'Financials',
+      url: 'stats/financials',
+      title: 'Sales',
       icon: faReceipt,
     },
     {
