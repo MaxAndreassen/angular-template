@@ -5,6 +5,7 @@ import { ProfileViewerComponent } from './components/profile-viewer/profile-view
 import { ProfileRoutingModule } from './profile-routing.module';
 import { FormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
+import { OpenSellerAccountComponent } from './components/open-seller-account/open-seller-account.component';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { SharedModule } from '../shared/shared.module';
   ],
   declarations: [
     ProfileEditorComponent,
-    ProfileViewerComponent
+    ProfileViewerComponent,
+    OpenSellerAccountComponent
   ]
 })
 export class ProfileModule { }

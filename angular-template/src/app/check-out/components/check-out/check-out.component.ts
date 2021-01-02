@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Inject } from '@angular/core';
+import { Component, OnInit, ViewChild, Inject, Input, Output, EventEmitter } from '@angular/core';
 import { PaymentIntentSecret } from '../../../shared/models/payment.models';
 import { PaymentService } from '../../../shared/services/payment/payment.service';
 import { finalize } from 'rxjs/operators';
@@ -34,7 +34,9 @@ export class CheckOutComponent implements OnInit {
 
   vat: number;
 
-  status: string;
+  @Input() productVersionUuid: string;
+
+  @Output() closeModal: EventEmitter<boolean> = new EventEmitter();
 
   constructor(
     private paymentService: PaymentService,
@@ -47,34 +49,28 @@ export class CheckOutComponent implements OnInit {
   }
 
   ngOnInit(): any {
-    this.route.paramMap.subscribe(params => {
-      this.productLoading = true;
+    this.productLoading = true;
 
-      this.productService
-        .getProductSummary(params.get('productUuid'))
-        .pipe(finalize(() => this.productLoading = false))
-        .subscribe(result => {
-          this.product = result;
-          this.vat = Math.round((this.product.priceInPounds * 0.2) * 100) / 100;
-        }, err => {
-          this.failed = true;
-        });
+    this.productService
+      .getProductSummary(this.productVersionUuid)
+      .pipe(finalize(() => this.productLoading = false))
+      .subscribe(result => {
+        this.product = result;
+        this.vat = Math.round((this.product.priceInPounds * 0.2) * 100) / 100;
 
-      this.loading = true;
-      this.paymentService
-        .createPaymentIntent(params.get('productUuid'))
-        .pipe(finalize(() => this.loading = false))
-        .subscribe(res => {
-          this.paymentIntent = res;
-          this.setupStripe();
-        }, err => {
-          this.failed = true;
-        });
-    });
-  }
-
-  backToProduct(): any {
-    this.router.navigateByUrl(`product/view/${this.product.uuid}`);
+        this.loading = true;
+        this.paymentService
+          .createPaymentIntent(this.product.productUuid)
+          .pipe(finalize(() => this.loading = false))
+          .subscribe(res => {
+            this.paymentIntent = res;
+            this.setupStripe();
+          }, err => {
+            this.failed = true;
+          });
+      }, err => {
+        this.failed = true;
+      });
   }
 
   setupStripe(): any {
@@ -118,13 +114,13 @@ export class CheckOutComponent implements OnInit {
         }
       }
     }).then(result => {
-      this.status = result.paymentIntent.status;
       this.paymentLoading = false;
 
       if (result.error) {
         // Show error to your customer (e.g., insufficient funds)
         console.log(result.error.message);
         this.paymentFailed = true;
+        this.paymentSubmitted = false;
         this.failureReason = result.error.message;
         this.paymentSucceed = false;
       } else {
@@ -132,6 +128,7 @@ export class CheckOutComponent implements OnInit {
         if (result.paymentIntent.status === 'succeeded') {
           this.paymentSucceed = true;
           this.paymentFailed = false;
+          this.closeModal.emit(true);
           console.log(result.paymentIntent.status);
           // Show a success message to your customer
           // There's a risk of the customer closing the window before callback

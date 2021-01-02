@@ -1,31 +1,30 @@
-<div class="mt-5">
-</div>
-
-<div class="card mobile-login mb-4">
+<div class="card">
   <h5 class="card-header text-center">Purchase</h5>
-
-  <table class="table text-center">
-    <thead>
-      <tr>
-        <th scope="col">Item</th>
-        <th scope="col">Price</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>{{product?.name}}</td>
-        <td>£{{product?.priceInPounds}}</td>
-      </tr>
-      <tr>
-        <td>VAT</td>
-        <td>£{{vat}}</td>
-      </tr>
-      <tr>
-        <th scope="row">Total</th>
-        <td>£{{product?.priceInPounds + vat}}</td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="mx-4 mt-4">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col-6">Item</th>
+          <th scope="col-6"
+              class="text-right">Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{product?.name}}</td>
+          <td class="text-right">£{{product?.priceInPounds}}</td>
+        </tr>
+        <tr>
+          <td>VAT</td>
+          <td class="text-right">£{{vat}}</td>
+        </tr>
+        <tr>
+          <th scope="row">Total</th>
+          <td class="text-right">£{{product?.priceInPounds + vat}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
   <form id="payment-form"
         *ngIf="!failed"
         class="p-3">
@@ -40,12 +39,16 @@
     <button *ngIf="!loading && !productLoading && !paymentSucceed"
             (click)="submit($event)"
             [disabled]="paymentSubmitted"
-            class="w-100 btn btn-primary mt-3">Pay</button>
+            class="w-100 btn btn-primary mt-3">Complete Purchase</button>
 
     <div *ngIf="paymentSucceed"
          class="alert alert-success mt-3 mb-0"
          role="alert">
       Payment Successful
+    </div>
+    <div *ngIf="paymentSucceed"
+         role="alert" style="font-size: 10px; margin-top: 1rem;">
+         If, when you try to download your product, it is not yet available, please wait for a couple of minutes before refreshing the page and trying again. Sometimes it can take us a couple of minutes to process your new purchase.
     </div>
     <div *ngIf="paymentFailed"
          class="alert alert-danger mt-3 mb-0"
@@ -58,11 +61,6 @@
        class="alert alert-danger mx-2"
        role="alert">
     There appears to be an issue with the product at this time. Unfortunately this means you are unable to make your purchase.
-  </div>
-  <div class="mt-2 mx-2 mb-2">
-    <button *ngIf="(failed || paymentSucceed) && !loading && !productLoading"
-            (click)="backToProduct()"
-            class="w-100 btn btn-primary">Return To Product</button>
   </div>
 </div>
 <app-loading-spinner *ngIf="loading || productLoading || paymentLoading"></app-loading-spinner>

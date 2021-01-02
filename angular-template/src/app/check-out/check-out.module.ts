@@ -14,6 +14,9 @@ import { CheckOutComponent } from './components/check-out/check-out.component';
   ],
   declarations: [
     CheckOutComponent
+  ],
+  exports: [
+    CheckOutComponent
   ]
 })
 export class CheckOutModule { }

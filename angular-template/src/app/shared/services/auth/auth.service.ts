@@ -35,6 +35,7 @@ export class AuthService {
   private readonly REMEMBER_KEY: string = 'auth_remember';
 
   private readonly SIDENAV: string = 'side_nav_open';
+  private readonly CHARGES_ENABLED: string = 'charges_enabled';
 
   private user: any;
 
@@ -44,6 +45,14 @@ export class AuthService {
 
   public getSideNavState(): boolean {
     return localStorage.getItem(this.SIDENAV) === '1' ? true : false;
+  }
+
+  public setChargesEnabled(open: boolean): any {
+    localStorage.setItem(this.CHARGES_ENABLED, open ? '1' : '0');
+  }
+
+  public getChargesEnabled(): boolean {
+    return localStorage.getItem(this.CHARGES_ENABLED) === '1' ? true : false;
   }
 
   constructor(
@@ -81,7 +90,6 @@ export class AuthService {
         this.setRememberedUser(request);
 
         this.authStateChange$.next(this.securityContext);
-
         return of(res);
       }));
   }
@@ -142,6 +150,7 @@ export class AuthService {
     if (!removeDataOnly) {
       this.authStateChange$.next(this.securityContext);
     }
+    location.reload();
   }
 
   getAuthHeader(): string {

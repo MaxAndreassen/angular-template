@@ -10,6 +10,7 @@ import { ProductViewerComponent } from './components/product-viewer/product-view
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ProductListingComponent } from './components/product-listing/product-listing.component';
 import { OwnedProductsComponent } from './components/owned-products/owned-products.component';
+import { CheckOutModule } from '../check-out/check-out.module';
 
 @NgModule({
   imports: [
@@ -17,7 +18,8 @@ import { OwnedProductsComponent } from './components/owned-products/owned-produc
     ProductRoutingModule,
     FormsModule,
     SharedModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    CheckOutModule
   ],
   declarations: [
     CreatorProductDashboardComponent,

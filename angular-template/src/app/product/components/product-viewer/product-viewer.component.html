@@ -6,7 +6,7 @@
                   *ngIf="externalFacing"
                   route="product/search"></app-search-box>
   <hr class="my-4">
-  <h1 class="mb-1 text-center d-block d-lg-none">{{product?.name}}</h1>
+  <h1 class="mb-1 text-center d-block d-lg-none">{{productVersion?.name}}</h1>
   <div class="text-center d-block d-lg-none">
     <a [href]="'profile/' + user?.uuid">
       <p class="mb-3"> {{user?.username ? user?.username : 'Anonymous'}} </p>
@@ -20,11 +20,11 @@
       <span class="d-none d-lg-block">
         <h4 class="mb-2 mt-4">Description</h4>
         <p class="mx-1 mb-3"
-           style="white-space: pre-wrap;">{{product?.description}}</p>
+           style="white-space: pre-wrap;">{{productVersion?.description}}</p>
       </span>
     </div>
     <div class="col-12 col-lg-5">
-      <h3 class="mb-1 d-none d-lg-block">{{product?.name}}</h3>
+      <h3 class="mb-1 d-none d-lg-block">{{productVersion?.name}}</h3>
 
       <div class="d-none d-lg-block">
         <a [href]="'profile/' + user?.uuid">
@@ -55,14 +55,19 @@
           </div>
         </div>
       </div>
-      <h3 *ngIf="!ownsProduct" class="mb-1 text-center text-lg-left"
-          style="font-weight: bold;">£{{product?.priceInPounds}}</h3>
-      <p *ngIf="!ownsProduct" class="mt-0 text-center text-lg-left"
+      <h3 *ngIf="!ownsProduct"
+          class="mb-1 text-center text-lg-left"
+          style="font-weight: bold;">£{{productVersion?.priceInPounds}}</h3>
+      <p *ngIf="!ownsProduct"
+         class="mt-0 text-center text-lg-left"
          style="font-size: 10px; color: gray;">Taxes/VAT calculated at checkout</p>
       <button *ngIf="!ownsProduct && !ownedLoading"
               type="button"
               class="btn btn-primary mx-auto w-100 mb-2"
               [disabled]="loading"
+              type="button"
+              data-toggle="modal"
+              data-target="#exampleModal"
               (click)="purchase()">
         <b>Buy Now</b>
       </button>
@@ -75,14 +80,34 @@
       </button>
       <button *ngIf="ownsProduct && !ownedLoading"
               type="button"
-              class="btn btn-secondary mx-auto w-100 mb-2">
+              class="btn btn-secondary mx-auto w-100 mb-2"
+              (click)="download()">
         <b>Download</b>
       </button>
-      <p *ngIf="!ownsProduct" class="text-center mb-0"> Payment Secured By
+
+      <div class="progress mt-2"
+           *ngIf="downloading">
+        <div class="progress-bar"
+             role="progressbar"
+             [style.width]="downloadPercentage +'%'"
+             aria-valuenow="99"
+             aria-valuemin="0"
+             aria-valuemax="100">{{downloadPercentage}}%</div>
+      </div>
+      <div class="alert alert-danger mt-0 mb-3 p-2"
+           style="border-radius: 0rem 0rem 0.25rem 0.25rem; margin: -1px;"
+           *ngIf="downloadFailed">
+        <p class="text-center mb-0">Download Failed</p>
+      </div>
+      <p class="text-center" style="font-size: 11px; margin-bottom: 1rem !important;" *ngIf="possibleTooEarlyDownload && !downloading">If you have only just purchased this asset then we may have not yet finished completing your purchase. Wait for 30 seconds and then try clicking download again.</p>
+
+      <p *ngIf="!ownsProduct"
+         class="text-center mb-0"> Payment Secured By
         <a href="https://stripe.com/customers"
            target="_blank">Stripe</a>
       </p>
-      <p *ngIf="!ownsProduct" class="mt-0 text-center mb-2 mb-lg-0"
+      <p *ngIf="!ownsProduct"
+         class="mt-0 text-center mb-2 mb-lg-0"
          style="font-size: 8px">Stripe is used by 1000s of platforms including Zoom, Slack and GitHub</p>
       <hr class="mt-1">
       <h4 class="mb-2 ml-lg-2">Details</h4>
@@ -114,7 +139,7 @@
         <hr class="mt-1">
         <h4 class="mb-2 mt-3">Description</h4>
         <p class="mx-1 mb-3"
-           style="white-space: pre-wrap;">{{product?.description}}</p>
+           style="white-space: pre-wrap;">{{productVersion?.description}}</p>
       </div>
       <hr>
       <h4 class="mb-2 mt-3 ml-lg-2">Asset Contents</h4>
@@ -137,6 +162,29 @@
                     height="135"
                     buttonText="View"></app-card>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade"
+     id="exampleModal"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog"
+       role="document">
+    <div class="modal-content">
+      <app-check-out *ngIf="modalOpen"
+                     [productVersionUuid]="productVersionUuid"
+                     (closeModal)="setCloseModal($event)"></app-check-out>
+      <div class="mt-2 mx-2 mb-2">
+        <button *ngIf="closeModal"
+                data-toggle="modal"
+                data-target="#exampleModal"
+                class="w-100 btn btn-primary">Return To Product</button>
       </div>
     </div>
   </div>

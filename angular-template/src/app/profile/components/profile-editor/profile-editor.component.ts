@@ -7,7 +7,6 @@ import { UserService } from '../../services/user.service';
 import { finalize } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { PaymentService } from '../../../shared/services/payment/payment.service';
-import { DOCUMENT } from '@angular/common';
 import { Upload, FileSummary } from '../../../shared/models/file.models';
 import { IValidationResult, ValidationResult } from '../../../shared/models/validation,models';
 
@@ -19,8 +18,6 @@ import { IValidationResult, ValidationResult } from '../../../shared/models/vali
 export class ProfileEditorComponent implements OnInit {
   loading = false;
   initialPageLoading = false;
-  paymentLinkLoading = false;
-  paymentCheckLoading = false;
   validationResult: IValidationResult = new ValidationResult();
   successfullyUpdated = false;
 
@@ -30,8 +27,6 @@ export class ProfileEditorComponent implements OnInit {
   firstName: string;
   lastName: string;
 
-  paymentProviderAccountCreated = false;
-
   securityContext: SecurityContext;
 
   existingProfileImage: FileSummary[] = [];
@@ -40,9 +35,7 @@ export class ProfileEditorComponent implements OnInit {
     private authService: AuthService,
     @Inject(PLATFORM_ID) private platformId: any,
     private userService: UserService,
-    private router: Router,
-    private paymentService: PaymentService,
-    @Inject(DOCUMENT) private document: Document
+    private router: Router
   ) {
   }
 
@@ -62,14 +55,6 @@ export class ProfileEditorComponent implements OnInit {
     });
 
     this.initialPageLoading = true;
-    this.paymentCheckLoading = true;
-
-    this.paymentService
-      .getAccount(this.securityContext.user.uuid)
-      .pipe(finalize(() => this.paymentCheckLoading = false))
-      .subscribe(result => {
-        this.paymentProviderAccountCreated = result.payoutsEnabled;
-      });
 
     this.userService
       .getUser(this.securityContext.user.uuid)
@@ -102,17 +87,6 @@ export class ProfileEditorComponent implements OnInit {
         if (err.status && err.status === 500) {
           this.validationResult = new ValidationResult('An Unknown Error Occured.');
         }
-      });
-  }
-
-  paymentOnboarding(): any {
-    this.paymentLinkLoading = true;
-
-    this.paymentService
-      .createAccountLink()
-      .pipe(finalize(() => this.paymentLinkLoading = false))
-      .subscribe(result => {
-        this.document.location.href = result.url;
       });
   }
 

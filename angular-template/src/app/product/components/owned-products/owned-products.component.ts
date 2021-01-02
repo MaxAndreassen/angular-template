@@ -45,13 +45,15 @@ export class OwnedProductsComponent implements OnInit {
       }
     });
 
-    this.queryParams.ownerUserUuid = this.securityContext.user.uuid;
-    this.productService
-      .listApprovedProducts(this.queryParams)
-      .pipe(finalize(() => this.loading = false))
-      .subscribe(res => {
-        this.products = res;
-      });
+    if (this.securityContext.user) {
+      this.queryParams.ownerUserUuid = this.securityContext.user.uuid;
+      this.productService
+        .listApprovedProducts(this.queryParams)
+        .pipe(finalize(() => this.loading = false))
+        .subscribe(res => {
+          this.products = res;
+        });
+    }
   }
 
   download(productVersion: ProductSummary): any {

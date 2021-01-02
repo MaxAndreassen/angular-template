@@ -34,6 +34,7 @@ import { SecurityContext } from '../../shared/models/auth.models';
 import { PaymentService } from '../../shared/services/payment/payment.service';
 import { finalize } from 'rxjs/operators';
 import { UserService } from '../../profile/services/user.service';
+import { Account } from '../../shared/models/payment.models';
 
 @Component({
   selector: 'app-side-nav',
@@ -44,8 +45,10 @@ export class SideNavComponent implements OnInit {
   sidebarEnabled = true;
   toggleIconOn = faAngleRight;
   toggleIconOff = faAngleLeft;
+  sellIcon = faDollarSign;
 
   adminUser = false;
+  paymentCheckLoading = false;
 
   sellerNavItems: DashboardSideNavItem[] = [
     {
@@ -58,6 +61,15 @@ export class SideNavComponent implements OnInit {
       title: 'Sales',
       icon: faReceipt,
     },
+    {
+      url: 'stats/financials/payout',
+      title: 'Payout',
+      icon: faDollarSign
+      ,
+    }
+  ];
+
+  otherNavItems: DashboardSideNavItem[] = [
     {
       url: 'profile/edit',
       title: 'Profile',
@@ -83,6 +95,7 @@ export class SideNavComponent implements OnInit {
   ];
 
   securityContext: SecurityContext;
+  account: Account = new Account();
 
   constructor(
     private authService: AuthService,
@@ -103,18 +116,40 @@ export class SideNavComponent implements OnInit {
     if (isPlatformServer(this.platformId)) {
       return;
     }
+
+    this.account.chargesEnabled = this.authService.getChargesEnabled();
+    this.securityContext = this.authService.securityContext;
     this.authService.authStateChange$.subscribe((context: SecurityContext) => {
+      if (!!context && !!context.user) {
+        if (this.securityContext == null ||
+          context.authenticated !== this.securityContext.authenticated || this.securityContext.user.uuid !== context.user.uuid) {
+          this.paymentCheckLoading = true;
+
+          this.paymentService
+            .getAccount(context.user.uuid)
+            .pipe(finalize(() => this.paymentCheckLoading = false))
+            .subscribe(result => {
+              this.account = result;
+              this.authService.setChargesEnabled(result.chargesEnabled);
+            });
+
+          this.userService.getUser(context.user.uuid)
+            .subscribe(res => {
+              this.adminUser = res.isAdmin;
+            });
+        } else {
+          if (!context || !context.user) {
+            this.authService.setChargesEnabled(false);
+            this.account = new Account();
+          }
+        }
+      }
+
+
       this.securityContext = context;
     });
 
     this.authService.securityCheck();
-
-    if (!!this.securityContext.user) {
-      this.userService.getUser(this.securityContext.user.uuid)
-        .subscribe(res => {
-          this.adminUser = res.isAdmin;
-        });
-    }
   }
 
   toggleSidebar(): any {

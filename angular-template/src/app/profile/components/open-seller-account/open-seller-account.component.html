@@ -1,0 +1,17 @@
+<div class="jumbotron m-0 m-xl-4 text-center bg-white">
+  <h1 class="display-4">Become a Seller</h1>
+  <p class="lead">At GameAssets.io we have partnered with
+    <a href="https://stripe.com/customers"
+       target="_blank">Stripe</a> to make selling assets as straight forward as possible for both you and ourselves. </p>
+  <hr class="my-4">
+  <app-loading-spinner *ngIf="paymentCheckLoading"></app-loading-spinner>
+  <p> By clicking the button below you will be redirected to Stripe's onboarding flow.</p>
+  <form class="m-3">
+    <button type="button"
+            class="mx-auto d-block btn btn-primary"
+            (click)="paymentOnboarding()">Stripe Onboarding</button>
+  </form>
+  <p>Pay Outs = {{account?.payoutsEnabled}}</p>
+  <p>Details = {{account?.detailsSubmitted}}</p>
+  <p>Charges = {{account?.chargesEnabled}}</p>
+</div>

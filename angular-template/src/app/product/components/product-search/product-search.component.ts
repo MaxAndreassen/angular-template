@@ -40,6 +40,7 @@ export class ProductSearchComponent implements OnInit {
 
       this.queryParams.searchTerm = params.get('term');
       this.currentPage = +params.get('page');
+
       this.queryParams.page = this.currentPage;
 
       this.productService

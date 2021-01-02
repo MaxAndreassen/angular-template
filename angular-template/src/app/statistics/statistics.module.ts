@@ -5,6 +5,7 @@ import { StatisticsRoutingModule } from './statistics-routing.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { SharedModule } from '../shared/shared.module';
 import { FormsModule } from '@angular/forms';
+import { PayoutComponent } from './components/payout/payout.component';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { FormsModule } from '@angular/forms';
     FontAwesomeModule
   ],
   declarations: [
-    TransactionHistoryComponent
+    TransactionHistoryComponent,
+    PayoutComponent
   ]
 })
 export class StatisticsModule { }

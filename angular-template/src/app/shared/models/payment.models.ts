@@ -21,4 +21,11 @@ export class AccountBalance {
 export class Transfer {
     amount: number;
     createdAt: Date;
+    id: string;
+}
+
+export class PayOut {
+    amount: number;
+    createdAt: Date;
+    id: string;
 }
