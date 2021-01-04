@@ -1,8 +1,6 @@
 <div class="jumbotron m-0 m-xl-4 text-center bg-white">
   <h1 class="display-4 mb-4">Sales History</h1>
   <app-loading-spinner *ngIf="loading"></app-loading-spinner>
-
-  <h6 class="text-center text-md-right mb-3 mb-md-1">CURRENT BALANCE: £67,934</h6>
   <div style="overflow-x:auto;">
     <table class="table table-striped">
       <thead>
@@ -29,6 +27,6 @@
   </div>
 
   <app-loading-spinner *ngIf="moreLoading"></app-loading-spinner>
-  <button *ngIf="!loading && transfers?.length > 0 && moreToLoad" class="btn btn-primary" [disabled]="moreLoading" (click)="loadMore()">Load More</button>
+  <button *ngIf="!loading && transfers?.length > 0 && moreToLoad" class="btn btn-primary mt-2" [disabled]="moreLoading" (click)="loadMore()">Load More</button>
 
 </div>

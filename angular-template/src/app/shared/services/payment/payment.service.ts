@@ -1,8 +1,8 @@
 import { Injectable, Inject } from '@angular/core';
 import { APP_CONFIG, IAppConfig } from '../../models/configuration.models';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { AccountLink, Account, PaymentIntentSecret, AccountBalance, Transfer } from '../../models/payment.models';
+import { Observable, ObservedValueOf } from 'rxjs';
+import { AccountLink, Account, PaymentIntentSecret, AccountBalance, Transfer, PayOut } from '../../models/payment.models';
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +14,8 @@ export class PaymentService {
     private http: HttpClient
   ) { }
 
-  createAccountLink(): Observable<AccountLink> {
-    const url = `${this.config.apiUrl}payment/account-link`;
+  createAccountLink(returnLocation: string): Observable<AccountLink> {
+    const url = `${this.config.apiUrl}payment/account-link?returnLocation=${returnLocation}`;
     return this.http.post<AccountLink>(url, null);
   }
 
@@ -34,6 +34,11 @@ export class PaymentService {
     return this.http.post<PaymentIntentSecret>(url, null);
   }
 
+  requestPayout(amount: number): Observable<boolean> {
+    const url = `${this.config.apiUrl}account/request-payout?amount=${amount}`;
+    return this.http.get<boolean>(url);
+  }
+
   getAccountTransfers(userUuid: string, startingAfter?: string): Observable<Transfer[]> {
     if (!startingAfter) {
       startingAfter = '';
@@ -41,5 +46,14 @@ export class PaymentService {
 
     const url = `${this.config.apiUrl}payment/account/${userUuid}/transfers?startingAfter=${startingAfter}`;
     return this.http.get<Transfer[]>(url);
+  }
+
+  getAccountPayouts(userUuid: string, startingAfter?: string): Observable<PayOut[]> {
+    if (!startingAfter) {
+      startingAfter = '';
+    }
+
+    const url = `${this.config.apiUrl}payment/account/${userUuid}/payouts?startingAfter=${startingAfter}`;
+    return this.http.get<PayOut[]>(url);
   }
 }

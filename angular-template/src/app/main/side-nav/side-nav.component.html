@@ -34,7 +34,7 @@
     <span>
       <hr style="border-color: #F7F7F7; margin-top: 0;opacity: 0.3;">
       <h6 class="text-white mb-2 mx-auto mx-md-3 mt-2 text-center text-md-left">Selling</h6>
-      <app-loading-spinner *ngIf="paymentCheckLoading"></app-loading-spinner>
+      <app-loading-spinner *ngIf="paymentCheckLoading" invertColours="true"></app-loading-spinner>
       <span *ngIf="!paymentCheckLoading">
         <a class="nav-item p-md-3 p-0 py-3 pl-md-1"
            *ngIf="!account?.chargesEnabled"

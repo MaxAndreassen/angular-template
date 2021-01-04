@@ -1,17 +1,27 @@
 <div class="jumbotron m-0 m-xl-4 text-center bg-white">
-  <h1 class="display-4">Become a Seller</h1>
-  <p class="lead">At GameAssets.io we have partnered with
-    <a href="https://stripe.com/customers"
-       target="_blank">Stripe</a> to make selling assets as straight forward as possible for both you and ourselves. </p>
-  <hr class="my-4">
   <app-loading-spinner *ngIf="paymentCheckLoading"></app-loading-spinner>
-  <p> By clicking the button below you will be redirected to Stripe's onboarding flow.</p>
-  <form class="m-3">
-    <button type="button"
-            class="mx-auto d-block btn btn-primary"
-            (click)="paymentOnboarding()">Stripe Onboarding</button>
-  </form>
-  <p>Pay Outs = {{account?.payoutsEnabled}}</p>
-  <p>Details = {{account?.detailsSubmitted}}</p>
-  <p>Charges = {{account?.chargesEnabled}}</p>
+  <span *ngIf="!paymentCheckLoading && !account?.chargesEnabled">
+    <h1 class="display-4">Become a Seller</h1>
+    <p class="lead">At GameAssets.io we have partnered with
+      <a href="https://stripe.com/customers"
+         target="_blank">Stripe</a> to make selling assets as straight forward as possible for both you and ourselves. </p>
+    <hr class="my-4">
+    <p> By clicking the button below you will be redirected to Stripe's onboarding flow.</p>
+    <p> You can exit the flow at any time and then return to this page when you would like to continue.</p>
+    <form class="m-3">
+      <button type="button"
+              class="mx-auto d-block btn btn-primary"
+              (click)="paymentOnboarding()">Stripe Onboarding</button>
+    </form>
+  </span>
+  <span *ngIf="!paymentCheckLoading && account?.chargesEnabled">
+      <h1 class="display-4">Ready To Sell</h1>
+      <p class="lead">Your account setup is complete and you are now ready to start listing products.</p>
+      <hr class="my-4">
+      <form class="m-3">
+          <button type="button"
+                  class="mx-auto d-block btn btn-primary"
+                  (click)="listing()">Start Listing</button>
+        </form>
+    </span>
 </div>

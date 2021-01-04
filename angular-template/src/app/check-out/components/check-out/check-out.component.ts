@@ -27,7 +27,7 @@ export class CheckOutComponent implements OnInit {
 
   paymentIntent: PaymentIntentSecret;
 
-  product: ProductVersionSummary = new ProductVersionSummary();
+  productVersion: ProductVersionSummary = new ProductVersionSummary();
 
   stripe: any;
   card: any;
@@ -55,12 +55,12 @@ export class CheckOutComponent implements OnInit {
       .getProductSummary(this.productVersionUuid)
       .pipe(finalize(() => this.productLoading = false))
       .subscribe(result => {
-        this.product = result;
-        this.vat = Math.round((this.product.priceInPounds * 0.2) * 100) / 100;
+        this.productVersion = result;
+        this.vat = Math.round((this.productVersion.priceInPounds * 0.2) * 100) / 100;
 
         this.loading = true;
         this.paymentService
-          .createPaymentIntent(this.product.productUuid)
+          .createPaymentIntent(this.productVersion.uuid)
           .pipe(finalize(() => this.loading = false))
           .subscribe(res => {
             this.paymentIntent = res;

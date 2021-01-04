@@ -1,0 +1,8 @@
+@import '_variables';
+@import '_bootstrap.mixins';
+
+.wide-button-small {
+    @include media-breakpoint-down(sm) {
+        width: 100%;
+      }
+}

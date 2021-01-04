@@ -16,10 +16,6 @@ export class TransactionHistoryComponent implements OnInit {
 
   securityContext: SecurityContext;
 
-  previousPageTransfer: string;
-  startPageTransfer: string;
-  currentPage: number;
-
   loading = false;
   moreLoading = false;
   moreToLoad = true;

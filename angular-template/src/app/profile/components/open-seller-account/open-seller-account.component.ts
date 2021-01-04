@@ -60,10 +60,14 @@ export class OpenSellerAccountComponent implements OnInit {
     this.paymentLinkLoading = true;
 
     this.paymentService
-      .createAccountLink()
+      .createAccountLink('seller')
       .pipe(finalize(() => this.paymentLinkLoading = false))
       .subscribe(result => {
         this.document.location.href = result.url;
       });
+  }
+
+  listing(): any {
+    this.router.navigateByUrl('product/me');
   }
 }
