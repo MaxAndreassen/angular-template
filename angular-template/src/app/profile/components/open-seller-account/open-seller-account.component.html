@@ -1,27 +1,51 @@
 <div class="jumbotron m-0 m-xl-4 text-center bg-white">
-  <app-loading-spinner *ngIf="paymentCheckLoading"></app-loading-spinner>
-  <span *ngIf="!paymentCheckLoading && !account?.chargesEnabled">
+  <app-loading-spinner *ngIf="paymentCheckLoading || userLoading"></app-loading-spinner>
+  <span *ngIf="!paymentCheckLoading && !userLoading && !account?.chargesEnabled && !emailVerified">
+    <h1 class="display-4">Become a Seller</h1>
+    <p class="lead">There's something you need to do before you can begin onboarding as a seller.</p>
+    <hr class="my-4">
+
+    <div class="alert alert-warning mt-2 mb-0 w-100">
+      <h3 class="text-center"> Verify Account </h3>
+      <p class="text-center"
+         *ngIf="!emailSending && emailSent"> Verification Email Sent. </p>
+      <p *ngIf="!emailSending && !emailSent"
+         class="text-center">You still need to verify your account using the email you will have recieved when you initially signed up.</p>
+      <p *ngIf="!emailSending && !emailSent"
+         class="text-center">If you can't find this email then click the button below and we'll resend it.</p>
+      <p class="text-center">Make sure to double check your spam folder if you still can't find it.</p>
+      <button *ngIf="!emailSending && !emailSent"
+              type="button"
+              class="mx-auto d-block btn btn-primary"
+              (click)="sendVerifyEmail()">Resend Verification Email</button>
+
+      <app-loading-spinner *ngIf="emailSending"></app-loading-spinner>
+    </div>
+  </span>
+  <span *ngIf="!paymentCheckLoading && !userLoading && !account?.chargesEnabled && emailVerified">
     <h1 class="display-4">Become a Seller</h1>
     <p class="lead">At GameAssets.io we have partnered with
       <a href="https://stripe.com/customers"
          target="_blank">Stripe</a> to make selling assets as straight forward as possible for both you and ourselves. </p>
     <hr class="my-4">
-    <p> By clicking the button below you will be redirected to Stripe's onboarding flow.</p>
-    <p> You can exit the flow at any time and then return to this page when you would like to continue.</p>
+    <p> By clicking the button below you will be redirected to Stripe's onboarding flow. It should only take a few minutes.</p>
+    <p> Once you complete the onboarding flow you will be ready to start selling your assets.</p>
     <form class="m-3">
       <button type="button"
               class="mx-auto d-block btn btn-primary"
-              (click)="paymentOnboarding()">Stripe Onboarding</button>
+              (click)="paymentOnboarding()"
+              [disabled]="paymentLinkLoading">Stripe Onboarding</button>
+      <app-loading-spinner *ngIf="paymentLinkLoading"></app-loading-spinner>
     </form>
   </span>
-  <span *ngIf="!paymentCheckLoading && account?.chargesEnabled">
-      <h1 class="display-4">Ready To Sell</h1>
-      <p class="lead">Your account setup is complete and you are now ready to start listing products.</p>
-      <hr class="my-4">
-      <form class="m-3">
-          <button type="button"
-                  class="mx-auto d-block btn btn-primary"
-                  (click)="listing()">Start Listing</button>
-        </form>
-    </span>
+  <span *ngIf="!paymentCheckLoading && !userLoading && account?.chargesEnabled && emailVerified">
+    <h1 class="display-4">Ready To Sell</h1>
+    <p class="lead">Your account setup is complete and you are now ready to start listing products.</p>
+    <hr class="my-4">
+    <form class="m-3">
+      <button type="button"
+              class="mx-auto d-block btn btn-primary"
+              (click)="listing()">Start Listing</button>
+    </form>
+  </span>
 </div>

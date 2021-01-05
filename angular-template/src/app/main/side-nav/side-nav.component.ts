@@ -27,7 +27,8 @@ import {
   faMoneyBill,
   faCreditCard,
   faTags,
-  faReceipt
+  faReceipt,
+  faPoundSign
 } from '@fortawesome/free-solid-svg-icons';
 import { isPlatformServer } from '@angular/common';
 import { SecurityContext } from '../../shared/models/auth.models';
@@ -45,7 +46,7 @@ export class SideNavComponent implements OnInit {
   sidebarEnabled = true;
   toggleIconOn = faAngleRight;
   toggleIconOff = faAngleLeft;
-  sellIcon = faDollarSign;
+  sellIcon = faPoundSign;
 
   adminUser = false;
   paymentCheckLoading = false;
@@ -64,8 +65,7 @@ export class SideNavComponent implements OnInit {
     {
       url: 'stats/financials/payout',
       title: 'Payout',
-      icon: faDollarSign
-      ,
+      icon: faPoundSign,
     }
   ];
 
@@ -80,7 +80,7 @@ export class SideNavComponent implements OnInit {
   buyerNavItems: DashboardSideNavItem[] = [
     {
       url: 'product/owned',
-      title: 'Owned',
+      title: 'Purchased',
       icon: faBox,
     }
   ];
@@ -119,11 +119,18 @@ export class SideNavComponent implements OnInit {
 
     this.account.chargesEnabled = this.authService.getChargesEnabled();
     this.securityContext = this.authService.securityContext;
+
     this.authService.authStateChange$.subscribe((context: SecurityContext) => {
       if (!!context && !!context.user) {
         if (this.securityContext == null ||
           context.authenticated !== this.securityContext.authenticated || this.securityContext.user.uuid !== context.user.uuid) {
           this.paymentCheckLoading = true;
+
+          this.userService.getUser(context.user.uuid)
+            .subscribe(res => {
+              this.adminUser = res.isAdmin;
+              this.authService.setPerformAdminCheck(res.isAdmin);
+            });
 
           this.paymentService
             .getAccount(context.user.uuid)
@@ -131,11 +138,6 @@ export class SideNavComponent implements OnInit {
             .subscribe(result => {
               this.account = result;
               this.authService.setChargesEnabled(result.chargesEnabled);
-            });
-
-          this.userService.getUser(context.user.uuid)
-            .subscribe(res => {
-              this.adminUser = res.isAdmin;
             });
         } else {
           if (!context || !context.user) {
@@ -145,9 +147,16 @@ export class SideNavComponent implements OnInit {
         }
       }
 
-
       this.securityContext = context;
     });
+
+    if (this.securityContext.authenticated && this.authService.getPerformAdminCheck()) {
+      this.userService.getUser(this.securityContext.user.uuid)
+        .subscribe(res => {
+          this.adminUser = res.isAdmin;
+          this.authService.setPerformAdminCheck(res.isAdmin);
+        });
+    }
 
     this.authService.securityCheck();
   }

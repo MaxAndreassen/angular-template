@@ -36,10 +36,13 @@
         <button class="btn btn-primary d-block wide-button-small"
                 *ngIf="!payoutRequestLoading && !balanceLoading"
                 [disabled]="balance < 2500 || payoutRequestSubmitted">Request Payout</button>
-            <p *ngIf="balance < 2500 && !balanceLoading" class="text-left mb-0 mt-1" style="font-size: 10px"> £25 Minimum Available Balance Required To Request Payout</p>
+        <p *ngIf="balance < 2500 && !balanceLoading"
+           class="text-left mb-0 mt-1"
+           style="font-size: 10px"> £25 Minimum Available Balance Required To Request Payout</p>
       </div>
       <div class="col-6 d-none d-md-block mt-auto">
-        <div style="max-width: 350px" class="ml-auto">
+        <div style="max-width: 350px"
+             class="ml-auto">
           <div *ngIf="balance != null"
                class="row">
             <div class="col-7">
@@ -115,7 +118,9 @@
     <form class="m-3">
       <button type="button"
               class="mx-auto d-block btn btn-primary mt-5"
-              (click)="paymentOnboarding()">Stripe Payout Verificiation</button>
+              (click)="paymentOnboarding()"
+              [disabled]="paymentLinkLoading">Stripe Payout Verificiation</button>
+      <app-loading-spinner *ngIf="paymentLinkLoading"></app-loading-spinner>
     </form>
   </span>
   <app-loading-spinner *ngIf="paymentCheckLoading"></app-loading-spinner>

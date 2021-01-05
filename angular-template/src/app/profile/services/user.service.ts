@@ -53,4 +53,14 @@ export class UserService {
     const url = `${this.config.apiUrl}users/${uuid}`;
     return this.http.get<UserEditor>(url);
   }
+
+  verifyAccount(verificationUuid: string): Observable<boolean> {
+    const url = `${this.config.apiUrl}users/verify/${verificationUuid}`;
+    return this.http.get<boolean>(url);
+  }
+
+  resendVerifyEmail(): Observable<boolean> {
+    const url = `${this.config.apiUrl}users/verify/resend`;
+    return this.http.get<boolean>(url);
+  }
 }

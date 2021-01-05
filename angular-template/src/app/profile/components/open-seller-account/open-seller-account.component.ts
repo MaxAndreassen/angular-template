@@ -6,6 +6,7 @@ import { Account } from '../../../shared/models/payment.models';
 import { AuthService } from '../../../shared/services/auth/auth.service';
 import { SecurityContext } from '../../../shared/models/auth.models';
 import { Router } from '@angular/router';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-open-seller-account',
@@ -16,6 +17,11 @@ export class OpenSellerAccountComponent implements OnInit {
 
   paymentLinkLoading = false;
   paymentCheckLoading = false;
+  userLoading = false;
+  emailVerified = false;
+
+  emailSending = false;
+  emailSent = false;
 
   account: Account = new Account();
   securityContext: SecurityContext;
@@ -23,6 +29,7 @@ export class OpenSellerAccountComponent implements OnInit {
   constructor(
     private paymentService: PaymentService,
     private authService: AuthService,
+    private userService: UserService,
     @Inject(DOCUMENT) private document: Document,
     @Inject(PLATFORM_ID) private platformId: any,
     private router: Router
@@ -53,6 +60,15 @@ export class OpenSellerAccountComponent implements OnInit {
         .subscribe(result => {
           this.account = result;
         });
+
+      this.userLoading = true;
+
+      this.userService
+        .getUser(this.securityContext.user.uuid)
+        .pipe(finalize(() => this.userLoading = false))
+        .subscribe(p => {
+          this.emailVerified = p.isEmailVerified;
+        });
     }
   }
 
@@ -69,5 +85,16 @@ export class OpenSellerAccountComponent implements OnInit {
 
   listing(): any {
     this.router.navigateByUrl('product/me');
+  }
+
+  sendVerifyEmail(): any {
+    this.emailSending = true;
+
+    this.userService
+      .resendVerifyEmail()
+      .pipe(finalize(() => this.emailSending = false))
+      .subscribe(p => {
+        this.emailSent = true;
+      });
   }
 }

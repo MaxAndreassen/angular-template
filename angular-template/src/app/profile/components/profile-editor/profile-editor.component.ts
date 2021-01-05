@@ -21,6 +21,9 @@ export class ProfileEditorComponent implements OnInit {
   validationResult: IValidationResult = new ValidationResult();
   successfullyUpdated = false;
 
+  emailSending = false;
+  emailSent = false;
+
   failed = false;
   editor: UserEditor = new UserEditor();
 
@@ -106,5 +109,16 @@ export class ProfileEditorComponent implements OnInit {
     }
 
     this.editor.existingProfileUuid = existingFiles.map(p => p.uuid).find(p => true);
+  }
+
+  sendVerifyEmail(): any {
+    this.emailSending = true;
+
+    this.userService
+      .resendVerifyEmail()
+      .pipe(finalize(() => this.emailSending = false))
+      .subscribe(p => {
+        this.emailSent = true;
+      });
   }
 }

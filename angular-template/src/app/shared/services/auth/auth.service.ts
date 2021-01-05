@@ -36,6 +36,7 @@ export class AuthService {
 
   private readonly SIDENAV: string = 'side_nav_open';
   private readonly CHARGES_ENABLED: string = 'charges_enabled';
+  private readonly PERFORM_ADMIN_CHECK: string = 'perform_admin_check';
 
   private user: any;
 
@@ -54,6 +55,15 @@ export class AuthService {
   public getChargesEnabled(): boolean {
     return localStorage.getItem(this.CHARGES_ENABLED) === '1' ? true : false;
   }
+
+  public setPerformAdminCheck(open: boolean): any {
+    localStorage.setItem(this.PERFORM_ADMIN_CHECK, open ? '1' : '0');
+  }
+
+  public getPerformAdminCheck(): boolean {
+    return localStorage.getItem(this.PERFORM_ADMIN_CHECK) === '1' ? true : false;
+  }
+
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: any,

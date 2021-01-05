@@ -9,6 +9,7 @@
                alt="Profile picture"
                [style.background-image]="editor?.profileUrl ? 'url(' + editor?.profileUrl + ')' : 'url(assets/user.svg)'"></div>
         </div>
+        <h6 class="text-center mt-2"><span class="badge badge-success" *ngIf="editor?.isEmailVerified">Email Verified</span></h6>
       </div>
       <!--<app-loading-spinner *ngIf="loading"></app-loading-spinner>-->
       <div *ngIf="!initialPageLoading">
@@ -24,6 +25,26 @@
     </div>
 
     <app-loading-spinner *ngIf="initialPageLoading"></app-loading-spinner>
+
+    <div class="alert alert-warning mt-2 mb-0 w-100" *ngIf="!editor?.isEmailVerified">
+      <h3 class="text-center"> Verify Account </h3>
+      <p class="text-center"
+         *ngIf="!emailSending && emailSent"> Verification Email Sent. </p>
+      <p class="text-center"
+         *ngIf="!emailSending && emailSent"> Once you open the email and verify your account, please refresh the page. </p>
+      <p *ngIf="!emailSending && !emailSent"
+         class="text-center">You still need to verify your account using the email you will have recieved when you initially signed up.</p>
+      <p *ngIf="!emailSending && !emailSent"
+         class="text-center">If you can't find this email then click the button below and we'll resend it.</p>
+      <p *ngIf="!emailSending && !emailSent"
+         class="text-center">Make sure to double check your spam folder if you still can't find it.</p>
+      <button *ngIf="!emailSending && !emailSent"
+              type="button"
+              class="mx-auto d-block btn btn-primary"
+              (click)="sendVerifyEmail()">Resend Verification Email</button>
+
+      <app-loading-spinner *ngIf="emailSending"></app-loading-spinner>
+    </div>
 
     <div class="pt-2 pt-md-2"
          *ngIf="!initialPageLoading">

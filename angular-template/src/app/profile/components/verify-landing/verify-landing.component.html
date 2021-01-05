@@ -1,0 +1,26 @@
+<div class="jumbotron m-0 m-xl-4 text-center bg-white">
+  <app-loading-spinner *ngIf="loading"></app-loading-spinner>
+
+  <span *ngIf="!loading && success">
+    <h1 class="display-4 text-success">Success!</h1>
+    <p class="lead text-success">Your account has been successfully validated.</p>
+    <hr class="my-4">
+
+    <button type="button"
+            class="mx-auto d-block btn btn-primary"
+            (click)="home()">Back To Profile</button>
+  </span>
+
+  <span *ngIf="!loading && !success">
+    <h1 class="display-4">Oops, something went wrong!</h1>
+    <p class="lead">Your account has not been successfully validated. Please try again using the button below.</p>
+    <hr class="my-4">
+    <p>If once you try again the issue persists please send us an email at help@gameasset.io so we can help to resolve the issue.</p>
+    <button *ngIf="!emailSending && !emailSent"
+            type="button"
+            class="mx-auto d-block btn btn-primary"
+            (click)="sendVerifyEmail()">Resend Verification Email</button>
+    <p *ngIf="emailSent"> New email sent. </p>
+    <app-loading-spinner *ngIf="emailSending"></app-loading-spinner>
+  </span>
+</div>

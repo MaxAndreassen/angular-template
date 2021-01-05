@@ -60,7 +60,8 @@ export class ProductEditorComponent implements OnInit {
           .getProduct(params.get('uuid'))
           .pipe(finalize(() => this.loading = false))
           .subscribe(result => {
-            if (result.creatorUserUuid !== this.securityContext.user.uuid) {
+            if (!this.securityContext.user || !this.securityContext.authenticated ||
+              result.creatorUserUuid !== this.securityContext.user.uuid) {
               this.router.navigateByUrl(`/product/view/${params.get('uuid')}`);
             }
 

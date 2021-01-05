@@ -25,7 +25,7 @@
           <p class="description">{{data?.bio}}</p>
         </div>
         <h3 class="mb-4 mx-1 text-center">Assets</h3>
-        <div class="row mr-0">
+        <div class="row">
             <div *ngFor="let product of products"
                  class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4 mx-auto mx-sm-0">
               <app-card [description]="product?.name"

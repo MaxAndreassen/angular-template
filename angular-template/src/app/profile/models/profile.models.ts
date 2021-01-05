@@ -7,4 +7,5 @@ export class UserEditor {
     existingProfileUuid: string;
     profileImage: any;
     isAdmin: boolean;
+    isEmailVerified: boolean;
 }
