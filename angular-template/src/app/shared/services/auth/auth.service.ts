@@ -1,7 +1,7 @@
 import { Injectable, EventEmitter, Inject, PLATFORM_ID } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { SecurityContext, AuthenticationRequest, AuthenticatedUser, IAuthenticationResponse, User, SignUpRequest } from '../../models/auth.models';
+import { SecurityContext, AuthenticationRequest, AuthenticatedUser, IAuthenticationResponse, User, SignUpRequest, Email, PasswordReset } from '../../models/auth.models';
 import { IAppConfig, APP_CONFIG } from '../../models/configuration.models';
 import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
@@ -102,6 +102,16 @@ export class AuthService {
         this.authStateChange$.next(this.securityContext);
         return of(res);
       }));
+  }
+
+  forgottenPassword(request: Email): Observable<boolean> {
+    const url = `${this.config.apiUrl}users/forgotten-password`;
+    return this.http.post<boolean>(url, request);
+  }
+
+  resetPassword(request: PasswordReset): Observable<boolean> {
+    const url = `${this.config.apiUrl}users/reset-password`;
+    return this.http.post<boolean>(url, request);
   }
 
   securityCheck(router?: Router): any {

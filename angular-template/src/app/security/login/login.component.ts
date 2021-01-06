@@ -3,6 +3,7 @@ import { AuthService } from '../../shared/services/auth/auth.service';
 import { AuthenticationRequest, User } from '../../shared/models/auth.models';
 import { ActivatedRoute, Router } from '@angular/router';
 import { finalize } from 'rxjs/operators';
+import { faLaptopHouse } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-login',
@@ -18,6 +19,7 @@ export class LoginComponent implements OnInit {
   reactivate = false;
   redirectUrl: string = null;
   failed = false;
+  newPassword = false;
 
   constructor(
     private router: Router,
@@ -31,6 +33,7 @@ export class LoginComponent implements OnInit {
       this.deactivated = params['deactivated'] === 'true';
       this.reactivate = params['reactivate'] === 'true';
       this.redirectUrl = params['redirectUrl'];
+      this.newPassword = params['newPassword'];
       /* tslint:enable:no-string-literal */
 
       if (!this.deactivated || this.reactivate) {
@@ -61,5 +64,7 @@ export class LoginComponent implements OnInit {
     this.router.navigateByUrl('/security/register');
   }
 
-
+  routeForgottenPassword(): any {
+    this.router.navigateByUrl('/security/forgotten-password');
+  }
 }

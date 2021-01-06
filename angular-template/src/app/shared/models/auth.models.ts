@@ -27,7 +27,7 @@ export class Username {
 export class PasswordReset {
     newPassword: string;
     newPasswordConfirm: string;
-    guid: string;
+    attemptUuid: string;
 }
 
 export class User {

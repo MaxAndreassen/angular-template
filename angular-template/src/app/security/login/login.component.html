@@ -3,9 +3,17 @@
     <div class="card-header text-center">
       <h2 class="mt-1">Login</h2>
     </div>
+    <div *ngIf="newPassword"
+         class="alert alert-success mt-3 mx-3"
+         role="alert">
+      Password successfully reset.
+    </div>
     <form class="m-3">
       <div class="form-group">
-        <label for="emailAddress" class="required-star"><b>Email Address</b></label>
+        <label for="emailAddress"
+               class="required-star">
+          <b>Email Address</b>
+        </label>
         <input type="email"
                name="email"
                class="form-control"
@@ -13,7 +21,10 @@
                [(ngModel)]="editor.email">
       </div>
       <div class="form-group">
-        <label for="password" class="required-star"><b>Password</b></label>
+        <label for="password"
+               class="required-star">
+          <b>Password</b>
+        </label>
         <input type="password"
                name="password"
                class="form-control"
@@ -27,9 +38,10 @@
                 (click)="login()">Login</button>
         <button type="button"
                 class="btn btn-link pt-3"
-                [disabled]="loading">Forgotten password?</button>
-                <button type="button"
-                class="btn btn-link pt-3"
+                [disabled]="loading"
+                (click)="routeForgottenPassword()">Forgotten password?</button>
+        <button type="button"
+                class="btn btn-link pt-3 text-right"
                 (click)="routeRegister()"
                 [disabled]="loading">Don't have an account?
         </button>

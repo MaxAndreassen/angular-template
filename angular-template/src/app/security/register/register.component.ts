@@ -30,6 +30,7 @@ export class RegisterComponent implements OnInit {
 
   register(): any {
     this.loading = true;
+    this.validationResult = new ValidationResult();
 
     this.authService
       .register(this.editor)
@@ -49,5 +50,4 @@ export class RegisterComponent implements OnInit {
   routeLogin(): any {
     this.router.navigateByUrl('/security/login');
   }
-
 }
