@@ -6,8 +6,13 @@
   </div>
 
   <div class="pt-2 pt-md-2">
-    <div class="card">
-      <app-version-status-bar [status]="editor?.status" *ngIf="editor?.status"></app-version-status-bar>
+    <div class="card" *ngIf="!paymentCheckLoading && !loading">
+      <app-version-status-bar [status]="editor?.status"
+                              *ngIf="editor?.status"></app-version-status-bar>
+      <div class="alert alert-warning mt-0 mb-0" *ngIf="!account?.chargesEnabled &&!paymentCheckLoading"
+           style="border-radius: 0rem 0rem 0.25rem 0.25rem; margin: -1px;">
+        <h5 class="text-center mb-0">Complete <a href="/profile/become-seller">Stripe onboarding</a> to list paid assets.</h5>
+      </div>
       <form class="m-3">
         <div class="row">
           <div class="form-group col-12 col-sm-6">
@@ -22,15 +27,16 @@
                    [(ngModel)]="editor.name">
           </div>
           <div class="form-group col-12 col-sm-6 mb-0">
-            <label class="required-star"
+            <label [class.required-star]="account?.chargesEnabled || paymentCheckLoading"
                    for="name">
-              <b>Price</b>
+              <b>Price <span *ngIf="!account?.chargesEnabled && !paymentCheckLoading" style="font-size: 10px">(You can only list free assets for now)</span></b>
             </label>
             <div class="input-group mb-2">
               <div class="input-group-prepend">
                 <div class="input-group-text">£</div>
               </div>
               <input type="number"
+                     [disabled]="!account?.chargesEnabled"
                      name="priceInPounds"
                      class="form-control"
                      id="name"
@@ -85,15 +91,14 @@
         <div>
           <button type="button"
                   class="w-100 d-block d-md-none btn btn-primary"
-                  [disabled]="loading"
+                  [disabled]="loading || paymentCheckLoading || submitLoading"
                   (click)="submit()">{{creating ? 'Submit' : 'Submit Changes'}}</button>
 
           <button type="button"
                   class="d-none d-md-block btn btn-primary"
-                  [disabled]="loading"
+                  [disabled]="loading || paymentCheckLoading || submitLoading"
                   (click)="submit()">{{creating ? 'Submit' : 'Submit Changes'}}</button>
         </div>
-        <app-loading-spinner *ngIf="loading || submitLoading"></app-loading-spinner>
         <div *ngIf="!validationResult?.valid"
              class="alert alert-danger mt-2"
              role="alert">
@@ -115,5 +120,6 @@
         </div>
       </form>
     </div>
+    <app-loading-spinner *ngIf="loading || submitLoading || paymentCheckLoading"></app-loading-spinner>
   </div>
 </div>

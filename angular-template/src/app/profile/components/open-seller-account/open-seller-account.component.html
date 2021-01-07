@@ -1,7 +1,7 @@
 <div class="jumbotron m-0 m-xl-4 text-center bg-white">
   <app-loading-spinner *ngIf="paymentCheckLoading || userLoading"></app-loading-spinner>
   <span *ngIf="!paymentCheckLoading && !userLoading && !account?.chargesEnabled && !emailVerified">
-    <h1 class="display-4">Become a Seller</h1>
+    <h1 class="display-4">Become a Paid Seller</h1>
     <p class="lead">There's something you need to do before you can begin onboarding as a seller.</p>
     <hr class="my-4">
 
@@ -23,7 +23,7 @@
     </div>
   </span>
   <span *ngIf="!paymentCheckLoading && !userLoading && !account?.chargesEnabled && emailVerified">
-    <h1 class="display-4">Become a Seller</h1>
+    <h1 class="display-4">Become a Paid Seller</h1>
     <p class="lead">At GameAssets.io we have partnered with
       <a href="https://stripe.com/customers"
          target="_blank">Stripe</a> to make selling assets as straight forward as possible for both you and ourselves. </p>

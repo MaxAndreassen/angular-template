@@ -56,16 +56,19 @@ export class SideNavComponent implements OnInit {
       url: 'product/me',
       title: 'Listings',
       icon: faTag,
+      chargesRequired: false
     },
     {
       url: 'stats/financials',
       title: 'Sales',
       icon: faReceipt,
+      chargesRequired: true
     },
     {
       url: 'stats/financials/payout',
       title: 'Payout',
       icon: faPoundSign,
+      chargesRequired: true
     }
   ];
 
@@ -140,6 +143,7 @@ export class SideNavComponent implements OnInit {
                 this.account = result;
                 this.authService.setChargesEnabled(result.chargesEnabled);
               } else {
+                this.account.chargesEnabled = false;
                 this.authService.setChargesEnabled(false);
               }
             });
@@ -178,4 +182,5 @@ interface DashboardSideNavItem {
   icon: any;
   isPaid?: boolean;
   isAdmin?: boolean;
+  chargesRequired?: boolean;
 }

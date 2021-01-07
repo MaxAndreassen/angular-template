@@ -37,7 +37,7 @@ export class ProductFileSummary {
 }
 
 export class ProductVersionEditor {
-    priceInPounds: string;
+    priceInPounds: number;
     name: string;
     description: string;
     uuid: string;

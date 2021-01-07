@@ -40,22 +40,30 @@
             (click)="submit($event)"
             [disabled]="paymentSubmitted"
             class="w-100 btn btn-primary mt-3">Complete Purchase</button>
-
+    <p *ngIf="!loading && !productLoading && !paymentSucceed"
+       class="text-center mb-0 mt-2"> Payment Secured By
+      <a href="https://stripe.com/customers"
+         target="_blank">Stripe</a>
+    </p>
+    <p *ngIf="!loading && !productLoading && !paymentSucceed"
+       class="mt-0 text-center mb-2 mb-lg-0"
+       style="font-size: 8px">Stripe is used by 1000s of platforms including Zoom, Slack and GitHub</p>
     <div *ngIf="paymentSucceed"
          class="alert alert-success mt-3 mb-0"
          role="alert">
       Payment Successful
     </div>
     <div *ngIf="paymentSucceed"
-         role="alert" style="font-size: 10px; margin-top: 1rem;">
-         If, when you try to download your product, it is not yet available, please wait for a couple of minutes before refreshing the page and trying again. Sometimes it can take us a couple of minutes to process your new purchase.
+         role="alert"
+         style="font-size: 10px; margin-top: 1rem;">
+      If, when you try to download your product, it is not yet available, please wait for a couple of minutes before refreshing
+      the page and trying again. Sometimes it can take us a couple of minutes to process your new purchase.
     </div>
     <div *ngIf="paymentFailed"
          class="alert alert-danger mt-3 mb-0"
          role="alert">
       {{failureReason}}
     </div>
-
   </form>
   <div *ngIf="failed && !loading && !productLoading"
        class="alert alert-danger mx-2"

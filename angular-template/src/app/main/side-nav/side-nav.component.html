@@ -36,25 +36,10 @@
       <app-loading-spinner *ngIf="paymentCheckLoading"
                            invertColours="true"></app-loading-spinner>
       <span *ngIf="!paymentCheckLoading">
-        <a class="nav-item p-md-3 p-0 py-3 pl-md-1"
-           *ngIf="!account?.chargesEnabled"
-           routerLinkActive="active"
-           href="profile/become-seller">
-          <fa-icon [icon]="sellIcon"
-                   class="ml-md-2 d-none d-md-inline-block"
-                   style="width:16px"></fa-icon>
-          <fa-icon [icon]="sellIcon"
-                   class="ml-md-2 text-center mx-auto d-block d-md-none"
-                   style="width:16px"></fa-icon>
-          <span class="d-md-inline-block d-none ml-2">Start Selling</span>
-          <span class="d-md-none d-block text-center">Start Selling</span>
-        </a>
-      </span>
-      <span *ngIf="!paymentCheckLoading">
         <span *ngFor="let item of sellerNavItems">
           <a class="nav-item p-md-3 p-0 py-3 pl-md-1"
              routerLinkActive="active"
-             *ngIf="account?.chargesEnabled"
+             *ngIf="account?.chargesEnabled || !item?.chargesRequired"
              [href]="item.url">
             <fa-icon [icon]="item.icon"
                      class="ml-md-2 d-none d-md-inline-block"
@@ -70,6 +55,21 @@
                   [class.text-warning]="item.isAdmin">{{item.title}}</span>
           </a>
         </span>
+      </span>
+      <span *ngIf="!paymentCheckLoading">
+        <a class="nav-item p-md-3 p-0 py-3 pl-md-1"
+           *ngIf="!account?.chargesEnabled"
+           routerLinkActive="active"
+           href="profile/become-seller">
+          <fa-icon [icon]="sellIcon"
+                   class="ml-md-2 d-none d-md-inline-block"
+                   style="width:16px"></fa-icon>
+          <fa-icon [icon]="sellIcon"
+                   class="ml-md-2 text-center mx-auto d-block d-md-none"
+                   style="width:16px"></fa-icon>
+          <span class="d-md-inline-block d-none ml-2">Start Earning</span>
+          <span class="d-md-none d-block text-center">Start Earning</span>
+        </a>
       </span>
     </span>
     <span>

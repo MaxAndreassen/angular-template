@@ -36,7 +36,7 @@ export class ProductService {
     }
 
     if (!!editor.priceInPounds) {
-      formData.append('priceInPounds', editor.priceInPounds);
+      formData.append('priceInPounds', editor.priceInPounds.toString());
     }
 
     if (!!editor.uuid) {

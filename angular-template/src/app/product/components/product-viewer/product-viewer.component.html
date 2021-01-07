@@ -51,17 +51,17 @@
                      class="text-center mx-auto d-inline-block text-primary"
                      style="font-size: 21px; width: 20px;">
             </fa-icon>
-            <p class="d-inline-block sub-title ml-2"> Refund Policy </p>
+            <p class="d-inline-block sub-title ml-2"> EULA Policy </p>
           </div>
         </div>
       </div>
       <h3 *ngIf="!ownsProduct"
           class="mb-1 text-center text-lg-left"
-          style="font-weight: bold;">£{{productVersion?.priceInPounds}}</h3>
-      <p *ngIf="!ownsProduct"
+          style="font-weight: bold;">{{productVersion?.priceInPounds == 0 ? 'FREE' : '£' + productVersion?.priceInPounds}}</h3>
+      <p *ngIf="!ownsProduct && productVersion?.priceInPounds != 0"
          class="mt-0 text-center text-lg-left"
          style="font-size: 10px; color: gray;">Taxes/VAT calculated at checkout</p>
-      <button *ngIf="!ownsProduct && !ownedLoading"
+      <button *ngIf="!ownsProduct && !ownedLoading && productVersion?.priceInPounds != 0"
               type="button"
               class="btn btn-primary mx-auto w-100 mb-2"
               [disabled]="loading"
@@ -78,9 +78,10 @@
               disabled="true">
         <b>Owned</b>
       </button>
-      <button *ngIf="ownsProduct && !ownedLoading"
+      <button *ngIf="(ownsProduct && !ownedLoading) || productVersion?.priceInPounds == 0"
               type="button"
               class="btn btn-secondary mx-auto w-100 mb-2"
+              [class.mt-2]="productVersion?.priceInPounds == 0"
               (click)="download()">
         <b>Download</b>
       </button>
@@ -104,12 +105,12 @@
          *ngIf="possibleTooEarlyDownload && !downloading">If you have only just purchased this asset then we may have not yet finished completing your purchase. Wait for 30
         seconds and then try clicking download again.</p>
 
-      <p *ngIf="!ownsProduct"
+      <p *ngIf="!ownsProduct && productVersion?.priceInPounds != 0"
          class="text-center mb-0"> Payment Secured By
         <a href="https://stripe.com/customers"
            target="_blank">Stripe</a>
       </p>
-      <p *ngIf="!ownsProduct"
+      <p *ngIf="!ownsProduct && productVersion?.priceInPounds != 0"
          class="mt-0 text-center mb-2 mb-lg-0"
          style="font-size: 8px">Stripe is used by 1000s of platforms including Zoom, Slack and GitHub</p>
       <hr class="mt-1">
@@ -159,7 +160,7 @@
         <div *ngFor="let product of extraProducts"
              class="col-xl-2 col-lg-3 col-md-4 col-sm-4 col-11 mb-4 mx-auto mx-sm-0">
           <app-card [description]="product?.name"
-                    [title]="'£' + product?.priceInPounds"
+                    [title]="product?.priceInPounds == 0 ? 'FREE' : '£' + product?.priceInPounds"
                     [linkUrl]="'product/view/' + product?.versionUuid"
                     [pictureUrl]="product?.coverImageUrl"
                     height="135"

@@ -8,6 +8,8 @@ import { SecurityContext } from '../../../shared/models/auth.models';
 import { Upload, FileSummary } from '../../../shared/models/file.models';
 import { ValidationResult, IValidationResult } from '../../../shared/models/validation,models';
 import { HttpEventType } from '@angular/common/http';
+import { PaymentService } from '../../../shared/services/payment/payment.service';
+import { Account } from '../../../shared/models/payment.models';
 
 @Component({
   selector: 'app-product-editor',
@@ -24,6 +26,9 @@ export class ProductEditorComponent implements OnInit {
 
   securityContext: SecurityContext = new SecurityContext();
 
+  account: Account = new Account();
+  paymentCheckLoading = false;
+
   creating = true;
   loading = false;
   submitLoading = false;
@@ -36,7 +41,8 @@ export class ProductEditorComponent implements OnInit {
     private productService: ProductService,
     private router: Router,
     private route: ActivatedRoute,
-    private authService: AuthService
+    private authService: AuthService,
+    private paymentService: PaymentService
   ) { }
 
   ngOnInit(): any {
@@ -52,6 +58,21 @@ export class ProductEditorComponent implements OnInit {
 
     this.route.paramMap.subscribe(params => {
       this.creating = !params.get('uuid');
+
+      this.paymentCheckLoading = true;
+
+      this.paymentService
+        .getAccount(this.securityContext.user.uuid)
+        .pipe(finalize(() => this.paymentCheckLoading = false))
+        .subscribe(result => {
+          if (!!result) {
+            this.account = result;
+          }
+
+          if (!this.account.chargesEnabled) {
+            this.editor.priceInPounds = 0;
+          }
+        });
 
       if (!this.creating) {
         this.loading = true;
