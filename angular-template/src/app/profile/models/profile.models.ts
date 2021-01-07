@@ -9,3 +9,12 @@ export class UserEditor {
     isAdmin: boolean;
     isEmailVerified: boolean;
 }
+
+export class SilentAccountResponse {
+    uuid: string;
+    email: string;
+}
+
+export class SilentAccountRequest {
+    email: string;
+}

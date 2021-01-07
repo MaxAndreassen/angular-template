@@ -1,7 +1,16 @@
 import { Injectable, EventEmitter, Inject, PLATFORM_ID } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { SecurityContext, AuthenticationRequest, AuthenticatedUser, IAuthenticationResponse, User, SignUpRequest, Email, PasswordReset } from '../../models/auth.models';
+import {
+  SecurityContext,
+  AuthenticationRequest,
+  AuthenticatedUser,
+  IAuthenticationResponse,
+  User,
+  SignUpRequest,
+  Email,
+  PasswordReset
+} from '../../models/auth.models';
 import { IAppConfig, APP_CONFIG } from '../../models/configuration.models';
 import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
@@ -37,6 +46,7 @@ export class AuthService {
   private readonly SIDENAV: string = 'side_nav_open';
   private readonly CHARGES_ENABLED: string = 'charges_enabled';
   private readonly PERFORM_ADMIN_CHECK: string = 'perform_admin_check';
+  private readonly GUEST_UUID: string = 'guest_user_uuid';
 
   private user: any;
 
@@ -64,6 +74,13 @@ export class AuthService {
     return localStorage.getItem(this.PERFORM_ADMIN_CHECK) === '1' ? true : false;
   }
 
+  public setGuestUuid(uuid: string): any {
+    localStorage.setItem(this.GUEST_UUID, uuid);
+  }
+
+  public getGuestUuid(): string {
+    return localStorage.getItem(this.GUEST_UUID);
+  }
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: any,

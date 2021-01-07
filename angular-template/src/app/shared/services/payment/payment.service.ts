@@ -29,8 +29,8 @@ export class PaymentService {
     return this.http.get<AccountBalance>(url);
   }
 
-  createPaymentIntent(productUuid: string): Observable<PaymentIntentSecret> {
-    const url = `${this.config.apiUrl}payment/purchase/${productUuid}`;
+  createPaymentIntent(productUuid: string, userUuid: string): Observable<PaymentIntentSecret> {
+    const url = `${this.config.apiUrl}payment/purchase/${productUuid}/user/${userUuid}`;
     return this.http.post<PaymentIntentSecret>(url, null);
   }
 

@@ -7,6 +7,8 @@ import { IAppConfig, APP_CONFIG } from '../../../shared/models/configuration.mod
 import { ProductVersionSummary } from '../../../shared/models/product.models.ts';
 import { ProductService } from '../../../shared/services/product/product.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from '../../../shared/services/auth/auth.service';
+import { SecurityContext } from '../../../shared/models/auth.models';
 
 @Component({
   selector: 'app-check-out',
@@ -34,6 +36,8 @@ export class CheckOutComponent implements OnInit {
 
   vat: number;
 
+  securityContext: SecurityContext;
+
   @Input() productVersionUuid: string;
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter();
@@ -42,6 +46,7 @@ export class CheckOutComponent implements OnInit {
     private paymentService: PaymentService,
     @Inject(APP_CONFIG) public config: IAppConfig,
     private productService: ProductService,
+    private authService: AuthService,
     private route: ActivatedRoute,
     private router: Router
   ) {
@@ -51,6 +56,10 @@ export class CheckOutComponent implements OnInit {
   ngOnInit(): any {
     this.productLoading = true;
 
+    this.authService.authStateChange$.subscribe((context: SecurityContext) => {
+      this.securityContext = context;
+    });
+
     this.productService
       .getProductSummary(this.productVersionUuid)
       .pipe(finalize(() => this.productLoading = false))
@@ -58,9 +67,15 @@ export class CheckOutComponent implements OnInit {
         this.productVersion = result;
         this.vat = Math.round((this.productVersion.priceInPounds * 0.2) * 100) / 100;
 
+        let userUuid = this.authService.getGuestUuid();
+
+        if (this.securityContext.authenticated) {
+          userUuid = this.securityContext.user.uuid;
+        }
+
         this.loading = true;
         this.paymentService
-          .createPaymentIntent(this.productVersion.uuid)
+          .createPaymentIntent(this.productVersion.uuid, userUuid)
           .pipe(finalize(() => this.loading = false))
           .subscribe(res => {
             this.paymentIntent = res;

@@ -1,6 +1,6 @@
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { Observable } from 'rxjs';
-import { UserEditor } from '../models/profile.models';
+import { UserEditor, SilentAccountResponse, SilentAccountRequest } from '../models/profile.models';
 import { APP_CONFIG, IAppConfig } from '../../shared/models/configuration.models';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { switchMap, map } from 'rxjs/operators';
@@ -62,5 +62,10 @@ export class UserService {
   resendVerifyEmail(): Observable<boolean> {
     const url = `${this.config.apiUrl}users/verify/resend`;
     return this.http.get<boolean>(url);
+  }
+
+  createSilentAccount(request: SilentAccountRequest): Observable<SilentAccountResponse> {
+    const url = `${this.config.apiUrl}silent/create`;
+    return this.http.post<SilentAccountResponse>(url, request);
   }
 }

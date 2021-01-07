@@ -99,7 +99,10 @@
            *ngIf="downloadFailed">
         <p class="text-center mb-0">Download Failed</p>
       </div>
-      <p class="text-center" style="font-size: 11px; margin-bottom: 1rem !important;" *ngIf="possibleTooEarlyDownload && !downloading">If you have only just purchased this asset then we may have not yet finished completing your purchase. Wait for 30 seconds and then try clicking download again.</p>
+      <p class="text-center"
+         style="font-size: 11px; margin-bottom: 1rem !important;"
+         *ngIf="possibleTooEarlyDownload && !downloading">If you have only just purchased this asset then we may have not yet finished completing your purchase. Wait for 30
+        seconds and then try clicking download again.</p>
 
       <p *ngIf="!ownsProduct"
          class="text-center mb-0"> Payment Secured By
@@ -177,9 +180,91 @@
   <div class="modal-dialog"
        role="document">
     <div class="modal-content">
-      <app-check-out *ngIf="modalOpen"
+      <app-check-out *ngIf="modalOpen && (securityContext?.authenticated || silentProfileSuccess)"
                      [productVersionUuid]="productVersionUuid"
                      (closeModal)="setCloseModal($event)"></app-check-out>
+      <div class="card"
+           *ngIf="!silentProfileSuccess && modalOpen && !securityContext?.authenticated && !loggingIn">
+        <h5 class="card-header text-center">Guest Checkout</h5>
+        <div class="mx-4 mt-4">
+          <h6 class="text-center mb-4"> Which email address shall we send your download link to?</h6>
+          <form class="m-3">
+            <div class="form-group">
+              <label for="emailAddress"
+                     class="required-star">
+                <b>Email Address</b>
+              </label>
+              <input type="email"
+                     name="email"
+                     class="form-control"
+                     id="emailAddress"
+                     [(ngModel)]="guestEmail">
+            </div>
+          </form>
+          <button (click)="createSilentAccount()"
+                  [disabled]="silentAccountLoading"
+                  class="w-100 btn btn-primary mt-3">Proceed To Purchase</button>
+          <app-loading-spinner *ngIf="silentAccountLoading"></app-loading-spinner>
+          <div *ngIf="!silentAccountValidationResult?.valid && !!silentAccountValidationResult"
+               class="alert alert-danger mt-2"
+               role="alert">
+            <app-validation-summary [errors]="silentAccountValidationResult?.errors"> </app-validation-summary>
+          </div>
+          <button type="button"
+                  [disabled]="silentAccountLoading"
+                  (click)="toggleLogin()"
+                  class="btn btn-link pt-3 mx-auto d-block">Have an account?
+          </button>
+        </div>
+      </div>
+
+      <div class="card"
+           *ngIf="!silentProfileSuccess && modalOpen && !securityContext?.authenticated && loggingIn">
+        <h5 class="card-header text-center">Log In</h5>
+        <div class="mx-4 mt-1">
+          <form class="m-3">
+            <div class="form-group">
+              <label for="emailAddress"
+                     class="required-star">
+                <b>Email Address</b>
+              </label>
+              <input type="email"
+                     name="email"
+                     class="form-control"
+                     id="emailAddress"
+                     [(ngModel)]="loginEditor.email">
+            </div>
+            <div class="form-group">
+              <label for="password"
+                     class="required-star">
+                <b>Password</b>
+              </label>
+              <input type="password"
+                     name="password"
+                     class="form-control"
+                     id="password"
+                     [(ngModel)]="loginEditor.password">
+            </div>
+            <app-loading-spinner *ngIf="loginLoading"></app-loading-spinner>
+          </form>
+          <button type="button"
+                  class="w-100 btn btn-primary mt-3"
+                  [disabled]="loginLoading"
+                  (click)="login()">Login</button>
+
+          <div *ngIf="loginFailed && !loginLoading"
+               class="alert alert-danger mt-4"
+               role="alert">
+            Login Attempt Failed.
+          </div>
+          <button type="button"
+                  [disabled]="loginLoading"
+                  class="btn btn-link pt-3 mx-auto d-block"
+                  (click)="toggleLogin()">Continue as a guest?
+          </button>
+        </div>
+      </div>
+
       <div class="mt-2 mx-2 mb-2">
         <button *ngIf="closeModal"
                 data-toggle="modal"

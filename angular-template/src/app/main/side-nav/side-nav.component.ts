@@ -136,8 +136,12 @@ export class SideNavComponent implements OnInit {
             .getAccount(context.user.uuid)
             .pipe(finalize(() => this.paymentCheckLoading = false))
             .subscribe(result => {
-              this.account = result;
-              this.authService.setChargesEnabled(result.chargesEnabled);
+              if (!!result) {
+                this.account = result;
+                this.authService.setChargesEnabled(result.chargesEnabled);
+              } else {
+                this.authService.setChargesEnabled(false);
+              }
             });
         } else {
           if (!context || !context.user) {

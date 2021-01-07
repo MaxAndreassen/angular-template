@@ -6,9 +6,12 @@ import { ProductVersionSummary, AssetContent, ProductSummary } from '../../../sh
 import { FileSummary } from '../../../shared/models/file.models';
 import { faFileContract, faShieldAlt } from '@fortawesome/free-solid-svg-icons';
 import { UserService } from '../../../profile/services/user.service';
-import { UserEditor } from '../../../profile/models/profile.models';
+import { UserEditor, SilentAccountResponse } from '../../../profile/models/profile.models';
 import { FileSizeHelperService } from '../../../shared/services/file-size-helper/file-size-helper.service';
 import { HttpEventType } from '@angular/common/http';
+import { SecurityContext, AuthenticationRequest, User } from '../../../shared/models/auth.models';
+import { AuthService } from '../../../shared/services/auth/auth.service';
+import { IValidationResult } from '../../../shared/models/validation,models';
 
 @Component({
   selector: 'app-product-viewer',
@@ -42,9 +45,23 @@ export class ProductViewerComponent implements OnInit {
   downloadPercentage = 1;
   possibleTooEarlyDownload = false;
 
+  securityContext: SecurityContext;
+
+  guestEmail: string;
+
+  silentProfileSuccess = false;
+  silentAccountLoading = false;
+  silentAccountValidationResult: IValidationResult;
+
+  loggingIn = false;
+  loginEditor = new AuthenticationRequest();
+  loginLoading = false;
+  loginFailed = false;
+
   constructor(
     private productService: ProductService,
     private userService: UserService,
+    private authService: AuthService,
     private fileSizeHelper: FileSizeHelperService,
     private router: Router,
     private route: ActivatedRoute
@@ -54,6 +71,10 @@ export class ProductViewerComponent implements OnInit {
     this.loading = true;
     this.filesLoading = true;
     this.ownedLoading = true;
+
+    this.authService.authStateChange$.subscribe((context: SecurityContext) => {
+      this.securityContext = context;
+    });
 
     this.productService
       .getProductSummary(this.productVersionUuid)
@@ -139,6 +160,42 @@ export class ProductViewerComponent implements OnInit {
         }
 
         this.downloadFailed = true;
+      });
+  }
+
+  createSilentAccount(): any {
+    this.silentAccountLoading = true;
+    this.silentAccountValidationResult = null;
+
+    this.userService
+      .createSilentAccount({ email: this.guestEmail })
+      .pipe(finalize(() => this.silentAccountLoading = false))
+      .subscribe(p => {
+        this.authService.setGuestUuid(p.uuid);
+        this.silentProfileSuccess = true;
+      }, err => {
+        if (err.status && err.status === 412) {
+          this.silentAccountValidationResult = err.error;
+        }
+      });
+  }
+
+  toggleLogin(): any {
+    this.loggingIn = !this.loggingIn;
+  }
+
+  login(): any {
+    this.loginLoading = true;
+
+    this.authService
+      .login<User>(this.loginEditor)
+      .pipe(finalize(() => this.loginLoading = false))
+      .subscribe(res => {
+        this.loginFailed = false;
+      }, err => {
+        if (err.status && (err.status === 412 || err.status === 401 || err.status === 400)) {
+          this.loginFailed = true;
+        }
       });
   }
 }
