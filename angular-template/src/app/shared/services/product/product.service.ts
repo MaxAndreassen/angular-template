@@ -133,4 +133,15 @@ export class ProductService {
       observe: 'events'
     });
   }
+
+  downloadProductVersionAssetByLink(downloadUuid: string): Observable<any> {
+    const url = `${this.config.apiUrl}product/${downloadUuid}/asset/download-by-link`;
+
+    return this.http.get<any>(url, {
+      headers: new HttpHeaders(),
+      responseType: 'blob' as 'json',
+      reportProgress: true,
+      observe: 'events'
+    });
+  }
 }

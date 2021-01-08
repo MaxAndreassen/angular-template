@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '../../../shared/services/product/product.service';
 import { finalize } from 'rxjs/operators';
-import { ProductVersionSummary, AssetContent, ProductSummary } from '../../../shared/models/product.models.ts';
+import { ProductVersionSummary, AssetContent, ProductSummary, AssetDownloadLink } from '../../../shared/models/product.models.ts';
 import { FileSummary } from '../../../shared/models/file.models';
 import { faFileContract, faShieldAlt } from '@fortawesome/free-solid-svg-icons';
 import { UserService } from '../../../profile/services/user.service';
@@ -57,6 +57,11 @@ export class ProductViewerComponent implements OnInit {
   loginEditor = new AuthenticationRequest();
   loginLoading = false;
   loginFailed = false;
+
+  assetDownloadUuid: string = null;
+  downloadLinkUsed = false;
+
+  alreadyOwnsProduct = false;
 
   constructor(
     private productService: ProductService,
@@ -123,7 +128,29 @@ export class ProductViewerComponent implements OnInit {
 
   setCloseModal(event: boolean): any {
     this.closeModal = event;
-    this.ownsProduct = true;
+    if (!!this.securityContext.authenticated) {
+      this.ownsProduct = true;
+    }
+  }
+
+  setAssetDownloadLink(downloadLink: AssetDownloadLink): any {
+    this.assetDownloadUuid = downloadLink.uuid;
+  }
+
+  downloadByLink(): any {
+    this.possibleTooEarlyDownload = false;
+    this.downloadFailed = false;
+    this.downloading = true;
+    this.downloadPercentage = 1;
+
+    this.productService.downloadProductVersionAssetByLink(this.assetDownloadUuid)
+      .pipe(finalize(() => this.downloading = false))
+      .subscribe(resp => {
+        this.downloadLinkUsed = true;
+        this.handleDownloadSuccess(resp);
+      }, err => {
+        this.handleDownloadSuccess(err);
+      });
   }
 
   download(): any {
@@ -135,32 +162,40 @@ export class ProductViewerComponent implements OnInit {
     this.productService.downloadProductVersionAsset(this.productVersion.uuid)
       .pipe(finalize(() => this.downloading = false))
       .subscribe(resp => {
-        if (resp.type === HttpEventType.Response) {
-          this.downloading = false;
-          const a: any = document.createElement('a');
-          document.body.appendChild(a);
-          a.style = 'display: none';
-          const url = window.URL.createObjectURL(resp.body);
-          a.href = url;
-          a.download = this.productVersion.name;
-          a.click();
-          window.URL.revokeObjectURL(url);
-        }
-
-        if (resp.type === HttpEventType.Sent) {
-          this.downloadPercentage = 10;
-        }
-
-        if (resp.type === HttpEventType.DownloadProgress) {
-          this.downloadPercentage = Math.max(10, Math.min(Math.floor(100 * resp.loaded / resp.total), 99));
-        }
+        this.handleDownloadSuccess(resp);
       }, err => {
-        if (err.status && err.status === 403) {
-          this.possibleTooEarlyDownload = true;
-        }
-
-        this.downloadFailed = true;
+        this.handleDownloadSuccess(err);
       });
+  }
+
+  handleDownloadSuccess(resp: any): any {
+    if (resp.type === HttpEventType.Response) {
+      this.downloading = false;
+      const a: any = document.createElement('a');
+      document.body.appendChild(a);
+      a.style = 'display: none';
+      const url = window.URL.createObjectURL(resp.body);
+      a.href = url;
+      a.download = this.productVersion.name;
+      a.click();
+      window.URL.revokeObjectURL(url);
+    }
+
+    if (resp.type === HttpEventType.Sent) {
+      this.downloadPercentage = 10;
+    }
+
+    if (resp.type === HttpEventType.DownloadProgress) {
+      this.downloadPercentage = Math.max(10, Math.min(Math.floor(100 * resp.loaded / resp.total), 99));
+    }
+  }
+
+  handleDownloadError(err: any): any {
+    if (err.status && err.status === 403) {
+      this.possibleTooEarlyDownload = true;
+    }
+
+    this.downloadFailed = true;
   }
 
   createSilentAccount(): any {
@@ -168,11 +203,15 @@ export class ProductViewerComponent implements OnInit {
     this.silentAccountValidationResult = null;
 
     this.userService
-      .createSilentAccount({ email: this.guestEmail })
+      .createSilentAccount({ email: this.guestEmail, relatedProductUuid: this.productVersion.productUuid })
       .pipe(finalize(() => this.silentAccountLoading = false))
       .subscribe(p => {
-        this.authService.setGuestUuid(p.uuid);
-        this.silentProfileSuccess = true;
+        if (!p.alreadyOwnsProduct) {
+          this.authService.setGuestUuid(p.uuid);
+          this.silentProfileSuccess = true;
+        }
+
+        this.alreadyOwnsProduct = p.alreadyOwnsProduct;
       }, err => {
         if (err.status && err.status === 412) {
           this.silentAccountValidationResult = err.error;
@@ -192,6 +231,16 @@ export class ProductViewerComponent implements OnInit {
       .pipe(finalize(() => this.loginLoading = false))
       .subscribe(res => {
         this.loginFailed = false;
+        this.ownedLoading = true;
+
+        this.productService
+          .getIsProductOwnedByMe(this.productVersion.productUuid)
+          .pipe(finalize(() => this.ownedLoading = false))
+          .subscribe(ownership => {
+            this.ownsProduct = ownership.ownsProduct;
+
+            this.alreadyOwnsProduct = this.ownsProduct;
+          });
       }, err => {
         if (err.status && (err.status === 412 || err.status === 401 || err.status === 400)) {
           this.loginFailed = true;

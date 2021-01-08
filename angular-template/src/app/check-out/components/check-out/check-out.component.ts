@@ -4,11 +4,12 @@ import { PaymentService } from '../../../shared/services/payment/payment.service
 import { finalize } from 'rxjs/operators';
 import { isPlatformServer } from '@angular/common';
 import { IAppConfig, APP_CONFIG } from '../../../shared/models/configuration.models';
-import { ProductVersionSummary } from '../../../shared/models/product.models.ts';
+import { ProductVersionSummary, AssetDownloadLink } from '../../../shared/models/product.models.ts';
 import { ProductService } from '../../../shared/services/product/product.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../../shared/services/auth/auth.service';
 import { SecurityContext } from '../../../shared/models/auth.models';
+import { TransactionService } from '../../../shared/services/transaction/transaction.service';
 
 @Component({
   selector: 'app-check-out',
@@ -36,17 +37,23 @@ export class CheckOutComponent implements OnInit {
 
   vat: number;
 
+  purchaseId: string;
+
+  isGuest = false;
+
   securityContext: SecurityContext;
 
   @Input() productVersionUuid: string;
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter();
+  @Output() assetDownloadLinkEmitter: EventEmitter<AssetDownloadLink> = new EventEmitter();
 
   constructor(
     private paymentService: PaymentService,
     @Inject(APP_CONFIG) public config: IAppConfig,
     private productService: ProductService,
     private authService: AuthService,
+    private transactionService: TransactionService,
     private route: ActivatedRoute,
     private router: Router
   ) {
@@ -71,6 +78,8 @@ export class CheckOutComponent implements OnInit {
 
         if (this.securityContext.authenticated) {
           userUuid = this.securityContext.user.uuid;
+        } else {
+          this.isGuest = true;
         }
 
         this.loading = true;
@@ -129,11 +138,9 @@ export class CheckOutComponent implements OnInit {
         }
       }
     }).then(result => {
-      this.paymentLoading = false;
-
       if (result.error) {
         // Show error to your customer (e.g., insufficient funds)
-        console.log(result.error.message);
+        this.paymentLoading = false;
         this.paymentFailed = true;
         this.paymentSubmitted = false;
         this.failureReason = result.error.message;
@@ -141,10 +148,20 @@ export class CheckOutComponent implements OnInit {
       } else {
         // The payment has been processed!
         if (result.paymentIntent.status === 'succeeded') {
-          this.paymentSucceed = true;
-          this.paymentFailed = false;
-          this.closeModal.emit(true);
-          console.log(result.paymentIntent.status);
+          this.transactionService
+            .fastTrackProductOwnership(result.paymentIntent.id)
+            .pipe(finalize(() => {
+              this.paymentLoading = false;
+              this.paymentSucceed = true;
+              this.paymentFailed = false;
+              this.closeModal.emit(true);
+            }))
+            .subscribe(p => {
+              this.purchaseId = p.transactionIdentifier;
+              this.assetDownloadLinkEmitter.emit(p);
+            });
+
+
           // Show a success message to your customer
           // There's a risk of the customer closing the window before callback
           // execution. Set up a webhook or plugin to listen for the

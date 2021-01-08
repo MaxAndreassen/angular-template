@@ -102,3 +102,8 @@ export class AssetContent {
     open = true;
     fileSizeFriendly: string;
 }
+
+export class AssetDownloadLink {
+    uuid: string;
+    transactionIdentifier: string;
+}

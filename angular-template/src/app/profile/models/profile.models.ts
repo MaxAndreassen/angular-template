@@ -13,8 +13,10 @@ export class UserEditor {
 export class SilentAccountResponse {
     uuid: string;
     email: string;
+    alreadyOwnsProduct: boolean;
 }
 
 export class SilentAccountRequest {
     email: string;
+    relatedProductUuid: string;
 }

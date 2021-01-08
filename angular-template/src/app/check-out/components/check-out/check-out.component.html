@@ -53,11 +53,14 @@
          role="alert">
       Payment Successful
     </div>
-    <div *ngIf="paymentSucceed"
+    <div *ngIf="paymentSucceed && purchaseId"
          role="alert"
-         style="font-size: 10px; margin-top: 1rem;">
-      If, when you try to download your product, it is not yet available, please wait for a couple of minutes before refreshing
-      the page and trying again. Sometimes it can take us a couple of minutes to process your new purchase.
+         class="text-center"
+         style=" margin-top: 1rem;">
+      <p>Your purchase identifier is
+        <b>{{purchaseId}}</b></p>
+      <p class="mb-0">Please take a copy (screenshot) of this. You'll be required to quote it if you contact support about a purchase
+        issue.</p>
     </div>
     <div *ngIf="paymentFailed"
          class="alert alert-danger mt-3 mb-0"
