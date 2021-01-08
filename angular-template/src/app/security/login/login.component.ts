@@ -15,9 +15,6 @@ export class LoginComponent implements OnInit {
   editor = new AuthenticationRequest();
   // validationResult: IValidationResult;
   loading = false;
-  deactivated = false;
-  reactivate = false;
-  redirectUrl: string = null;
   failed = false;
   newPassword = false;
 
@@ -30,17 +27,13 @@ export class LoginComponent implements OnInit {
   ngOnInit(): any {
     this.route.queryParams.subscribe(params => {
       /* tslint:disable:no-string-literal */
-      this.deactivated = params['deactivated'] === 'true';
-      this.reactivate = params['reactivate'] === 'true';
-      this.redirectUrl = params['redirectUrl'];
-      this.newPassword = params['newPassword'];
+      const email = params['email'];
+
+      if (!!email) {
+        this.editor.email = email;
+      }
       /* tslint:enable:no-string-literal */
 
-      if (!this.deactivated || this.reactivate) {
-        this.editor.email = this.authService.latestEmail();
-      }
-
-      this.editor.remember = true;
     });
   }
 

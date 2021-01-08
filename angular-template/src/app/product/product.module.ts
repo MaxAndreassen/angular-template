@@ -11,6 +11,9 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ProductListingComponent } from './components/product-listing/product-listing.component';
 import { OwnedProductsComponent } from './components/owned-products/owned-products.component';
 import { CheckOutModule } from '../check-out/check-out.module';
+import { OwnedProductsByLinkComponent } from './components/owned-products-by-link/owned-products-by-link.component';
+import { OwnedProductsBySecurityContextComponent } from './components/owned-products-by-security-context/owned-products-by-security-context.component';
+import { RequestProductEmailComponent } from './components/request-product-email/request-product-email.component';
 
 @NgModule({
   imports: [
@@ -27,7 +30,10 @@ import { CheckOutModule } from '../check-out/check-out.module';
     ProductSearchComponent,
     ProductViewerComponent,
     ProductListingComponent,
-    OwnedProductsComponent
+    OwnedProductsComponent,
+    OwnedProductsByLinkComponent,
+    OwnedProductsBySecurityContextComponent,
+    RequestProductEmailComponent
   ],
   exports: [
     ProductViewerComponent

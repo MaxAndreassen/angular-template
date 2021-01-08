@@ -123,8 +123,12 @@ export class ProductService {
     return this.http.get<ProductVersionSummary>(url);
   }
 
-  downloadProductVersionAsset(productVersionUuid: string): Observable<any> {
-    const url = `${this.config.apiUrl}product/${productVersionUuid}/asset/download`;
+  downloadProductVersionAsset(productVersionUuid: string, temporaryLinkUuid?: string): Observable<any> {
+    let url = `${this.config.apiUrl}product/${productVersionUuid}/asset/download`;
+
+    if (temporaryLinkUuid) {
+      url += `?assetDownloadLink=${temporaryLinkUuid}`;
+    }
 
     return this.http.get<any>(url, {
       headers: new HttpHeaders(),

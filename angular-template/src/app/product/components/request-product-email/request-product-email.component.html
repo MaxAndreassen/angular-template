@@ -1,0 +1,42 @@
+<div class="pt-4 pt-md-4 mb-5">
+  <div class="card mobile-login">
+    <div class="card-header text-center">
+      <h2 class="mt-1 mb-3">View Purchased Products</h2>
+      <p class="mt-1">If you have previously bought assets as a guest on GameAsset.io, you can use this form to request an email which will
+        allow you to re-download any of any these purchased assets.</p>
+      <p class="mt-1">It is recommended that you <a href="security/login">login to your account</a> using the temporary password you will have been emailed on your initial
+        guest purchase rather than using this method.</p>
+      <p class="mt-1">If you have lost your temporary password you can use the <a href="security/forgotten-password">forgotten password</a> page to recover your account.</p>
+    </div>
+    <form class="m-3">
+      <div class="form-group">
+        <label for="emailAddress"
+               class="required-star">
+          <b>Email Address</b>
+        </label>
+        <input type="email"
+               name="email"
+               class="form-control"
+               id="emailAddress"
+               [(ngModel)]="editor.email">
+      </div>
+      <div>
+        <button type="button"
+                class="w-100 btn btn-primary"
+                [disabled]="loading"
+                (click)="submit()">Request Link</button>
+      </div>
+      <app-loading-spinner *ngIf="loading"></app-loading-spinner>
+      <div *ngIf="!validationResult?.valid && failed && !loading"
+           class="alert alert-danger mt-2"
+           role="alert">
+        <app-validation-summary [errors]="validationResult?.errors"> </app-validation-summary>
+      </div>
+      <div *ngIf="succeeded && !loading"
+           class="alert alert-success mt-2"
+           role="alert">
+        If this email address has any purchase associated with it then an email will have now been sent!
+      </div>
+    </form>
+  </div>
+</div>

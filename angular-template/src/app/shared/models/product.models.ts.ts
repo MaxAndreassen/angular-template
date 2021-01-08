@@ -59,6 +59,7 @@ export class ProductOwnership {
 
 export class ProductQueryRequest {
     ownerUserUuid?: string;
+    temporaryOwnerLinkUuid?: string;
     creatorUserUuid?: string;
     searchTerm?: string;
     page?: number;
@@ -106,4 +107,11 @@ export class AssetContent {
 export class AssetDownloadLink {
     uuid: string;
     transactionIdentifier: string;
+}
+
+export class ProductOwnerLink {
+    uuid: string;
+    createdAt: Date;
+    expiresAt: Date;
+    email: string;
 }

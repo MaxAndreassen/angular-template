@@ -41,7 +41,6 @@ export class AuthService {
   private readonly AUTH_TOKEN_KEY: string = 'auth_token';
   private readonly USER_KEY: string = 'auth_user';
   private readonly EMAIL_KEY: string = 'auth_username';
-  private readonly REMEMBER_KEY: string = 'auth_remember';
 
   private readonly SIDENAV: string = 'side_nav_open';
   private readonly CHARGES_ENABLED: string = 'charges_enabled';
@@ -114,8 +113,6 @@ export class AuthService {
         user.username = res.username;
         user.uuid = res.uuid;
         this.setUser(res);
-        this.setRememberedUser(request);
-
         this.authStateChange$.next(this.securityContext);
         return of(res);
       }));
@@ -176,12 +173,9 @@ export class AuthService {
 
   logout(removeDataOnly: boolean = false): void {
     if (isPlatformBrowser(this.platformId)) {
-      if (localStorage.getItem(this.REMEMBER_KEY) !== 'true') {
-        localStorage.removeItem(this.EMAIL_KEY);
-      }
-
       localStorage.removeItem(this.AUTH_TOKEN_KEY);
       localStorage.removeItem(this.USER_KEY);
+      localStorage.removeItem(this.CHARGES_ENABLED);
     }
 
     if (!removeDataOnly) {
@@ -212,7 +206,6 @@ export class AuthService {
   }
 
   private setRememberedUser(request: AuthenticationRequest): void {
-    localStorage.setItem(this.REMEMBER_KEY, `${request.remember}`);
     localStorage.setItem(this.EMAIL_KEY, request.email);
   }
 

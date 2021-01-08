@@ -1,10 +1,20 @@
 <div class="jumbotron m-0 m-xl-4 text-center bg-white">
-  <h1 class="display-4">Purchased Assets</h1>
-  <p class="lead">You've Purchased {{products?.length}} Assets Listed on GameAssets.io</p>
+  <h1 class="display-4" *ngIf="!loading && !temporaryLinkLoading">{{pageExpired ? 'Link Expired' : 'Purchased Assets'}}</h1>
+  <p class="lead" *ngIf="!pageExpired && !temporaryLinkLoading && !loading">{{temporaryLink?.email}} has {{products?.length}} owned assets on GameAssets.io</p>
+  <p class="lead" *ngIf="pageExpired">If you wish to view your purchases either request a <a href="/product/request-products">new email link</a> or <a href="/security/login">login to your account</a>.</p>
+  <div *ngIf="temporaryLink">
+      <h5>{{expiryVisual}}</h5>
+    </div>
   <hr class="my-4">
-  <app-loading-spinner *ngIf="loading"></app-loading-spinner>
+  <div class="alert alert-warning mt-0 mb-4"
+       *ngIf="temporaryLinkUuid && !pageExpired && !temporaryLinkLoading && !loading"
+       style="border-radius: 0rem 0rem 0.25rem 0.25rem; margin: -1px;">
+    <h5 class="text-center mt-0">You only have limited access by viewing your purchases using a temporary link.</h5>
+    <h5 class="text-center mb-1">In order to gain full access you need to <a href="/security/login">login into your account</a>.</h5>
+  </div>
+  <app-loading-spinner *ngIf="loading || temporaryLinkLoading"></app-loading-spinner>
   <div class="row mx-0 mx-md-4"
-       *ngIf="!loading">
+       *ngIf="!loading && !temporaryLinkLoading && !pageExpired">
     <div *ngFor="let product of products"
          class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4">
 
@@ -13,16 +23,14 @@
              style="background-position: center; background-size: cover; background-repeat: no-repeat; height: 200px;"
              [style.background-image]="!!product?.coverImageUrl ? 'url(' + product?.coverImageUrl + ')' : 'url(assets/user.svg)'">
           <span class="helper"></span>
-          <div class="card-body">
+          <div class="card-body mb-0">
             <h5 class="card-title">{{product?.name}}</h5>
             <p class="card-text"
                style="overflow: hidden; white-space: nowrap;">by {{product?.creatorUserUsername}}</p>
-            <a [href]="'product/view/' + product?.versionUuid"
-               class="btn btn-primary w-100 mb-2">View</a>
             <button (click)="download(product)"
                     class="btn btn-secondary w-100">Download</button>
           </div>
-          <div class="progress mt-2"
+          <div class="progress mt-1 mx-3"
                *ngIf="product?.downloading">
             <div class="progress-bar"
                  role="progressbar"
@@ -31,7 +39,7 @@
                  aria-valuemin="0"
                  aria-valuemax="100">{{product?.downloadPercentage}}%</div>
           </div>
-          <div class="alert alert-danger mt-0 mb-0"
+          <div class="alert alert-danger mt-3 mx-3 mb-0"
                style="border-radius: 0rem 0rem 0.25rem 0.25rem; margin: -1px;"
                *ngIf="product?.downloadFailed">
             <h5 class="text-center mb-0">Download Failed</h5>
