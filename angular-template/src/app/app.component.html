@@ -9,28 +9,68 @@
 
 
 <!-- Toolbar -->
-<div class="toolbar bg-secondary"        style="z-index: 10; width:100%"
+<div class="toolbar bg-secondary"
+     style="z-index: 10; width:100%"
      role="banner">
         <a href="/">
                 <img width="40"
                      alt="Game Asset Logo"
                      src="assets/logo_icon_inverse.png"
-                     style="margin-top: 2px;"
-                />
+                     style="margin-top: 2px;" />
         </a>
         <span> {{securityContext?.user?.username}}</span>
         <div class="spacer"></div>
-        <button *ngIf="!securityContext?.authenticated"
-                type="button"
-                (click)="routeLogin()"
-                class="btn btn-primary mr-2">Log In</button>
-        <button *ngIf="securityContext?.authenticated"
-                type="button"
-                class="btn btn-secondary mr-2">
-                <div *ngIf="securityContext?.authenticated"
-                     style="float: left;margin-top: 2px; color: white;"
-                     (click)="signOut()">Sign Out</div>
-        </button>
+        <a class="mr-4 text-white d-none d-md-block"
+           style="text-decoration: underline"
+           href="product/search">Search Assets</a>
+        <a class="mr-4 text-white d-none d-md-block"
+           style="text-decoration: underline"
+           href="product/request-products">View Purchased Assets</a>
+        <a *ngIf="!securityContext?.authenticated"
+           class="mr-4 text-white d-none d-md-block"
+           style="text-decoration: underline"
+           href="security/login">Login</a>
+        <a *ngIf="securityContext?.authenticated"
+           class="mr-4 text-white d-none d-md-block"
+           style="text-decoration: underline; cursor: pointer;"
+           (click)="signOut()">Sign Out</a>
+
+        <div class="navbar-header"
+             (click)="toggleBurgerNav()">
+                <fa-icon [icon]="burger"
+                         class="mr-3 d-block d-md-none"
+                         style="font-size: 18px"></fa-icon>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="navbar-collapse nav-bar-items"
+             *ngIf="burgerNavOpen"
+             id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                        <li class="my-2">
+                                <a href="product/search"
+                                   style="text-decoration: underline;"
+                                   class="text-white m-2">Search Assets</a>
+                        </li>
+                        <li class="my-2">
+                                <a href="product/request-products"
+                                   style="text-decoration: underline;"
+                                   class="text-white m-2">View Purchased Assets</a>
+                        </li>
+                        <li class="my-2"
+                            *ngIf="securityContext?.authenticated">
+                                <a style="text-decoration: underline; cursor: pointer;"
+                                   class="text-white m-2"
+                                   (click)="signOut()">Sign Out</a>
+                        </li>
+                        <li class="my-2"
+                            *ngIf="!securityContext?.authenticated">
+                                <a href="security/login"
+                                   style="text-decoration: underline;"
+                                   class="text-white m-2">Login</a>
+                        </li>
+                </ul>
+        </div>
 </div>
 
 <div class="content"

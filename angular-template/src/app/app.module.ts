@@ -16,6 +16,7 @@ import { CheckOutModule } from './check-out/check-out.module';
 import { ProductModule } from './product/product.module';
 import { AdminModule } from './admin/admin.module';
 import { StatisticsModule } from './statistics/statistics.module';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { StatisticsModule } from './statistics/statistics.module';
     CheckOutModule,
     ProductModule,
     AdminModule,
-    StatisticsModule
+    StatisticsModule,
+    FontAwesomeModule
   ],
   providers: [
     { provide: APP_CONFIG, useClass: AppConfig },

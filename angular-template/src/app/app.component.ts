@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { AuthService } from './shared/services/auth/auth.service';
 import { isPlatformServer } from '@angular/common';
 import { Router } from '@angular/router';
+import { faToggleOn, faToggleOff, faSearch, faBars } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-root',
@@ -13,6 +14,11 @@ import { Router } from '@angular/router';
 export class AppComponent implements OnInit {
   title = 'angular-template';
   sideBarOpen = true;
+  toggleOn = faToggleOn;
+  searchIcon = faSearch;
+  burger = faBars;
+
+  burgerNavOpen = false;
 
   securityContext: SecurityContext = new SecurityContext();
 
@@ -44,5 +50,10 @@ export class AppComponent implements OnInit {
 
   signOut(): any {
     this.authService.logout();
+    this.burgerNavOpen = false;
+  }
+
+  toggleBurgerNav(): any {
+    this.burgerNavOpen = !this.burgerNavOpen;
   }
 }
