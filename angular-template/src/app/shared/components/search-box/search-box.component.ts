@@ -18,7 +18,6 @@ export class SearchBoxComponent implements OnInit {
   }
 
   search(): any {
-    this.router.navigateByUrl(`${this.route}?term=${this.searchTerm}`);
+    this.router.navigateByUrl(`${this.route}term=${this.searchTerm}`);
   }
-
 }

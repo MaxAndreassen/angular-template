@@ -4,7 +4,6 @@ import { CheckOutComponent } from './components/check-out/check-out.component';
 
 
 const routes: Routes = [
-  { path: ':productUuid', component: CheckOutComponent },
 ];
 
 @NgModule({

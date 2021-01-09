@@ -28,6 +28,7 @@ export class ProductViewerComponent implements OnInit {
   productVersion: ProductVersionSummary = new ProductVersionSummary();
   user: UserEditor = new UserEditor();
   extraProducts: ProductSummary[] = [];
+  similarProducts: ProductSummary[] = [];
   files: FileSummary[] = [];
   assetContent: AssetContent = new AssetContent();
 
@@ -87,6 +88,10 @@ export class ProductViewerComponent implements OnInit {
       .subscribe(result => {
         this.productVersion = result;
 
+        if (!result) {
+          return;
+        }
+
         this.userService
           .getUser(result.creatorUserUuid)
           .subscribe(user => {
@@ -94,9 +99,19 @@ export class ProductViewerComponent implements OnInit {
           });
 
         this.productService
-          .listApprovedProducts({ creatorUserUuid: result.creatorUserUuid })
+          .listApprovedProducts({ creatorUserUuid: result.creatorUserUuid, excludeUuid: this.productVersion.productUuid })
           .subscribe(extraProducts => {
             this.extraProducts = extraProducts;
+          });
+
+        this.productService
+          .listApprovedProducts({
+            genre: this.productVersion.genreUuid,
+            category: this.productVersion.categoryUuid,
+            excludeUuid: this.productVersion.productUuid
+          })
+          .subscribe(similarProducts => {
+            this.similarProducts = similarProducts;
           });
 
         this.productService

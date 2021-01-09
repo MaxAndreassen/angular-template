@@ -10,6 +10,10 @@ import { ValidationResult, IValidationResult } from '../../../shared/models/vali
 import { HttpEventType } from '@angular/common/http';
 import { PaymentService } from '../../../shared/services/payment/payment.service';
 import { Account } from '../../../shared/models/payment.models';
+import { ProductCategoryService } from '../../../shared/services/product-categories/product-category.service';
+import { ProductGenreService } from '../../../shared/services/product-genres/product-genre.service';
+import { ProductGenre } from '../../../shared/models/product-genre.models';
+import { ProductCategory } from '../../../shared/models/product-category.models';
 
 @Component({
   selector: 'app-product-editor',
@@ -37,12 +41,20 @@ export class ProductEditorComponent implements OnInit {
 
   uploadPercentage = 0;
 
+  genres: ProductGenre[] = [];
+  genresLoading = false;
+
+  categories: ProductCategory[] = [];
+  categoriesLoading = false;
+
   constructor(
     private productService: ProductService,
     private router: Router,
     private route: ActivatedRoute,
     private authService: AuthService,
-    private paymentService: PaymentService
+    private paymentService: PaymentService,
+    private productCategoryService: ProductCategoryService,
+    private productGenreService: ProductGenreService
   ) { }
 
   ngOnInit(): any {
@@ -72,6 +84,24 @@ export class ProductEditorComponent implements OnInit {
           if (!this.account.chargesEnabled) {
             this.editor.priceInPounds = 0;
           }
+        });
+
+      this.categoriesLoading = true;
+
+      this.productCategoryService
+        .listProductCategories()
+        .pipe(finalize(() => this.categoriesLoading = false))
+        .subscribe(res => {
+          this.categories = res;
+        });
+
+      this.genresLoading = true;
+
+      this.productGenreService
+        .listProductGenres()
+        .pipe(finalize(() => this.genresLoading = false))
+        .subscribe(res => {
+          this.genres = res;
         });
 
       if (!this.creating) {

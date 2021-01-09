@@ -3,7 +3,7 @@
          style="width:40px"
          class="d-none d-sm-block mx-auto">
     <h1 class="mb-3">Submissions</h1>
-    <app-search-box [searchTerm]="queryParams?.searchTerm" route="admin/submissions"></app-search-box>
+    <app-search-box [searchTerm]="queryParams?.searchTerm" route="admin/submissions?"></app-search-box>
     <hr class="my-4">
     <app-loading-spinner *ngIf="loading"></app-loading-spinner>
     <h2 class="text-center my-5" *ngIf="!loading && !(products?.length > 0)"> No Oustanding Assets To Review</h2>

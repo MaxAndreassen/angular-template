@@ -8,6 +8,11 @@ export class ProductVersionSummary {
     version: number;
     status: number;
     statusName: string;
+    genre: string;
+    category: string;
+    genreUuid: string;
+    categoryUuid: string;
+    keyWords: string;
 }
 
 export class ProductSummary {
@@ -38,6 +43,9 @@ export class ProductFileSummary {
 
 export class ProductVersionEditor {
     priceInPounds: number;
+    genreUuid: string;
+    categoryUuid: string;
+    keyWords: string;
     name: string;
     description: string;
     uuid: string;
@@ -64,6 +72,11 @@ export class ProductQueryRequest {
     searchTerm?: string;
     page?: number;
     status?: number;
+    minimumPrice?: number;
+    maximumPrice?: number;
+    genre?: string;
+    category?: string;
+    excludeUuid?: string;
 }
 
 export class ProductFileQueryRequest {

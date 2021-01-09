@@ -2,11 +2,83 @@
   <img src="assets/logo_icon.png"
        style="width:40px"
        class="d-none d-sm-block mx-auto">
-  <h1 class="mb-3">Find The Perfect Asset</h1>
-  <app-search-box [searchTerm]="queryParams?.searchTerm" route="product/search"></app-search-box>
+  <h1 class="mb-4 mb-md-3">Find The Perfect Asset</h1>
+  <div class="mb-4">
+    <app-search-box [searchTerm]="queryParams?.searchTerm"
+                    [route]="'product/search?maximumPrice=' + (!queryParams?.maximumPrice ? '' : queryParams?.maximumPrice) + '&minimumPrice=' + (!queryParams?.minimumPrice ? '0' : queryParams?.minimumPrice) +'&genre=' + (!queryParams?.genre ? '' : queryParams?.genre) + '&category=' + (!queryParams?.category ? '' : queryParams?.category) + '&'"></app-search-box>
+  </div>
+  <div (click)="toggleFilters()"
+       style="width: 136px"
+       class="mx-auto d-block mb-4">
+    <h6 class="text-left">Advanced Filters
+      <fa-icon [icon]="openIcon"
+               *ngIf="!filtersOpen"
+               style="font-size: 13px;"></fa-icon>
+      <fa-icon [icon]="closeIcon"
+               *ngIf="filtersOpen"
+               style="font-size: 13px;"></fa-icon>
+    </h6>
+  </div>
+  <div *ngIf="filtersOpen">
+    <div class="row mt-3">
+      <div class="form-group col-12 col-sm-6 col-md-4 col-lg-3 mb-3 text-left">
+        <label for="genre">
+          <b>Genre</b>
+        </label>
+        <ng-select [(ngModel)]="queryParams.genre"
+                   name="genre">
+          <ng-option *ngFor="let genre of genres"
+                     [value]="genre.uuid">{{genre.name}}</ng-option>
+        </ng-select>
+      </div>
+      <div class="form-group col-12 col-sm-6 col-md-4 col-lg-3 mb-3 text-left">
+        <label for="category">
+          <b>Category</b>
+        </label>
+        <ng-select [(ngModel)]="queryParams.category"
+                   name="category">
+          <ng-option *ngFor="let category of categories"
+                     [value]="category.uuid">{{category.name}}</ng-option>
+        </ng-select>
+      </div>
+      <div class="form-group col-12 col-sm-6 col-md-4 col-lg-3 mb-3 text-left">
+        <label for="minPrice">
+          <b>Min Price</b>
+        </label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <div class="input-group-text">£</div>
+          </div>
+          <input [(ngModel)]="queryParams.minimumPrice"
+                 name="minPrice"
+                 class="form-control"
+                 type="number">
+        </div>
+      </div>
+      <div class="form-group col-12 col-sm-6 col-md-4 col-lg-3 mb-3 text-left">
+        <label for="maxPrice">
+          <b>Max Price</b>
+        </label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <div class="input-group-text">£</div>
+          </div>
+          <input [(ngModel)]="queryParams.maximumPrice"
+                 name="maxPrice"
+                 class="form-control"
+                 type="number">
+        </div>
+      </div>
+    </div>
+    <button class="btn btn-primary d-block d-md-none w-100 mt-3"
+            (click)="refresh()">Apply Filters</button>
+    <button class="btn btn-primary d-none d-md-block mx-auto mt-3"
+            (click)="refresh()">Apply Filters</button>
+  </div>
   <hr class="my-4">
   <app-loading-spinner *ngIf="loading"></app-loading-spinner>
-  <h2 class="text-center my-5" *ngIf="!loading && !(products?.length > 0)"> No Assets Found</h2>
+  <h2 class="text-center my-5"
+      *ngIf="!loading && !(products?.length > 0)"> No Assets Found</h2>
   <div class="row mx-0 mx-md-4"
        *ngIf="!loading">
     <div *ngFor="let product of products"

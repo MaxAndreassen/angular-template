@@ -59,6 +59,18 @@ export class ProductService {
       formData.append('existingAssetZipUuid', editor.existingAssetZipUuid);
     }
 
+    if (!!editor.genreUuid) {
+      formData.append('genreUuid', editor.genreUuid);
+    }
+
+    if (!!editor.categoryUuid) {
+      formData.append('categoryUuid', editor.categoryUuid);
+    }
+
+    if (!!editor.keyWords) {
+      formData.append('keyWords', editor.keyWords);
+    }
+
     if (!!editor.marketingMedia) {
       editor.marketingMedia.forEach(file => {
         if (!!file) {
