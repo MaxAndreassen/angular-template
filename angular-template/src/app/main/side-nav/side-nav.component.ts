@@ -66,7 +66,7 @@ export class SideNavComponent implements OnInit {
     },
     {
       url: 'stats/financials/payout',
-      title: 'Payout',
+      title: 'Payouts',
       icon: faPoundSign,
       chargesRequired: true
     }
@@ -83,7 +83,7 @@ export class SideNavComponent implements OnInit {
   buyerNavItems: DashboardSideNavItem[] = [
     {
       url: 'product/owned',
-      title: 'Purchased',
+      title: 'Purchases',
       icon: faBox,
     }
   ];
