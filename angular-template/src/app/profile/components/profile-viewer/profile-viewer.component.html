@@ -13,18 +13,19 @@
         <app-loading-spinner *ngIf="loading"></app-loading-spinner>
         <!--<app-loading-spinner *ngIf="loading"></app-loading-spinner>-->
         <div *ngIf="!loading">
-          <h1 class="name allergen-directory-title">
-            {{data?.firstName}} {{data?.lastName}}
+          <h3 class="name mt-2">
+              {{data?.username}}
             <!--<app-verified-user-indicator *ngIf="model?.influencer"></app-verified-user-indicator>-->
-          </h1>
+          </h3>
           <p class="text-center text-muted">
-            {{data?.username}}
+            joined 03/04/2020
             <!--<span *ngIf="model.emailAddress">| {{model.emailAddress}}</span>-->
           </p>
+          <hr>
   
           <p class="description">{{data?.bio}}</p>
         </div>
-        <h3 class="mb-4 mx-1 text-center">Assets</h3>
+        <h5 class="mb-4 mx-1 mt-2 text-center">Assets Created By {{data?.username}}</h5>
         <div class="row">
             <div *ngFor="let product of products"
                  class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4 mx-auto mx-sm-0">

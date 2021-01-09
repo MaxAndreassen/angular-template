@@ -29,6 +29,7 @@ export class ProfileEditorComponent implements OnInit {
 
   firstName: string;
   lastName: string;
+  username: string;
 
   securityContext: SecurityContext;
 
@@ -66,6 +67,7 @@ export class ProfileEditorComponent implements OnInit {
         this.editor = result;
         this.firstName = this.editor.firstName;
         this.lastName = this.editor.lastName;
+        this.username = this.editor.username;
       });
   }
 
@@ -83,6 +85,7 @@ export class ProfileEditorComponent implements OnInit {
         this.editor = result;
         this.firstName = this.editor.firstName;
         this.lastName = this.editor.lastName;
+        this.username = this.editor.username;
       }, err => {
         if (err.status && err.status === 412) {
           this.validationResult = err.error;

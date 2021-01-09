@@ -9,16 +9,19 @@
                alt="Profile picture"
                [style.background-image]="editor?.profileUrl ? 'url(' + editor?.profileUrl + ')' : 'url(assets/user.svg)'"></div>
         </div>
-        <h6 class="text-center mt-2"><span class="badge badge-success" *ngIf="editor?.isEmailVerified">Email Verified</span></h6>
+        <h6 class="text-center mt-2">
+          <span class="badge badge-success"
+                *ngIf="editor?.isEmailVerified">Email Verified</span>
+        </h6>
       </div>
       <!--<app-loading-spinner *ngIf="loading"></app-loading-spinner>-->
       <div *ngIf="!initialPageLoading">
-        <h1 class="name allergen-directory-title">
+        <h3 class="name">
           {{firstName}} {{lastName}}
           <!--<app-verified-user-indicator *ngIf="model?.influencer"></app-verified-user-indicator>-->
-        </h1>
+        </h3>
         <p class="text-center text-muted">
-          {{editor?.username}}
+          {{username}}
           <!--<span *ngIf="model.emailAddress">| {{model.emailAddress}}</span>-->
         </p>
       </div>
@@ -26,7 +29,8 @@
 
     <app-loading-spinner *ngIf="initialPageLoading"></app-loading-spinner>
 
-    <div class="alert alert-warning mt-2 mb-0 w-100" *ngIf="!editor?.isEmailVerified">
+    <div class="alert alert-warning mt-2 mb-0 w-100"
+         *ngIf="!editor?.isEmailVerified">
       <h3 class="text-center"> Verify Account </h3>
       <p class="text-center"
          *ngIf="!emailSending && emailSent"> Verification Email Sent. </p>
@@ -70,6 +74,16 @@
                      class="form-control"
                      id="lastName"
                      [(ngModel)]="editor.lastName">
+            </div>
+            <div class="form-group col-12">
+              <label for="username">
+                <b>Username</b>
+              </label>
+              <input type="text"
+                     name="username"
+                     class="form-control"
+                     id="username"
+                     [(ngModel)]="editor.username">
             </div>
             <div class="form-group col-12">
               <app-file-uploader *ngIf="!loading"

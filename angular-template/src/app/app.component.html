@@ -23,7 +23,8 @@
         <a class="mr-4 text-white d-none d-md-block"
            style="text-decoration: underline"
            href="product/search">Search Assets</a>
-        <a class="mr-4 text-white d-none d-md-block"
+        <a *ngIf="!securityContext?.authenticated"
+           class="mr-4 text-white d-none d-md-block"
            style="text-decoration: underline"
            href="product/request-products">View Purchased Assets</a>
         <a *ngIf="!securityContext?.authenticated"
@@ -52,7 +53,8 @@
                                    style="text-decoration: underline;"
                                    class="text-white m-2">Search Assets</a>
                         </li>
-                        <li class="my-2">
+                        <li *ngIf="!securityContext?.authenticated"
+                            class="my-2">
                                 <a href="product/request-products"
                                    style="text-decoration: underline;"
                                    class="text-white m-2">View Purchased Assets</a>
