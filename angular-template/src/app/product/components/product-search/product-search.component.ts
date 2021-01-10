@@ -96,7 +96,7 @@ export class ProductSearchComponent implements OnInit {
         .listApprovedProducts(this.queryParams)
         .pipe(finalize(() => this.loading = false))
         .subscribe(res => {
-          this.products = res;
+          this.products = res.items;
         });
     });
   }

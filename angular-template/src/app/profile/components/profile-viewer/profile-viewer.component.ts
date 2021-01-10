@@ -8,7 +8,7 @@ import { SecurityContext } from '../../../shared/models/auth.models';
 import { finalize } from 'rxjs/operators';
 import { PaymentService } from '../../../shared/services/payment/payment.service';
 import { PaymentIntentSecret } from '../../../shared/models/payment.models';
-import { ProductVersionSummary, ProductSummary } from '../../../shared/models/product.models.ts';
+import { ProductVersionSummary, ProductSummary, ProductQueryRequest } from '../../../shared/models/product.models.ts';
 import { ProductService } from '../../../shared/services/product/product.service';
 
 @Component({
@@ -24,6 +24,11 @@ export class ProfileViewerComponent implements OnInit {
 
   products: ProductSummary[] = [];
 
+  queryParams: ProductQueryRequest = new ProductQueryRequest();
+
+  currentPage = 0;
+  total = 0;
+
   constructor(
     @Inject(PLATFORM_ID) private platformId: any,
     private userService: UserService,
@@ -38,24 +43,41 @@ export class ProfileViewerComponent implements OnInit {
       return;
     }
 
-    this.route.paramMap.subscribe(params => {
-      this.userUuid = params.get('uuid');
+    this.route.queryParamMap.subscribe(queryParams => {
+      this.queryParams.page = +queryParams.get('page');
+      this.currentPage = +queryParams.get('page');
 
-      this.loading = true;
+      this.route.paramMap.subscribe(params => {
+        this.userUuid = params.get('uuid');
 
-      this.userService
-        .getUser(this.userUuid)
-        .pipe(finalize(() => this.loading = false))
-        .subscribe(result => {
-          this.data = result;
-        });
+        this.loading = true;
 
-      this.productService
-        .listApprovedProducts({ creatorUserUuid: this.userUuid })
-        .subscribe(extraProducts => {
-          this.products = extraProducts;
-        });
+        this.userService
+          .getUser(this.userUuid)
+          .pipe(finalize(() => this.loading = false))
+          .subscribe(result => {
+            this.data = result;
+            this.data.createdAt = new Date(this.data.createdAt);
+          });
 
+        this.queryParams.creatorUserUuid = this.userUuid;
+
+        this.productService
+          .listApprovedProducts(this.queryParams)
+          .subscribe(extraProducts => {
+            this.products = extraProducts.items;
+            this.total = extraProducts.totalItems;
+          });
+
+      });
     });
+  }
+
+  prev(): any {
+    this.router.navigateByUrl(`profile/${this.userUuid}?page=${this.currentPage - 1}`);
+  }
+
+  next(): any {
+    this.router.navigateByUrl(`profile/${this.userUuid}?page=${this.currentPage + 1}`);
   }
 }

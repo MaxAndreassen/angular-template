@@ -1,16 +1,27 @@
 <div class="jumbotron m-0 m-xl-4 text-center bg-white">
-  <h1 class="display-4" *ngIf="!loading && !temporaryLinkLoading">{{pageExpired ? 'Link Expired' : 'Purchased Assets'}}</h1>
-  <p class="lead" *ngIf="!pageExpired && !temporaryLinkLoading && !loading">{{temporaryLink?.email}} has {{products?.length}} owned assets on GameAssets.io</p>
-  <p class="lead" *ngIf="pageExpired">If you wish to view your purchases either request a <a href="/product/request-products">new email link</a> or <a href="/security/login">login to your account</a>.</p>
+  <h1 class=""
+      *ngIf="!loading && !temporaryLinkLoading">{{pageExpired ? 'Link Expired' : 'My Assets'}}</h1>
+  <p class="lead"
+     *ngIf="!pageExpired && !temporaryLinkLoading && !loading">{{temporaryLink?.email}} has {{total}} owned assets on GameAssets.io</p>
+  <p class="lead"
+     *ngIf="pageExpired">If you wish to view your purchases either request a
+    <a href="/product/request-products">new email link</a> or
+    <a href="/security/login">login to your account</a>.</p>
   <div *ngIf="temporaryLink">
-      <h5>{{expiryVisual}}</h5>
-    </div>
+    <h5>{{expiryVisual}}</h5>
+  </div>
+  <div class="mb-4">
+    <app-search-box [searchTerm]="queryParams?.searchTerm"
+                    placeholder="Search your assets..."
+                    [route]="routeBase + '?'"></app-search-box>
+  </div>
   <hr class="my-4">
   <div class="alert alert-warning mt-0 mb-4"
        *ngIf="temporaryLinkUuid && !pageExpired && !temporaryLinkLoading && !loading"
        style="border-radius: 0rem 0rem 0.25rem 0.25rem; margin: -1px;">
     <h5 class="text-center mt-0">You only have limited access by viewing your purchases using a temporary link.</h5>
-    <h5 class="text-center mb-1">In order to gain full access you need to <a href="/security/login">login into your account</a>.</h5>
+    <h5 class="text-center mb-1">In order to gain full access you need to
+      <a href="/security/login">login into your account</a>.</h5>
   </div>
   <app-loading-spinner *ngIf="loading || temporaryLinkLoading"></app-loading-spinner>
   <div class="row mx-0 mx-md-4"
@@ -48,3 +59,24 @@
 
       </div>
     </div>
+  </div>
+  <nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+      <li class="page-item">
+        <button class="page-link px-4 disabled-link"
+                [class.disabled-link]="currentPage === 0"
+                [disabled]="currentPage === 0"
+                (click)="prev()">Prev</button>
+      </li>
+      <li class="page-item active">
+        <a class="page-link">{{currentPage}}</a>
+      </li>
+      <li class="page-item">
+        <button class="page-link px-4"
+                [class.disabled-link]="!(products?.length > 0)"
+                [disabled]="!(products?.length > 0)"
+                (click)="next()">Next</button>
+      </li>
+    </ul>
+  </nav>
+</div>

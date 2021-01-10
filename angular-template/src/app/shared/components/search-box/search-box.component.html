@@ -3,7 +3,7 @@
          name="search"
          [(ngModel)]="searchTerm"
          class="form-control"
-         placeholder="Search for assets..."
+         [placeholder]="placeholder"
          (keyup.enter)="search()">
   <div class="input-group-append">
     <button class="btn btn-outline-secondary"

@@ -12,6 +12,7 @@ import {
   AssetContent
 } from '../../models/product.models.ts';
 import { Observable } from 'rxjs';
+import { PaginatedList } from '../../models/base.models';
 
 @Injectable({
   providedIn: 'root'
@@ -94,14 +95,14 @@ export class ProductService {
     });
   }
 
-  listProducts(queryParams: ProductQueryRequest): Observable<ProductSummary[]> {
+  listProducts(queryParams: ProductQueryRequest): Observable<PaginatedList<ProductSummary>> {
     const url = `${this.config.apiUrl}product/list`;
-    return this.http.post<ProductSummary[]>(url, queryParams);
+    return this.http.post<PaginatedList<ProductSummary>>(url, queryParams);
   }
 
-  listApprovedProducts(queryParams: ProductQueryRequest): Observable<ProductSummary[]> {
+  listApprovedProducts(queryParams: ProductQueryRequest): Observable<PaginatedList<ProductSummary>> {
     const url = `${this.config.apiUrl}product/list/approved`;
-    return this.http.post<ProductSummary[]>(url, queryParams);
+    return this.http.post<PaginatedList<ProductSummary>>(url, queryParams);
   }
 
   listFilesForProduct(productVersionUuid: string, includeAsset?: boolean): Observable<ProductFileSummary[]> {

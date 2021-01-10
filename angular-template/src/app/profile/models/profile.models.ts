@@ -1,5 +1,6 @@
 export class UserEditor {
     uuid: string;
+    createdAt: Date;
     firstName: string;
     lastName: string;
     username: string;

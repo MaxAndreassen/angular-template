@@ -87,6 +87,7 @@ export class ProductViewerComponent implements OnInit {
       .pipe(finalize(() => this.loading = false))
       .subscribe(result => {
         this.productVersion = result;
+        this.productVersion.updatedAt = new Date(this.productVersion.updatedAt);
 
         if (!result) {
           return;
@@ -101,7 +102,7 @@ export class ProductViewerComponent implements OnInit {
         this.productService
           .listApprovedProducts({ creatorUserUuid: result.creatorUserUuid, excludeUuid: this.productVersion.productUuid })
           .subscribe(extraProducts => {
-            this.extraProducts = extraProducts;
+            this.extraProducts = extraProducts.items;
           });
 
         this.productService
@@ -111,7 +112,7 @@ export class ProductViewerComponent implements OnInit {
             excludeUuid: this.productVersion.productUuid
           })
           .subscribe(similarProducts => {
-            this.similarProducts = similarProducts;
+            this.similarProducts = similarProducts.items;
           });
 
         this.productService

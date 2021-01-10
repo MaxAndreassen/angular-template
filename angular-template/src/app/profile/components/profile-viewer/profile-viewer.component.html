@@ -1,41 +1,62 @@
 <div class="user-profile-page">
-    <div class="banner"></div>
-    <div class="container">
-      <div class="container-summary card card-body mt-4 mb-md-4">
-        <div class="card-content">
-          <!--<app-sanitized-image class="uploader-image profile-photo" *ngIf="!!profilePictureUrl" [chosenUrl]="profilePictureUrl"></app-sanitized-image>!-->
-          <div class="profile-picture shadow-sm">
-            <div class="uploader-image"
-                 alt="Profile picture"
-                 [style.background-image]="data?.profileUrl ? 'url(' + data?.profileUrl + ')' : 'url(assets/user.svg)'"></div>
-          </div>
+  <div class="banner"></div>
+  <div class="container">
+    <div class="container-summary card card-body mt-4 mb-md-4">
+      <div class="card-content">
+        <!--<app-sanitized-image class="uploader-image profile-photo" *ngIf="!!profilePictureUrl" [chosenUrl]="profilePictureUrl"></app-sanitized-image>!-->
+        <div class="profile-picture shadow-sm">
+          <div class="uploader-image"
+               alt="Profile picture"
+               [style.background-image]="data?.profileUrl ? 'url(' + data?.profileUrl + ')' : 'url(assets/user.svg)'"></div>
         </div>
-        <app-loading-spinner *ngIf="loading"></app-loading-spinner>
-        <!--<app-loading-spinner *ngIf="loading"></app-loading-spinner>-->
-        <div *ngIf="!loading">
-          <h3 class="name mt-2">
-              {{data?.username}}
-            <!--<app-verified-user-indicator *ngIf="model?.influencer"></app-verified-user-indicator>-->
-          </h3>
-          <p class="text-center text-muted">
-            joined 03/04/2020
-            <!--<span *ngIf="model.emailAddress">| {{model.emailAddress}}</span>-->
-          </p>
-          <hr>
-  
-          <p class="description">{{data?.bio}}</p>
-        </div>
-        <h5 class="mb-4 mx-1 mt-2 text-center">Assets Created By {{data?.username}}</h5>
-        <div class="row">
-            <div *ngFor="let product of products"
-                 class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4 mx-auto mx-sm-0">
-              <app-card [description]="product?.name"
-                        [title]="product?.priceInPounds == 0 ? 'FREE' : '£' + product?.priceInPounds"
-                        [linkUrl]="'product/view/' + product?.versionUuid"
-                        [pictureUrl]="product?.coverImageUrl"
-                        buttonText="View"></app-card>
-            </div>
-          </div>
       </div>
+      <app-loading-spinner *ngIf="loading"></app-loading-spinner>
+      <!--<app-loading-spinner *ngIf="loading"></app-loading-spinner>-->
+      <div *ngIf="!loading">
+        <h3 class="name mt-2">
+          {{data?.username}}
+          <!--<app-verified-user-indicator *ngIf="model?.influencer"></app-verified-user-indicator>-->
+        </h3>
+        <p class="text-center text-muted">
+          joined {{data?.createdAt?.toLocaleDateString()}}
+          <!--<span *ngIf="model.emailAddress">| {{model.emailAddress}}</span>-->
+        </p>
+        <hr>
+
+        <p class="description">{{data?.bio}}</p>
+      </div>
+      <h5 class="mb-4 mx-1 mt-2 text-center">{{total}} Assets Created By {{data?.username}}</h5>
+      <h2 class="text-center mt-4 mb-5"
+          *ngIf="!loading && !(products?.length > 0)"> No Assets Found</h2>
+      <div class="row">
+        <div *ngFor="let product of products"
+             class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4 mx-auto mx-sm-0">
+          <app-card [description]="product?.name"
+                    [title]="product?.priceInPounds == 0 ? 'FREE' : '£' + product?.priceInPounds"
+                    [linkUrl]="'product/view/' + product?.versionUuid"
+                    [pictureUrl]="product?.coverImageUrl"
+                    buttonText="View"></app-card>
+        </div>
+      </div>
+      <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+          <li class="page-item">
+            <button class="page-link px-4 disabled-link"
+                    [class.disabled-link]="currentPage === 0"
+                    [disabled]="currentPage === 0"
+                    (click)="prev()">Prev</button>
+          </li>
+          <li class="page-item active">
+            <a class="page-link">{{currentPage}}</a>
+          </li>
+          <li class="page-item">
+            <button class="page-link px-4"
+                    [class.disabled-link]="!(products?.length > 0)"
+                    [disabled]="!(products?.length > 0)"
+                    (click)="next()">Next</button>
+          </li>
+        </ul>
+      </nav>
     </div>
   </div>
+</div>

@@ -2,7 +2,7 @@ import { Component, OnInit, PLATFORM_ID, Inject, Input, OnDestroy } from '@angul
 import { ProductQueryRequest, ProductSummary, ProductVersionSummary, ProductOwnerLink } from '../../../shared/models/product.models.ts';
 import { SecurityContext } from '../../../shared/models/auth.models';
 import { isPlatformServer } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../../shared/services/auth/auth.service';
 import { ProductService } from '../../../shared/services/product/product.service';
 import { finalize } from 'rxjs/operators';
@@ -24,6 +24,7 @@ export class OwnedProductsComponent implements OnInit, OnDestroy {
 
   @Input() userUuid: string;
   @Input() temporaryLinkUuid: string;
+  @Input() routeBase: string;
 
   temporaryLink: ProductOwnerLink;
   temporaryLinkLoading = false;
@@ -31,12 +32,17 @@ export class OwnedProductsComponent implements OnInit, OnDestroy {
   expiryVisual: string;
   expiryInterval: any;
 
+  currentPage = 0;
+
+  total = 0;
+
   constructor(
     private productService: ProductService,
     private authService: AuthService,
     private ownedProductsService: OwnedProductsService,
     @Inject(PLATFORM_ID) private platformId: any,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit(): any {
@@ -44,38 +50,45 @@ export class OwnedProductsComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.loading = true;
+    this.route.queryParamMap.subscribe(params => {
+      this.queryParams.searchTerm = params.get('term');
+      this.currentPage = +params.get('page');
+      this.queryParams.page = this.currentPage;
 
-    if (this.userUuid || this.temporaryLinkUuid) {
-      this.queryParams.ownerUserUuid = this.userUuid;
-      this.queryParams.temporaryOwnerLinkUuid = this.temporaryLinkUuid;
+      this.loading = true;
 
-      this.productService
-        .listApprovedProducts(this.queryParams)
-        .pipe(finalize(() => this.loading = false))
-        .subscribe(res => {
-          this.products = res;
-        });
+      if (this.userUuid || this.temporaryLinkUuid) {
+        this.queryParams.ownerUserUuid = this.userUuid;
+        this.queryParams.temporaryOwnerLinkUuid = this.temporaryLinkUuid;
 
-      if (this.temporaryLinkUuid) {
-        this.temporaryLinkLoading = true;
-
-        this.ownedProductsService
-          .getProductOwnerLink(this.temporaryLinkUuid)
-          .pipe(finalize(() => this.temporaryLinkLoading = false))
+        this.productService
+          .listApprovedProducts(this.queryParams)
+          .pipe(finalize(() => this.loading = false))
           .subscribe(res => {
-            this.temporaryLink = res;
-
-            if (new Date(res.expiresAt) < new Date()) {
-              this.pageExpired = true;
-            } else {
-              this.pageExpired = false;
-            }
-
-            this.expiryCountDown(res.expiresAt);
+            this.products = res.items;
+            this.total = res.totalItems;
           });
+
+        if (this.temporaryLinkUuid) {
+          this.temporaryLinkLoading = true;
+
+          this.ownedProductsService
+            .getProductOwnerLink(this.temporaryLinkUuid)
+            .pipe(finalize(() => this.temporaryLinkLoading = false))
+            .subscribe(res => {
+              this.temporaryLink = res;
+
+              if (new Date(res.expiresAt) < new Date()) {
+                this.pageExpired = true;
+              } else {
+                this.pageExpired = false;
+              }
+
+              this.expiryCountDown(res.expiresAt);
+            });
+        }
       }
-    }
+    });
   }
 
   ngOnDestroy(): any {
@@ -140,5 +153,21 @@ export class OwnedProductsComponent implements OnInit, OnDestroy {
     if (distance < 0) {
       this.expiryVisual = '';
     }
+  }
+
+  prev(): any {
+    if (!this.queryParams.searchTerm) {
+      this.queryParams.searchTerm = '';
+    }
+
+    this.router.navigateByUrl(`${this.routeBase}?term=${this.queryParams.searchTerm}&page=${this.currentPage - 1}`);
+  }
+
+  next(): any {
+    if (!this.queryParams.searchTerm) {
+      this.queryParams.searchTerm = '';
+    }
+
+    this.router.navigateByUrl(`${this.routeBase}?term=${this.queryParams.searchTerm}&page=${this.currentPage + 1}`);
   }
 }

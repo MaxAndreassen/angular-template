@@ -6,19 +6,15 @@
       <thead>
         <tr>
           <th scope="col">Type</th>
-          <th scope="col">Amount</th>
           <th scope="col">Date</th>
-          <th scope="col">Action</th>
+          <th scope="col">Amount</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let transfer of transfers">
           <th scope="row">Sale</th>
-          <td>£{{transfer?.amount / 100}}</td>
           <td style="white-space: nowrap">{{transfer?.createdAt}}</td>
-          <td>
-            <a class="w-100">View</a>
-          </td>
+          <td>£{{transfer?.amount / 100}}</td>
         </tr>
       </tbody>
     </table>

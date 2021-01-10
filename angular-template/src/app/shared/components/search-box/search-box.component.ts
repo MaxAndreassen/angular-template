@@ -12,9 +12,14 @@ export class SearchBoxComponent implements OnInit {
 
   @Input() route: string;
 
+  @Input() placeholder: string;
+
   constructor(private router: Router) { }
 
   ngOnInit(): any {
+    if (!this.placeholder) {
+      this.placeholder = 'search for assets...';
+    }
   }
 
   search(): any {

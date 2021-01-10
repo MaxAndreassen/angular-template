@@ -1,4 +1,5 @@
 export class ProductVersionSummary {
+    updatedAt: Date;
     priceInPounds: number;
     productUuid: string;
     name: string;
