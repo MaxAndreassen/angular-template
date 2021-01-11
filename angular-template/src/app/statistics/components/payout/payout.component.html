@@ -15,7 +15,7 @@
             </div>
             <div class="col-5">
               <h6 class="text-right mb-md-1"
-                  style="white-space: nowrap;">£{{balance / 100}}</h6>
+                  style="white-space: nowrap;">{{currencySymbol}}{{balance / 100}}</h6>
             </div>
           </div>
           <div *ngIf="pendingBalance != null"
@@ -26,7 +26,7 @@
             </div>
             <div class="col-5">
               <h6 class="text-right mb-md-1"
-                  style="white-space: nowrap;">£{{pendingBalance / 100}}</h6>
+                  style="white-space: nowrap;">{{currencySymbol}}{{pendingBalance / 100}}</h6>
             </div>
           </div>
         </div>
@@ -35,10 +35,15 @@
         <app-loading-spinner *ngIf="payoutRequestLoading"></app-loading-spinner>
         <button class="btn btn-primary d-block wide-button-small"
                 *ngIf="!payoutRequestLoading && !balanceLoading"
+                (click)="payoutRequest()"
                 [disabled]="balance < 2500 || payoutRequestSubmitted">Request Payout</button>
         <p *ngIf="balance < 2500 && !balanceLoading"
            class="text-left mb-0 mt-1"
-           style="font-size: 10px"> £25 Minimum Available Balance Required To Request Payout</p>
+           style="font-size: 10px"> {{currencySymbol}}25 Minimum Available Balance Required To Request Payout</p>
+           <div class="text-left mb-0 mt-1 alert alert-danger w-100"
+           *ngIf="payoutRequestFailed">
+        Payout Request Failed!
+      </div>
       </div>
       <div class="col-6 d-none d-md-block mt-auto">
         <div style="max-width: 350px"
@@ -51,7 +56,7 @@
             </div>
             <div class="col-5">
               <h6 class="text-right mb-md-1"
-                  style="white-space: nowrap;">£{{balance / 100}}</h6>
+                  style="white-space: nowrap;">{{currencySymbol}}{{balance / 100}}</h6>
             </div>
           </div>
           <div *ngIf="pendingBalance != null"
@@ -62,14 +67,10 @@
             </div>
             <div class="col-5">
               <h6 class="text-right mb-md-1"
-                  style="white-space: nowrap;">£{{pendingBalance / 100}}</h6>
+                  style="white-space: nowrap;">{{currencySymbol}}{{pendingBalance / 100}}</h6>
             </div>
           </div>
         </div>
-      </div>
-      <div class="col-12"
-           *ngIf="payoutRequestFailed">
-        Payout Request Failed!
       </div>
     </div>
     <hr>
@@ -87,7 +88,7 @@
         <tbody>
           <tr *ngFor="let payout of payOuts">
             <th scope="row">Pay Out</th>
-            <td>£{{payout?.amount / 100}}</td>
+            <td>{{currencySymbol}}{{payout?.amount / 100}}</td>
             <td style="white-space: nowrap">{{payout?.createdAt}}</td>
             <td>
               <span [class.text-success]="payout?.status === 'paid'">{{payout?.status}}</span>

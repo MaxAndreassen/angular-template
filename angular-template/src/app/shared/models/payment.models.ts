@@ -17,6 +17,7 @@ export class PaymentIntentSecret {
 export class AccountBalance {
     balance: number;
     pendingBalance: number;
+    currency: string;
 }
 
 export class Transfer {

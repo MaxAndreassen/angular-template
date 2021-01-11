@@ -34,8 +34,8 @@ export class PaymentService {
     return this.http.post<PaymentIntentSecret>(url, null);
   }
 
-  requestPayout(amount: number): Observable<boolean> {
-    const url = `${this.config.apiUrl}account/request-payout?amount=${amount}`;
+  requestPayout(amount: number, currency: string): Observable<boolean> {
+    const url = `${this.config.apiUrl}payment/account/request-payout?amount=${amount}&currency=${currency}`;
     return this.http.get<boolean>(url);
   }
 
@@ -55,5 +55,19 @@ export class PaymentService {
 
     const url = `${this.config.apiUrl}payment/account/${userUuid}/payouts?startingAfter=${startingAfter}`;
     return this.http.get<PayOut[]>(url);
+  }
+
+  getCurrencySymbol(currency: string): string {
+    switch (currency) {
+      case 'gbp': {
+        return '£';
+      }
+      case 'eur': {
+        return '€';
+      }
+      default: {
+        return '$';
+      }
+    }
   }
 }

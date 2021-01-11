@@ -17,7 +17,8 @@ export class PayoutComponent implements OnInit {
   account: Account = new Account();
   balance = null;
   pendingBalance = null;
-
+  currency: string;
+  currencySymbol: string;
   securityContext: SecurityContext;
 
   loading = false;
@@ -77,6 +78,8 @@ export class PayoutComponent implements OnInit {
             .subscribe(p => {
               this.balance = p.balance;
               this.pendingBalance = p.pendingBalance;
+              this.currency = p.currency;
+              this.currencySymbol = this.paymentService.getCurrencySymbol(this.currency);
             });
         }
       });
@@ -115,14 +118,13 @@ export class PayoutComponent implements OnInit {
     this.payoutRequestFailed = false;
 
     this.paymentService
-      .requestPayout(this.balance)
+      .requestPayout(this.balance, this.currency)
       .pipe(finalize(() => this.payoutRequestLoading = false))
       .subscribe(res => {
         this.payoutRequestSubmitted = true;
+        this.router.navigateByUrl('stats/financials/payout?reload=true');
       }, err => {
         this.payoutRequestFailed = true;
       });
-
   }
-
 }
