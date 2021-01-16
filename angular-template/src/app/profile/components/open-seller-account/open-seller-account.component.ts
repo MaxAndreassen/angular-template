@@ -59,6 +59,8 @@ export class OpenSellerAccountComponent implements OnInit {
         .pipe(finalize(() => this.paymentCheckLoading = false))
         .subscribe(result => {
           this.account = result;
+
+          this.authService.setPerformAdminCheck(true);
         });
 
       this.userLoading = true;

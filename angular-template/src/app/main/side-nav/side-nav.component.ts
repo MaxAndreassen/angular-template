@@ -159,6 +159,19 @@ export class SideNavComponent implements OnInit {
     });
 
     if (this.securityContext.authenticated && this.authService.getPerformAdminCheck()) {
+      this.paymentService
+      .getAccount(this.securityContext.user.uuid)
+      .pipe(finalize(() => this.paymentCheckLoading = false))
+      .subscribe(result => {
+        if (!!result) {
+          this.account = result;
+          this.authService.setChargesEnabled(result.chargesEnabled);
+        } else {
+          this.account.chargesEnabled = false;
+          this.authService.setChargesEnabled(false);
+        }
+      });
+
       this.userService.getUser(this.securityContext.user.uuid)
         .subscribe(res => {
           this.adminUser = res.isAdmin;
