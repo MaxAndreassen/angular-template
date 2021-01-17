@@ -27,6 +27,9 @@ export class ProductSummary {
     status: number;
     statusName: string;
     versionUuid: string;
+    genre: string;
+    category: string;
+    creatorUserProfileUrl: string;
 
     // local vars
     downloadFailed = false;

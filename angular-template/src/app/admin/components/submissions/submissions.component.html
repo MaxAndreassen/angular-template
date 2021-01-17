@@ -16,6 +16,11 @@
                   [linkUrl]="'admin/review/' + product?.uuid"
                   [pictureUrl]="product?.coverImageUrl"
                   [status]="product?.status"
+                  [subText]="product?.genre + ' | ' + product?.category"
+                  [userUuid]="product?.creatorUserUuid"
+                  [username]="product?.creatorUserUsername"
+                  [profileUrl]="product?.creatorUserProfileUrl"
+                  showBottom="true"
                   buttonText="Review"></app-card>
       </div>
     </div>

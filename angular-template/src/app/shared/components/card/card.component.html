@@ -1,17 +1,32 @@
-<div class="card mx-auto d-block"
-     [class.pb-4]="!status">
+<div class="card mx-auto d-block" style="padding-bottom: 12px">
   <div class="image-container"
        style="background-position: center;     background-size: cover; background-repeat: no-repeat;"
        [style.background-image]="!!pictureUrl ? 'url(' + pictureUrl + ')' : 'url(assets/user.svg)'"
        [style.height]="height + 'px'">
     <span class="helper"></span>
-    <div class="card-body">
-      <h5 class="card-title">{{title}}</h5>
-      <p class="card-text"
-         style="overflow: hidden; white-space: nowrap;">{{description}}</p>
+    <hr class="mt-0 mb-2">
+    <div class="card-body pt-0 px-3 pb-3">
+        <h5 class="card-title text-center pb-2 mb-0" style="font-weight: 600;">{{title}}</h5>
+      <h6 class="card-text text-center pb-2 mb-1"
+          style="overflow: hidden; white-space: nowrap; font-weight: normal;">{{description}}</h6>
       <a [href]="linkUrl"
          class="btn btn-primary w-100">{{buttonText}}</a>
     </div>
+    <hr class="mt-0 mb-1" *ngIf="showBottom">
+    <div class="row mt-1" style="height: 34px;" *ngIf="showBottom">
+        <div class="col-6">
+          <a [href]="'profile/' + userUuid"
+             class="d-table mr-auto pt-1 pl-2" style="white-space: nowrap;">
+            <img [src]="profileUrl ? profileUrl : 'assets/user.svg'"
+                 class="img-thumbnail user-profile">
+            <p class="d-inline-block ml-1 mb-1"
+               style="font-size: 9px; font-weight: bold;"> {{username ? username : 'Anonymous'}} </p>
+          </a>
+        </div>
+        <div class="col-6">
+            <p class="d-table ml-auto pt-2 pr-2" style="font-size: 10px;color: gray; margin-top: 1px; white-space: nowrap;">{{subText}}</p>
+        </div>
+      </div>
     <app-version-status-bar [status]="status"
                             *ngIf="status"></app-version-status-bar>
   </div>

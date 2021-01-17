@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { UserEditor } from '../../../profile/models/profile.models';
 
 @Component({
   selector: 'app-card',
@@ -14,6 +15,12 @@ export class CardComponent implements OnInit {
   @Input() buttonText: string;
   @Input() height = 200;
   @Input() status: number;
+  @Input() user: UserEditor;
+  @Input() subText: string;
+  @Input() userUuid: string;
+  @Input() username: string;
+  @Input() profileUrl: string;
+  @Input() showBottom: boolean;
 
   constructor() { }
 

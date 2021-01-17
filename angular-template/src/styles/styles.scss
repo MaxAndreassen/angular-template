@@ -37,3 +37,10 @@ $ng-select-highlight: #6200ee !default;
 ::-webkit-scrollbar-thumb:hover {
   background: #555; 
 }
+
+.col-xl-fifth {
+  @media (min-width: 1200px) {
+    flex: 0 0 20%;
+    max-width:20%;
+  }
+}

@@ -30,11 +30,16 @@
           *ngIf="!loading && !(products?.length > 0)"> No Assets Found</h2>
       <div class="row">
         <div *ngFor="let product of products"
-             class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4 mx-auto mx-sm-0">
+             class="col-xl-fifth col-lg-3 col-md-4 col-sm-6 col-10 mb-4 mx-auto mx-sm-0">
           <app-card [description]="product?.name"
                     [title]="product?.priceInPounds == 0 ? 'FREE' : '£' + product?.priceInPounds"
                     [linkUrl]="'product/view/' + product?.versionUuid"
                     [pictureUrl]="product?.coverImageUrl"
+                    [subText]="product?.genre + ' | ' + product?.category"
+                    [userUuid]="product?.creatorUserUuid"
+                    [username]="product?.creatorUserUsername"
+                    [profileUrl]="product?.creatorUserProfileUrl"
+                    showBottom="true"
                     buttonText="View"></app-card>
         </div>
       </div>

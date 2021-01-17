@@ -1,6 +1,7 @@
 <div class="jumbotron m-0 m-xl-4 text-center bg-white">
   <span *ngIf="account?.payoutsEnabled && !paymentCheckLoading">
-    <h1 class="display-4 mb-4">Manage Payouts</h1>
+    <h1 class="display-4">Manage Payouts</h1>
+    <p class="lead">The currency shown on this page is determined by your linked bank's currency.</p>
     <hr>
     <h3 class="mb-4 mt-4 mt-md-1 text-center text-md-left">Current Balance</h3>
     <app-loading-spinner *ngIf="loading"></app-loading-spinner>
@@ -15,7 +16,7 @@
             </div>
             <div class="col-5">
               <h6 class="text-right mb-md-1"
-                  style="white-space: nowrap;">{{currencySymbol}}{{balance / 100}}</h6>
+                  style="white-space: nowrap;">{{currencySymbol}}{{payoutRequestSubmitted ? '0' : balance / 100}}</h6>
             </div>
           </div>
           <div *ngIf="pendingBalance != null"
